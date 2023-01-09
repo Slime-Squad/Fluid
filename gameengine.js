@@ -91,9 +91,9 @@ class GameEngine {
     };
 
     update() {
-        let entitiesCount = this.entities.length;
+        this.totalEntities = this.entities.length;
 
-        for (let i = 0; i < entitiesCount; i++) {
+        for (let i = 0; i < this.totalEntities; i++) {
             let entity = this.entities[i];
 
             if (!entity.removeFromWorld) {
