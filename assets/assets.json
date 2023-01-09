@@ -1,0 +1,14 @@
+{
+    "graphics": {
+        "item": [
+            "charge.png",
+            "charge.json"
+        ],
+        "map": [
+            "brick-spritesheet.png"
+        ]
+    },
+    "audio": {
+        
+    }
+}
