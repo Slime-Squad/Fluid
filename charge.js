@@ -21,8 +21,8 @@ class Charge extends AnimatedEntity {
      * Code necessary to move entity with WASD or a Xbox controller.
      */
     update() {
-        if(this.x > 1024 || this.x < 0) this.x = 0;
-        if(this.y > 768 || this.y < 0) this.y = 0;
+        if(this.x > PARAMS.WIDTH || this.x < 0) this.x = 0;
+        if(this.y > PARAMS.HEIGHT || this.y < 0) this.y = 0;
         
         //Controls work with keyboard and a gamepad
         if(this.game.keys["w"] || this.game.up) {

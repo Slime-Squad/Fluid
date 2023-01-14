@@ -45,8 +45,8 @@ fetch(ASSET_PATHS)
 			const c4 = new Charge(gameEngine, "Electric", 150, 200, 50);
 			const c5 = new Charge(gameEngine, "Earth", 150, 250, 50);
 
-			// const slime1 = new Slime(gameEngine, "Slide", 150, 448, 320);
-			// gameEngine.addEntity(slime1);
+			const slime1 = new Slime(gameEngine, "Slide", 150, 448, 320);
+			gameEngine.addEntity(slime1);
 			
 			gameEngine.addEntity(c1);
 			gameEngine.addEntity(c2);
