@@ -1,5 +1,10 @@
 {
     "graphics": {
+        "characters": [
+            "SlimeSlide.png",
+            "SlimeSlide.json"
+        ],
+
         "item": [
             "charge.png",
             "charge.json"
