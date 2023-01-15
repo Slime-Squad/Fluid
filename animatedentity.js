@@ -7,7 +7,7 @@ class AnimatedEntity {
      * Creates a new instance of an animated entity.
      * @param {GameEngine} game The {@link GameEngine} instance to be associated with this entity.
      * @param {String} path The relative path to the entity. Where the image and json files for this object are located, including the name without a file extension.
-     * @param {String} tag The name of the current animation of the entity. 
+     * @param {String} tag The name of the current animation of the entity. {@link this.frames.tags}
      * @param {number} x The x-coordinate associated with the top-left corner of the entity's sprite in the current {@link GameEngine.ctx} context.
      * @param {number} y The y-coordinate associated with the top-left corner of the entity's sprite in the current {@link GameEngine.ctx} context.
      * @param {number} width The width of the entity's sprite in the current {@link GameEngine.ctx} context.

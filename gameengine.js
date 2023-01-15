@@ -5,6 +5,7 @@ class GameEngine {
         // What you will use to draw
         // Documentation: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
         this.ctx = null;
+        this.currentFrame = 0; // Used to track time globablly
 
         // Everything that will be updated and drawn each frame
         this.entities = [];
@@ -140,7 +141,14 @@ class GameEngine {
         this.update();
         this.gamepadUpdate();
         this.draw();
+        this.currentFrame++;
     };
+
+    // Utilities
+
+    clamp (num, min, max) {
+        return Math.min(Math.max(num, min), max);
+    }
 
 };
 

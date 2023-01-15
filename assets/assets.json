@@ -1,6 +1,8 @@
 {
     "graphics": {
         "characters": [
+            "slimeBounce.png",
+            "slimeBounce.json",
             "SlimeSlide.png",
             "SlimeSlide.json"
         ],

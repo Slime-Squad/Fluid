@@ -6,7 +6,7 @@ class Charge extends AnimatedEntity {
     /**
      * Creates a new instance of a charge item.
      * @param {GameEngine} game The {@link GameEngine} instance to be associated with this charge.
-     * @param {String} tag The type of charge to be placed. One of "Earth", "Fire", "Ice", "Electric", or "Disabled".
+     * @param {String} tag The type of charge to be placed. One of "Earth", "Fire", "Ice", "Electric", or "Disabled". 
      * @param {number} speed The amount of pixels that the object moves in a tick if moved.
      * @param {number} x The x-coordinate associated with the top-left corner of the charge's sprite in the current {@link GameEngine.ctx} context.
      * @param {number} y The y-coordinate associated with the top-left corner of the charge's sprite in the current {@link GameEngine.ctx} context.
@@ -38,10 +38,10 @@ class Charge extends AnimatedEntity {
             this.x += this.speed * this.game.clockTick;
         }
         if(this.game.keys[" "] || this.game.A) {
-            console.log("jump");
+            // console.log("jump");
         }
         if(this.game.keys["j"] || this.game.B) {
-            console.log("smash")
+            // console.log("smash")
         }
     }
 }
