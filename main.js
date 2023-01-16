@@ -39,13 +39,13 @@ fetch(ASSET_PATHS)
 			
 			gameEngine.init(ctx);
 
-			const c1 = new Charge(gameEngine, "Disabled", 150, 50, 50);
-			const c2 = new Charge(gameEngine, "Fire", 150, 100, 50);
-			const c3 = new Charge(gameEngine, "Ice", 150, 150, 50);
-			const c4 = new Charge(gameEngine, "Electric", 150, 200, 50);
-			const c5 = new Charge(gameEngine, "Earth", 150, 250, 50);
+			const c1 = new Charge(gameEngine, "Disabled", 50, 50);
+			const c2 = new Charge(gameEngine, "Fire", 100, 50);
+			const c3 = new Charge(gameEngine, "Ice", 150, 50);
+			const c4 = new Charge(gameEngine, "Electric", 200, 50);
+			const c5 = new Charge(gameEngine, "Earth", 250, 50);
 
-			const slime1 = new Slime(gameEngine, "Idle", 150, 448, 320);
+			const slime1 = new Slime(gameEngine, "Idle", PARAMS.WIDTH/2, PARAMS.HEIGHT/2);
 			gameEngine.addEntity(slime1);
 			
 			gameEngine.addEntity(c1);
