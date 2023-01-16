@@ -6,14 +6,11 @@
  */
 class Slime extends AnimatedEntity {
 
-    constructor(game, tag, speed, x, y, loop = true) {
-       
- //       this.animatedentity = new AnimatedEntity(game, "./assets/graphics/characters/Slime-sheet4.png", tag, x, y, 8*PARAMS.SCALE, 8*PARAMS.SCALE, loop)
+    constructor(game, tag, x, y, loop = true) {
         
-        super(game, "./assets/graphics/characters/slimeBounce", tag, x, y, 4*PARAMS.SCALE, 4*PARAMS.SCALE, loop);
-        Object.assign(this, {game, tag, speed, x, y, loop});
-        // this.x = 448;
-        // this.y = 320;
+        super(game, "./assets/graphics/characters/slimeBounce", tag, x, y, loop);
+        Object.assign(this, {game, tag, x, y, loop});
+        this.hitbox = new HitBox(x, y, 12*PARAMS.SCALE, 10*PARAMS.SCALE);
 
         // Movement
         this.speed = 250;
@@ -26,7 +23,7 @@ class Slime extends AnimatedEntity {
         this.canDash = true;
 
         // Charges
-        this.charged = {
+        this.charges = {
             "Electric" : 0,
             "Fire" : 0,
             "Ice" : 0,
@@ -40,15 +37,11 @@ class Slime extends AnimatedEntity {
     };
 
     /**
-     * Will update the position of the slime and whether or not it is 
-     * actively being given any input every tick.
+     * Function called on every {@link AnimatedEntity.game.clockTick}.
      */
     update() {
         
-        if(this.x > PARAMS.WIDTH || this.x < 0) this.x = 0;
-        if(this.y > PARAMS.HEIGHT || this.y < 0) this.y = 0;
-        
-        //Controls work with keyboard and a gamepad
+        // CONTROLS
         if(this.game.keys["w"] || this.game.up) {
             this.y -= this.speed * this.game.clockTick;
         }
@@ -98,6 +91,19 @@ class Slime extends AnimatedEntity {
         }
         if (!this.canJump && this.game.currentFrame - this.jumpTimer > 45) this.canJump = true;
         if (!this.canDash && this.game.currentFrame - this.dashTimer > 30) this.canDash = true;
+
+        // HANDLE COLLISIONS
+        this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(6*PARAMS.SCALE));
+        this.game.entities.forEach(entity => {
+            if (entity.hitbox && this.hitbox.collide(entity.hitbox)) {
+                if (entity instanceof Charge) {
+                    if (entity.tag != "Disabled") { // charge collected
+                        entity.tag = "Disabled";
+                    }
+                }
+            }
+        });
+
     }
 
     /**
