@@ -23,11 +23,11 @@ class AnimatedEntity {
      * @param {CanvasRenderingContext2D} ctx The canvas to which the animation will be displayed upon.
      */
     draw(ctx) {
-        this.frames.animateTag(this.game, ctx, this.x, this.y, this.timer, this.spritesheet, this.tag, this.loop);
+        this.frames.animateTag(this.game, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.timer, this.spritesheet, this.tag, this.loop);
         if (this.hitbox && PARAMS.DEBUG) {
             ctx.strokeStyle = "red";
             ctx.beginPath();
-            ctx.rect(this.hitbox.left, this.hitbox.top, this.hitbox.width, this.hitbox.height);   
+            ctx.rect(this.hitbox.left - this.game.camera.x, this.hitbox.top - this.game.camera.y, this.hitbox.width, this.hitbox.height);   
             ctx.stroke();
         }
     }
