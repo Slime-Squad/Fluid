@@ -76,7 +76,7 @@ class AssetManager {
                             this.successCount++;
                             if (this.isDone()) callback();
                         })
-                        .catch(asset => {
+                        .catch(() => {
                             console.log("Error loading " + path);
                             this.errorCount++;
                             if (this.isDone()) callback();
