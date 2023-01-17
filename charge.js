@@ -12,10 +12,22 @@ class Charge extends AnimatedEntity {
      * @param {boolean} loop Whether the charge's animation loops over again, after having finished playing once.
      */
     constructor(game, tag, x, y, loop = true) {
-        super(game, "./assets/graphics/item/charge", tag, x, y, 8*PARAMS.SCALE, 8*PARAMS.SCALE, loop);
+        super(game, "./assets/graphics/item/charge", tag, x, y, loop);
+        Object.assign(this, {game, tag, x, y, loop});
+        this.hitbox = new HitBox(x, y, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
+        this.originalTag = tag;
+        this.elapsedTime = 0;
     }
 
     update() {
-        
+        if (this.originalTag == "Disabled") return;
+        if (this.tag == "Disabled") {
+            this.elapsedTime += this.game.clockTick;
+        }
+
+        if (this.elapsedTime >= 5) {
+            this.tag = this.originalTag;
+            this.elapsedTime = 0;
+        }
     }
 }

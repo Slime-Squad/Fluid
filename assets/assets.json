@@ -1,11 +1,19 @@
 {
     "graphics": {
+        "characters": [
+            "slimeBounce.png",
+            "slimeBounce.json",
+            "SlimeSlide.png",
+            "SlimeSlide.json"
+        ],
+
         "item": [
             "charge.png",
             "charge.json"
         ],
         "map": [
-            "brick-spritesheet.png"
+            "ice.png",
+            "dirt.png"
         ]
     },
     "audio": {

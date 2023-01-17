@@ -2,14 +2,14 @@
 
 class GameEngine {
     constructor(options) {
-        // What you will use to draw
-        // Documentation: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
         this.ctx = null;
+        this.camera = null;
+        this.currentFrame = 0; // Used to track time globablly
 
         // Everything that will be updated and drawn each frame
         this.entities = [];
 
-        // Information on the input
+         //for Gamepad
         this.left = false;
         this.right = false;
         this.up = false;
@@ -17,7 +17,7 @@ class GameEngine {
         this.A = false;
         this.B = false;
         this.gamepad = null;
-
+       
         // Information on the input
         this.click = null;
         this.mouse = null;
@@ -34,6 +34,8 @@ class GameEngine {
         this.ctx = ctx;
         this.startInput();
         this.timer = new Timer();
+        this.camera = new SceneManager(this);
+        this.entities.push(this.camera);
     };
 
     start() {
@@ -81,41 +83,25 @@ class GameEngine {
             this.rightclick = getXandY(e);
         });
 
-        /*listens for keyboard events and declares whether or not keyboard is active
-        knowing keyboard is active is important to stop flicker in menu and potential other issues
-        when playing with a gamepad.*/
-        this.ctx.canvas.addEventListener("keydown", event => {this.keyboardActive = true; this.keys[event.key] = true;});
-        this.ctx.canvas.addEventListener("keyup", event => {this.keyboardActive = false; this.keys[event.key] = false});
+       //declares keyboard active and listens for keyboard events
+       this.ctx.canvas.addEventListener("keydown", event => {this.keyboardActive = true; this.keys[event.key] = true;});
+       this.ctx.canvas.addEventListener("keyup", event => {this.keyboardActive = false; this.keys[event.key] = false});
     };
 
     addEntity(entity) {
+        if (entity instanceof Slime) this.slime = entity;
         this.entities.push(entity);
     };
 
     draw() {
-        // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
-        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height); // Clear canvas
 
-        // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
-    };
 
-        // Tracks and updates input from the gamepad
-        gamepadUpdate() {
-            this.gamepad = navigator.getGamepads()[0];
-            let gamepad = this.gamepad;
-            if (gamepad != null && !this.keyboardActive) {
-                this.A = gamepad.buttons[0].pressed;
-                this.B = gamepad.buttons[1].pressed;
-                //checks if d-pad is used or joysticks meet a certain threshold
-                this.left = gamepad.buttons[14].pressed || gamepad.axes[0] < -0.3;
-                this.right = gamepad.buttons[15].pressed || gamepad.axes[0] > 0.3;
-                this.up = gamepad.buttons[12].pressed || gamepad.axes[1] < -0.3;
-                this.down = gamepad.buttons[13].pressed || gamepad.axes [1] > 0.3;
-            }
-        }    
+        this.camera.draw(this.ctx); 
+    };
 
     update() {
         this.totalEntities = this.entities.length;
@@ -138,8 +124,16 @@ class GameEngine {
     loop() {
         this.clockTick = this.timer.tick();
         this.update();
+        this.gamepadUpdate();
         this.draw();
+        this.currentFrame++;
     };
+
+    // Utilities
+
+    clamp (num, min, max) {
+        return Math.min(Math.max(num, min), max);
+    }
 
 };
 
