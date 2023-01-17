@@ -12,7 +12,8 @@
             "charge.json"
         ],
         "map": [
-            "brick-spritesheet.png"
+            "ice.png",
+            "dirt.png"
         ]
     },
     "audio": {
