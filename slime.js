@@ -42,6 +42,8 @@ class Slime extends AnimatedEntity {
     update() {
         
         // CONTROLS
+
+        // Up and Down
         if(this.game.keys["w"] || this.game.up) {
             this.y -= this.speed * this.game.clockTick;
         }
@@ -49,6 +51,7 @@ class Slime extends AnimatedEntity {
             this.y += this.speed * this.game.clockTick;
         }
         
+        // Left and Right
         if(this.game.keys["a"] || this.game.left) {
             if (this.momentum > 0) this.momentum / 3;
             this.x += (this.speed * -1 + this.momentum) * this.game.clockTick;
@@ -78,12 +81,16 @@ class Slime extends AnimatedEntity {
                 this.game.clamp(this.momentum - this.acceleration, 0, this.speed) :
                 this.game.clamp(this.momentum + this.acceleration, this.speed * -1, 0);
         }
+
+        // Jump
         // console.log(this.canJump)
         if((this.game.keys[" "] || this.game.A) && this.canJump) {
             this.canJump = false;
             console.log("jump");
             this.jumpTimer = this.game.currentFrame;
         }
+
+        // Dash
         if((this.game.keys["j"] || this.game.B) && this.canDash) {
             this.canDash = false;
             console.log("smash");
