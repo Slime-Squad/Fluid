@@ -28,6 +28,9 @@ class AnimatedEntity {
             ctx.beginPath();
             ctx.rect(this.hitbox.left - PARAMS.GAME.camera.x, this.hitbox.top - PARAMS.GAME.camera.y, this.hitbox.width, this.hitbox.height);   
             ctx.stroke();
+            ctx.font = "12px segoe ui";
+            ctx.fillStyle = "white";
+            ctx.fillText(this.constructor.name.toUpperCase() + ": x=" + this.x + " y=" + this.y, this.hitbox.left - PARAMS.GAME.camera.x, this.hitbox.bottom - PARAMS.GAME.camera.y + 4*PARAMS.SCALE);
         }
     }
 

@@ -119,11 +119,7 @@ class Slime extends AnimatedEntity {
      */
     draw(ctx) {
         super.draw(ctx);
-        if (PARAMS.DEBUG) {
-            ctx.font = "12px segoe ui";
-            ctx.fillStyle = "white";
-            ctx.fillText("SLIME: x=" + this.x + " y=" + this.y, this.x + 6*PARAMS.SCALE - PARAMS.GAME.camera.x, this.y + 20*PARAMS.SCALE - PARAMS.GAME.camera.y);
-        }
+        
     }
     
 }

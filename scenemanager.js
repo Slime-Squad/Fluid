@@ -19,10 +19,10 @@ class SceneManager {
         PARAMS.GAME.addEntity(new Slime("Idle", PARAMS.WIDTH/2, PARAMS.HEIGHT/2));
 
         PARAMS.GAME.addEntity(new Charge("Disabled", 50, 50));
-        PARAMS.GAME.addEntity(new Charge("Fire", 100, 50));
-        PARAMS.GAME.addEntity(new Charge("Ice", 150, 50));
-        PARAMS.GAME.addEntity(new Charge("Electric", 200, 50));
-        PARAMS.GAME.addEntity(new Charge("Earth", 250, 50));
+        PARAMS.GAME.addEntity(new Charge("Fire", 100, 100));
+        PARAMS.GAME.addEntity(new Charge("Ice", 150, 150));
+        PARAMS.GAME.addEntity(new Charge("Electric", 200, 200));
+        PARAMS.GAME.addEntity(new Charge("Earth", 250, 250));
     }
 
     /**
