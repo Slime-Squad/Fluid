@@ -5,35 +5,34 @@
 class AnimatedEntity {
     /**
      * Creates a new instance of an animated entity.
-     * @param {GameEngine} game The {@link GameEngine} instance to be associated with this entity.
      * @param {String} path The relative path to the entity. Where the image and json files for this object are located, including the name without a file extension.
      * @param {String} tag The name of the current animation of the entity. 
      * @param {number} x The x-coordinate associated with the top-left corner of the entity's sprite in the current {@link GameEngine.ctx} context.
      * @param {number} y The y-coordinate associated with the top-left corner of the entity's sprite in the current {@link GameEngine.ctx} context.
      * @param {boolean} loop Whether the entity's animation loops over again, after having finished playing once.
      */
-    constructor(game, path, tag, x, y, loop) {
-        Object.assign(this, { game, path, tag, x, y, loop });
+    constructor(path, tag, x, y, loop) {
+        Object.assign(this, { path, tag, x, y, loop });
         this.spritesheet = ASSET_MANAGER.getAsset(this.path + ".png");
         this.frames = ASSET_MANAGER.getAsset(this.path + ".json");
         this.timer = {frameIndex:0, elapsedTime:0}; // handles frame timing
     }
     /**
-     * Draws the current entity's {@link AnimatedEntity.tag} animation. Called on every {@link AnimatedEntity.game.clockTick}.
+     * Draws the current entity's {@link AnimatedEntity.tag} animation. Called on every clock tick.
      * @param {CanvasRenderingContext2D} ctx The canvas to which the animation will be displayed upon.
      */
     draw(ctx) {
-        this.frames.animateTag(this.game, ctx, this.x - this.game.camera.x, this.y - this.game.camera.y, this.timer, this.spritesheet, this.tag, this.loop);
+        this.frames.animateTag(ctx, this.x - PARAMS.GAME.camera.x, this.y - PARAMS.GAME.camera.y, this.timer, this.spritesheet, this.tag, this.loop);
         if (this.hitbox && PARAMS.DEBUG) {
             ctx.strokeStyle = "red";
             ctx.beginPath();
-            ctx.rect(this.hitbox.left - this.game.camera.x, this.hitbox.top - this.game.camera.y, this.hitbox.width, this.hitbox.height);   
+            ctx.rect(this.hitbox.left - PARAMS.GAME.camera.x, this.hitbox.top - PARAMS.GAME.camera.y, this.hitbox.width, this.hitbox.height);   
             ctx.stroke();
         }
     }
 
     /**
-     * Function called on every {@link AnimatedEntity.game.clockTick}.
+     * Function called on every clock tick.
      */
     update() {
         

@@ -51,7 +51,6 @@ class Frames {
     }
     /**
      * Animates the animation located in the given spritesheet with the given tag name on the given canvas. 
-     * @param {GameEngine} game The {@link GameEngine} instance to be associated with this animation.
      * @param {CanvasRenderingContext2D} ctx The canvas to which the animation will be displayed upon.
      * @param {number} x The x-coordinate associated with the top-left corner of the animation's sprite in the given ctx context.
      * @param {number} y The y-coordinate associated with the top-left corner of the animation's sprite in the given ctx context.
@@ -60,9 +59,9 @@ class Frames {
      * @param {String} tag The name of the animation to be animated, as it is defined in the JSON file used to initialize this {@link Frames} instance.
      * @param {boolean} loop Whether the entity's animation loops over again, after having finished playing once.
      */
-    animateTag(game, ctx, x, y, Timer, spritesheet, tag, loop = true, direction = 1) {
+    animateTag(ctx, x, y, Timer, spritesheet, tag, loop = true, direction = 1) {
         
-        Timer.elapsedTime += game.clockTick;
+        Timer.elapsedTime += PARAMS.GAME.clockTick;
         if (this.animations[tag].length <= Timer.frameIndex) {
             if (!loop) {
                 // dereference function if not a looping animation (saves unneccessary computation)
