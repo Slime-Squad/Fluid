@@ -42,7 +42,6 @@ class AssetManager {
             
             switch(ext) {
                 case 'png':
-                    console.log(ext);
                     let img = new Image;
                     this.handleEventListeners(img, callback);
                     img.src = path;
@@ -75,8 +74,11 @@ class AssetManager {
                         .then((asset) => {
                             console.log("Loaded " + asset.src);
                             this.successCount++;
+                            if (this.isDone()) callback();
                         })
-                        .finally(() => {
+                        .catch(() => {
+                            console.log("Error loading " + path);
+                            this.errorCount++;
                             if (this.isDone()) callback();
                         });
                     break;

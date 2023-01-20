@@ -33,26 +33,11 @@ fetch(ASSET_PATHS)
 			ctx.imageSmoothingEnabled = false; // disable antialiasing
 
 			PARAMS.TICK = gameEngine.clockTick;
-			PARAMS.BLOCKWIDTH = PARAMS.BITWIDTH*PARAMS.SCALE;
+			PARAMS.BLOCKSIZE = PARAMS.BITWIDTH*PARAMS.SCALE;
 			PARAMS.WIDTH = canvas.getAttribute("width");
 			PARAMS.HEIGHT = canvas.getAttribute("height");
 			
 			gameEngine.init(ctx);
-
-			const c1 = new Charge(gameEngine, "Disabled", 150, 50, 50);
-			const c2 = new Charge(gameEngine, "Fire", 150, 100, 50);
-			const c3 = new Charge(gameEngine, "Ice", 150, 150, 50);
-			const c4 = new Charge(gameEngine, "Electric", 150, 200, 50);
-			const c5 = new Charge(gameEngine, "Earth", 150, 250, 50);
-
-			const slime1 = new Slime(gameEngine, "Slide", 150, 448, 320);
-			gameEngine.addEntity(slime1);
-			
-			gameEngine.addEntity(c1);
-			gameEngine.addEntity(c2);
-			gameEngine.addEntity(c3);
-			gameEngine.addEntity(c4);
-			gameEngine.addEntity(c5);
 		
 			gameEngine.start();
 		

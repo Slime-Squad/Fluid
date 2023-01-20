@@ -1,10 +1,14 @@
-﻿
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <title>Slime Game</title>
-  
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <title>Fluid</title>
+
     <script type="text/javascript" src="./assetmanager.js"></script>
     <script type="text/javascript" src="./timer.js"></script>
     <script type="text/javascript" src="./gameengine.js"></script>
@@ -15,9 +19,17 @@
     <script type="text/javascript" src="./Slime.js"></script>
     <script type="text/javascript" src="./frames.js"></script>
     <script type="text/javascript" src="./hitbox.js"></script>
-
+    <script type="text/javascript" src="./scenemanager.js"></script>
 </head>
+
 <body>
-    <canvas id="gameWorld" width="1280" height="768" style="width: 100%; background: #1f102a; border: 1px solid black" tabindex="0"></canvas>
+    <canvas 
+        id="gameWorld" 
+        width="1280" 
+        height="768" 
+        tabindex="0">
+    </canvas>
+    <footer>A game by <a href="https://github.com/ProfessorX0537">Xavier Hines</a>, <a href="http://github.com/jaspersn">Jasper Newkirk</a> and <a href="https://github.com/Nattypat">Nathan Brown</a>.</footer>
 </body>
+
 </html>

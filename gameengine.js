@@ -2,9 +2,9 @@
 
 class GameEngine {
     constructor(options) {
-        // What you will use to draw
-        // Documentation: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
         this.ctx = null;
+        this.camera = null;
+        this.currentFrame = 0; // Used to track time globablly
 
         // Everything that will be updated and drawn each frame
         this.entities = [];
@@ -34,6 +34,8 @@ class GameEngine {
         this.ctx = ctx;
         this.startInput();
         this.timer = new Timer();
+        this.camera = new SceneManager(this);
+        this.entities.push(this.camera);
     };
 
     start() {
@@ -87,17 +89,18 @@ class GameEngine {
     };
 
     addEntity(entity) {
+        if (entity instanceof Slime) this.slime = entity;
         this.entities.push(entity);
     };
 
     draw() {
-        // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
-        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height); // Clear canvas
 
-        // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
+
+        this.camera.draw(this.ctx); 
     };
 
     /**
@@ -140,7 +143,14 @@ class GameEngine {
         this.update();
         this.gamepadUpdate();
         this.draw();
+        this.currentFrame++;
     };
+
+    // Utilities
+
+    clamp (num, min, max) {
+        return Math.min(Math.max(num, min), max);
+    }
 
 };
 

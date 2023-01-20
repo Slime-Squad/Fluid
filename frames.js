@@ -34,10 +34,12 @@ class Frames {
     init(json) {
         if (!json) return; // Truthiness check
         this.animations = {};
+        this.tags = [];
         Object.keys(json["frames"]).forEach((index) => {
             
             const frame = json["frames"][index];
             const tag = frame["filename"].split("#")[1];
+            if (this.tags.indexOf(tag) === -1) this.tags.push(tag);
             if (this.animations[tag] === undefined) this.animations[tag] = []; // fencepost
             const x = frame["frame"]["x"];
             const y = frame["frame"]["y"];
@@ -45,7 +47,6 @@ class Frames {
             const h = frame["frame"]["h"];
             const duration = frame["duration"]/1000;
             this.animations[tag].push(new this.Frame(x, y, w, h, duration));
-            
         });
     }
     /**
@@ -59,7 +60,7 @@ class Frames {
      * @param {String} tag The name of the animation to be animated, as it is defined in the JSON file used to initialize this {@link Frames} instance.
      * @param {boolean} loop Whether the entity's animation loops over again, after having finished playing once.
      */
-    animateTag(game, ctx, x, y, Timer, spritesheet, tag, loop = true) {
+    animateTag(game, ctx, x, y, Timer, spritesheet, tag, loop = true, direction = 1) {
         
         Timer.elapsedTime += game.clockTick;
         if (this.animations[tag].length <= Timer.frameIndex) {
