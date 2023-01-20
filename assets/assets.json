@@ -10,7 +10,8 @@
             "charge.json"
         ],
         "map": [
-            "brick-spritesheet.png"
+            "brick-spritesheet.png",
+            "stone_Tileset.png"
         ]
     },
     "audio": {
