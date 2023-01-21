@@ -14,7 +14,8 @@
         "map": [
             "ice.png",
             "dirt.png",
-            "stone_Tileset.png"
+            "stone.png",
+            "fire.png"
         ]
     },
     "audio": {
