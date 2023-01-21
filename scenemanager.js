@@ -5,10 +5,8 @@
 class SceneManager {
     /**
      * Constructs a new camera and scene manager for the given game context.
-     * @param {GameEngine} game The current game engine context.
      */
-    constructor(game) {
-        this.game = game;
+    constructor() {
         this.x = 0;
         this.y = 0;
         this.loadTest();
@@ -18,25 +16,25 @@ class SceneManager {
      * Initializes the testing level.
      */
     loadTest() {
-        this.game.addEntity(new Slime(this.game, "Idle", PARAMS.WIDTH/2, PARAMS.HEIGHT/2));
+        PARAMS.GAME.addEntity(new Slime("Idle", PARAMS.WIDTH/2, PARAMS.HEIGHT/2));
 
-        this.game.addEntity(new Charge(this.game, "Disabled", 50, 50));
-        this.game.addEntity(new Charge(this.game, "Fire", 100, 50));
-        this.game.addEntity(new Charge(this.game, "Ice", 150, 50));
-        this.game.addEntity(new Charge(this.game, "Electric", 200, 50));
-        this.game.addEntity(new Charge(this.game, "Earth", 250, 50));
+        PARAMS.GAME.addEntity(new Charge("Disabled", 50, 50));
+        PARAMS.GAME.addEntity(new Charge("Fire", 100, 100));
+        PARAMS.GAME.addEntity(new Charge("Ice", 150, 150));
+        PARAMS.GAME.addEntity(new Charge("Electric", 200, 200));
+        PARAMS.GAME.addEntity(new Charge("Earth", 250, 250));
     }
 
     /**
      * Function called on every {@link AnimatedEntity.game.clockTick}.
      */
     update() {
-        this.x = this.game.slime.x - PARAMS.WIDTH/2;
-        this.y = this.game.slime.y - PARAMS.HEIGHT/2;
+        this.x = PARAMS.GAME.slime.x - PARAMS.WIDTH/2;
+        this.y = PARAMS.GAME.slime.y - PARAMS.HEIGHT/2;
     }
 
     /**
-     * Function responsible for drawing on the given canvas. Called on every {@link AnimatedEntity.game.clockTick}.
+     * Function responsible for drawing on the given canvas. Called on every clock tick.
      * @param {CanvasRenderingContext2D} ctx The canvas to display upon.
      */
     draw(ctx) {
