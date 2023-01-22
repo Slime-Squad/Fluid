@@ -6,7 +6,7 @@
  */
 const rgb = (r, g, b) => `rgba(${r}, ${g}, ${b})`;
 
-/** Global Parameters Object */
+/** Global Parameters */
 const PARAMS = { 
     BITWIDTH: 8,
     SCALE: 4,
@@ -97,3 +97,15 @@ window.requestAnimFrame = (() => {
 const getDistance = (p1, p2) => {
     return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 };
+
+/**
+ * Returns the given num, limited to the given range between min and max.
+ * @author Nathan Brown
+ * @param {number} num The number to be clamped.
+ * @param {number} min The minimum value of num.
+ * @param {number} max The maximum value of num.
+ * @returns The given num, limited to the given range between min and max.
+ */
+const clamp = (num, min, max) => {
+    return Math.min(Math.max(num, min), max);
+}
