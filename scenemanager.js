@@ -46,7 +46,13 @@ class SceneManager {
     update() {
         this.x = PARAMS.GAME.slime.x - PARAMS.WIDTH/2;
         this.y = PARAMS.GAME.slime.y - PARAMS.HEIGHT/2;
+        // Update fps
         this.frames++;
+        if (Math.floor((Date.now()-this.start)/1000) > 0) {
+            this.start = Date.now();
+            this.fps = this.frames;
+            this.frames = 0;
+        }
     }
 
     /**
@@ -54,15 +60,8 @@ class SceneManager {
      * @param {CanvasRenderingContext2D} ctx The canvas to display upon.
      */
     draw(ctx) {
-        
-        // DEBUG CAMERA INFO
+        // DEBUG INFO
         if (PARAMS.DEBUG) {
-            if (Math.floor((Date.now()-this.start)/1000) > 0) {
-                this.start = Date.now();
-                this.fps = this.frames;
-                this.frames = 0;
-            }
-            
             ctx.font = "30px segoe ui";
             ctx.fillStyle = "white";
             ctx.fillText("CAM: x=" + this.x + " y=" + this.y, 10, 30);
