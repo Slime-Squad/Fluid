@@ -23,8 +23,8 @@ class Slime extends AnimatedEntity {
         this.decceleration = this.speed / 45;
         this.direction = 1;
         this.rise = -1;
-        this.bounce = 18;
-        this.gravity = 1;
+        this.bounce = 8;
+        this.gravity = .1;
 
         // Conditions
         this.canJump = true;
@@ -132,7 +132,7 @@ class Slime extends AnimatedEntity {
                         entity.tag = "Disabled";
                     }
                     break;
-                case 'Platform':
+                case 'Tile':
                     if (collisions.direction === 'left'){
                         this.x = this.x + (collisions.leftIntersect);
                     } else if (collisions.direction === 'right'){
