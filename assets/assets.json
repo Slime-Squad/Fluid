@@ -13,7 +13,9 @@
         ],
         "map": [
             "ice.png",
-            "dirt.png"
+            "dirt.png",
+            "stone.png",
+            "fire.png"
         ]
     },
     "world": {

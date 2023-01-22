@@ -38,6 +38,8 @@ class SceneManager {
         PARAMS.GAME.addEntity(new Charge("Ice", 150, 150));
         PARAMS.GAME.addEntity(new Charge("Electric", 200, 200));
         PARAMS.GAME.addEntity(new Charge("Earth", 250, 250));
+
+        PARAMS.GAME.addEntity(new Platform());
     }
 
     /**

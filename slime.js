@@ -17,14 +17,19 @@ class Slime extends AnimatedEntity {
         this.hitbox = new HitBox(x, y, 12*PARAMS.SCALE, 10*PARAMS.SCALE);
 
         // Movement
-        this.speed = 250;
+        this.speed = 350;
         this.momentum = 0;
-        this.acceleration = this.speed / 45;
+        this.acceleration = this.speed / 30;
+        this.decceleration = this.speed / 45;
         this.direction = 1;
+        this.rise = -1;
+        this.bounce = 18;
+        this.gravity = 1;
 
         // Conditions
         this.canJump = true;
         this.canDash = true;
+        this.isAirborne = true;
 
         // Charges
         this.charges = {
@@ -48,16 +53,16 @@ class Slime extends AnimatedEntity {
         // CONTROLS
 
         // Up and Down
-        if(PARAMS.GAME.keys["w"] || PARAMS.GAME.up) {
-            this.y -= this.speed * PARAMS.GAME.clockTick;
-        }
-        if(PARAMS.GAME.keys["s"] || PARAMS.GAME.down) {
-            this.y += this.speed * PARAMS.GAME.clockTick;
-        }
+        // if(PARAMS.GAME.keys["w"] || PARAMS.GAME.up) {
+        //     this.y -= this.speed * PARAMS.GAME.clockTick;
+        // }
+        // if(PARAMS.GAME.keys["s"] || PARAMS.GAME.down) {
+        //     this.y += this.speed * PARAMS.GAME.clockTick;
+        // }
         
         // Left and Right
         if(PARAMS.GAME.keys["a"] || PARAMS.GAME.left) {
-            if (this.momentum > 0) this.momentum / 3;
+            if (this.momentum > 0) this.momentum / 5;
             this.x += (this.speed * -1 + this.momentum) * PARAMS.GAME.clockTick;
             this.tag = "move_left";
             this.direction = -1;
@@ -67,8 +72,8 @@ class Slime extends AnimatedEntity {
                 this.speed
             );
         }
-        else if (PARAMS.GAME.keys["d"] || PARAMS.GAME.right) {
-            if (this.momentum < 0) this.momentum / 3;
+        else if(PARAMS.GAME.keys["d"] || PARAMS.GAME.right) {
+            if (this.momentum < 0) this.momentum / 5;
             this.x += (this.speed + this.momentum) * PARAMS.GAME.clockTick;
             this.tag = "move";
             this.direction = 1;
@@ -90,7 +95,9 @@ class Slime extends AnimatedEntity {
         if((PARAMS.GAME.keys[" "] || PARAMS.GAME.A) && this.canJump) {
             this.canJump = false;
             console.log("jump");
-            this.jumpTimer = PARAMS.GAME.currentFrame;
+            // this.jumpTimer = PARAMS.GAME.currentFrame;
+            this.rise = this.bounce;
+            this.isAirborne = true;
         }
 
         // Dash
@@ -99,20 +106,47 @@ class Slime extends AnimatedEntity {
             console.log("smash");
             this.dashTimer = PARAMS.GAME.currentFrame;
         }
-        if (!this.canJump && PARAMS.GAME.currentFrame - this.jumpTimer > 45) this.canJump = true;
+        // if (!this.canJump && PARAMS.GAME.currentFrame - this.jumpTimer > 45) this.canJump = true;
         if (!this.canDash && PARAMS.GAME.currentFrame - this.dashTimer > 30) this.canDash = true;
+
+        // Rise
+        this.y -= this.rise;
+
+        // Gravity
+        if (this.rise > -100){
+            this.rise -= this.gravity;
+        }
 
         // HANDLE COLLISIONS
         this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(6*PARAMS.SCALE));
         PARAMS.GAME.entities.forEach(entity => {
-            if (entity.hitbox && this.hitbox.collide(entity.hitbox)) {
-                if (entity instanceof Charge) {
+            if (!entity.hitbox) return;
+            if (entity instanceof Slime) return;
+            let collisions = this.hitbox.collide(entity.hitbox);
+            if (!collisions) return;
+            // console.log(collisions);
+            // console.log(entity.constructor.name);
+            switch (entity.constructor.name){
+                case 'Charge':
                     if (entity.tag != "Disabled") { // charge collected
                         entity.tag = "Disabled";
                     }
-                } else if (entity instanceof Tile) {
-                    console.log("collidin");
-                }
+                    break;
+                case 'Platform':
+                    if (collisions.direction === 'left'){
+                        this.x = this.x + (collisions.leftIntersect);
+                    } else if (collisions.direction === 'right'){
+                        this.x = this.x + (collisions.rightIntersect);
+                    } else if (collisions.direction ==='top'){
+                        this.y = this.y + (collisions.topIntersect);
+                    } else {
+                        this.y = this.y + (collisions.bottomIntersect);
+                        this.rise = -1;
+                        this.isAirborne = true;
+                        this.canJump = true;
+                    }
+                    this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(6*PARAMS.SCALE));
+                    break;
             }
         });
 
