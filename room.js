@@ -47,7 +47,6 @@ class Room {
                 this.tiles[layer] = [];
                 const img = ASSET_MANAGER.getAsset(this.layers[layer][0]);
                 this.layers[layer][1].forEach((elem, index) => {
-                    
                     if (elem >= 0) {
                         const x = this.x*PARAMS.SCALE + ((index)%(this.w/8))*8*PARAMS.SCALE;
                         const y = this.y*PARAMS.SCALE + Math.floor((index)/(this.w/8))*8*PARAMS.SCALE;
@@ -82,10 +81,8 @@ class Room {
                                 )
                             );
                         }
-                        //console.log(this.tiles[layer][index])
                     }
                 });
-               
             }
         });
     }
