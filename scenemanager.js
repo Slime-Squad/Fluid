@@ -19,12 +19,10 @@ class SceneManager {
      */
     loadTest() {
         const world = ASSET_MANAGER.getAsset("./assets/world/world/level.world");
-        PARAMS.GAME.addEntity(new Slime("Idle", PARAMS.WIDTH/2, PARAMS.HEIGHT/2));
+
         Object.keys(world.rooms).forEach((roomName) => {
             const room = world.rooms[roomName];
-            //PARAMS.GAME.addEntity(room);
-            
-            const order = ["bg", "map", "fg"]; // TODO: add entity special case
+            const order = ["bg", "map", "entity", "fg"];
             order.forEach((layer) => {
                 if (room.tiles[layer]) { // layer exists
                     room.tiles[layer].forEach((tile) => {
@@ -33,11 +31,6 @@ class SceneManager {
                 }
             });
         });
-        PARAMS.GAME.addEntity(new Charge("Disabled", 50, 50));
-        PARAMS.GAME.addEntity(new Charge("Fire", 100, 100));
-        PARAMS.GAME.addEntity(new Charge("Ice", 150, 150));
-        PARAMS.GAME.addEntity(new Charge("Electric", 200, 200));
-        PARAMS.GAME.addEntity(new Charge("Earth", 250, 250));
     }
 
     /**

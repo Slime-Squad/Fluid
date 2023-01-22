@@ -18,7 +18,7 @@ class World {
      */
     init(json) {
         json["maps"].forEach((room) => {
-            const roomName = room["fileName"].split(".")[0];
+            const roomName = room["fileName"].split("/").slice(-1).toString().split(".")[0];
             const x = room["x"];
             const y = room["y"];
             const w = room["width"];
