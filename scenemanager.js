@@ -66,6 +66,8 @@ class SceneManager {
             ctx.fillStyle = "white";
             ctx.fillText("CAM: x=" + this.x + " y=" + this.y, 10, 30);
             ctx.fillText("FPS:" + this.fps, PARAMS.WIDTH-120, 30);
+            ctx.fillText("Rise:" + Math.round(PARAMS.GAME.entities[0].rise), 10, 65);
+            ctx.fillText("Momentum:" + Math.round(PARAMS.GAME.entities[0].momentum), 120, 65);
         }
     }
 }
