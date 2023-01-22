@@ -1,0 +1,129 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level3.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        ":/automap-tiles.tsx": {
+            "scaleInDock": 3
+        },
+        "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Project/map_rules/map-brick.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Project/map_rules/map_rules.tmx": {
+            "scale": 0.8468237704918032,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 164.73321234119783,
+                "y": 488.2952208106473
+            }
+        },
+        "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Project/tools.tsx": {
+            "scaleInDock": 1
+        },
+        "dirt.tsx": {
+            "scaleInDock": 5.5,
+            "scaleInEditor": 1
+        },
+        "fire.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "ice.tsx": {
+            "scaleInDock": 8,
+            "scaleInEditor": 1
+        },
+        "level1.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": -751.3333333333333,
+                "y": 367.33333333333326
+            }
+        },
+        "level2.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 97.66666666666663,
+                "y": 180.99999999999997
+            }
+        },
+        "level2a.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 482.3333333333333,
+                "y": -4.333333333333371
+            }
+        },
+        "level3.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1280.6666666666665,
+                "y": 497.99999999999994
+            }
+        },
+        "map_rules.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 297.54545454545456,
+                "y": 375.54545454545456
+            }
+        },
+        "stone.tsx": {
+            "scaleInDock": 5.5,
+            "scaleInEditor": 1
+        },
+        "tools.tsx": {
+            "scaleInDock": 8,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Week 4/Fluid/assets/world/room",
+    "last.externalTilesetPath": "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Week 4/Fluid/mapping_tools",
+    "last.imagePath": "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Week 4/Fluid/assets/graphics/map",
+    "last.worldFilePath": "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Week 4/Fluid/assets/world/world",
+    "loadedWorlds": [
+        "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Week 4/Fluid/assets/world/world/level.world"
+    ],
+    "map.height": 180,
+    "map.lastUsedExportFilter": "All Files (*)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 8,
+    "map.tileWidth": 8,
+    "map.width": 240,
+    "openFiles": [
+        "map_rules.tmx",
+        "level1.tmx",
+        "level2.tmx",
+        "level2a.tmx",
+        "level3.tmx",
+        "stone.tsx"
+    ],
+    "project": "world.tiled-project",
+    "recentFiles": [
+        "map_rules.tmx",
+        "level1.tmx",
+        "level2.tmx",
+        "level2a.tmx",
+        "stone.tsx",
+        "level3.tmx",
+        "ice.tsx",
+        "fire.tsx",
+        "tools.tsx",
+        "dirt.tsx",
+        "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Project/map_rules/map_rules.tmx"
+    ],
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 8,
+        "width": 8
+    }
+}
