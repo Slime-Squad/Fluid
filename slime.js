@@ -118,7 +118,7 @@ class Slime extends AnimatedEntity {
         }
 
         // HANDLE COLLISIONS
-        this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(6*PARAMS.SCALE));
+        this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(5*PARAMS.SCALE));
         PARAMS.GAME.entities.forEach(entity => {
             if (!entity.hitbox) return;
             if (entity instanceof Slime) return;
@@ -145,7 +145,7 @@ class Slime extends AnimatedEntity {
                         this.isAirborne = true;
                         this.canJump = true;
                     }
-                    this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(6*PARAMS.SCALE));
+                    this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(5*PARAMS.SCALE));
                     break;
             }
         });
