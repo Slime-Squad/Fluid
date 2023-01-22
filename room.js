@@ -45,7 +45,6 @@ class Room {
         Object.keys(this.layers).forEach((layer) => {
             if (this.layers[layer][1] !== undefined) {
                 this.tiles[layer] = [];
-                console.log(layer, this.layers[layer][0])
                 const img = ASSET_MANAGER.getAsset(this.layers[layer][0]);
                 this.layers[layer][1].forEach((elem, index) => {
                     
