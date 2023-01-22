@@ -16,6 +16,11 @@
             "dirt.png"
         ]
     },
+    "world": {
+        "world": [
+            "level.world"
+        ]
+    },
     "audio": {
         
     }
