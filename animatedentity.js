@@ -7,8 +7,8 @@ class AnimatedEntity {
      * Creates a new instance of an animated entity.
      * @param {String} path The relative path to the entity. Where the image and json files for this object are located, including the name without a file extension.
      * @param {String} tag The name of the current animation of the entity. 
-     * @param {number} x The x-coordinate associated with the top-left corner of the entity's sprite in the current {@link GameEngine.ctx} context.
-     * @param {number} y The y-coordinate associated with the top-left corner of the entity's sprite in the current {@link GameEngine.ctx} context.
+     * @param {number} x The x-coordinate associated with the top-left corner of the entity's sprite on the canvas.
+     * @param {number} y The y-coordinate associated with the top-left corner of the entity's sprite on the canvas.
      * @param {boolean} loop Whether the entity's animation loops over again, after having finished playing once.
      */
     constructor(path, tag, x, y, loop) {

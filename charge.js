@@ -6,8 +6,8 @@ class Charge extends AnimatedEntity {
     /**
      * Creates a new instance of a charge item.
      * @param {String} tag The type of charge to be placed. One of "Earth", "Fire", "Ice", "Electric", or "Disabled".
-     * @param {number} x The x-coordinate associated with the top-left corner of the charge's sprite in the current {@link GameEngine.ctx} context.
-     * @param {number} y The y-coordinate associated with the top-left corner of the charge's sprite in the current {@link GameEngine.ctx} context.
+     * @param {number} x The x-coordinate associated with the top-left corner of the charge's sprite on the canvas.
+     * @param {number} y The y-coordinate associated with the top-left corner of the charge's sprite on the canvas.
      * @param {boolean} loop Whether the charge's animation loops over again, after having finished playing once.
      */
     constructor(tag, x, y, loop = true) {
@@ -18,6 +18,9 @@ class Charge extends AnimatedEntity {
         this.elapsedTime = 0;
     }
 
+    /**
+     * Function called on every clock tick.
+     */
     update() {
         if (this.originalTag == "Disabled") return;
         if (this.tag == "Disabled") {

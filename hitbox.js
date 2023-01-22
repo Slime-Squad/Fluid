@@ -5,10 +5,10 @@
 class HitBox {
     /**
      * Constructs a new hitbox to handle entity collision.
-     * @param {number} x The x-coordinate associated with the top-left corner of the hitbox as it will be interpretted in a {@link GameEngine.ctx} context.
-     * @param {*} y The y-coordinate associated with the top-left corner of the hitbox as it will be interpretted in a {@link GameEngine.ctx} context.
-     * @param {*} width The width of the hitbox as it will be interpretted in a {@link GameEngine.ctx} context.
-     * @param {*} height The height of the hitbox as it will be interpretted in a {@link GameEngine.ctx} context.
+     * @param {number} x The x-coordinate associated with the top-left corner of the hitbox on the canvas.
+     * @param {number} y The y-coordinate associated with the top-left corner of the hitbox  on the canvas.
+     * @param {number} width The width of the hitbox on the canvas.
+     * @param {number} height The height of the hitbox on the canvas.
      */
     constructor(x, y, width, height) {
         Object.assign(this, { x, y, width, height });
@@ -30,8 +30,8 @@ class HitBox {
 
     /**
      * Updates the current hitbox's position to reflect the given x and y coordinates.
-     * @param {number} x The x-coordinate associated with the top-left corner of the hitbox as it will be interpretted in a {@link GameEngine.ctx} context.
-     * @param {number} y The y-coordinate associated with the top-left corner of the hitbox as it will be interpretted in a {@link GameEngine.ctx} context.
+     * @param {number} x The x-coordinate associated with the top-left corner of the hitbox on the canvas.
+     * @param {number} y The y-coordinate associated with the top-left corner of the hitbox on the canvas.
      */
     updatePos(x, y) {
         this.left = x;

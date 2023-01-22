@@ -1,15 +1,19 @@
 /**
- * Currently creates a slime entity with the ability to move with WASD or a xbox controller
- * 1/15/2023: Added Momentum based movement and WIP 'bounce' animation
+ * Class representation of a playable Slime entity
  * @author Xavier Hines
  * @author Nathan Brown
+ * @author Jasper Newkirk
  */
 class Slime extends AnimatedEntity {
-
-    constructor(tag, x, y, loop = true) {
-        
-        super("./assets/graphics/characters/slimeBounce", tag, x, y, loop);
-        Object.assign(this, {tag, x, y, loop});
+    /**
+     * Creates a new instance of a playable slime entity.
+     * @param {string} tag The name of the current animation of the slime
+     * @param {number} x The x-coordinate associated with the top-left corner of the slime's sprite on the canvas.
+     * @param {number} y The y-coordinate associated with the top-left corner of the slime's sprite on the canvas.
+     */
+    constructor(tag, x, y) {
+        super("./assets/graphics/characters/slimeBounce", tag, x, y);
+        Object.assign(this, {tag, x, y});
         this.hitbox = new HitBox(x, y, 12*PARAMS.SCALE, 10*PARAMS.SCALE);
 
         // Movement
@@ -37,7 +41,7 @@ class Slime extends AnimatedEntity {
     };
 
     /**
-     * Function called on every {@link AnimatedEntity.game.clockTick}.
+     * Function called on every clock tick.
      */
     update() {
         
@@ -57,29 +61,28 @@ class Slime extends AnimatedEntity {
             this.x += (this.speed * -1 + this.momentum) * PARAMS.GAME.clockTick;
             this.tag = "move_left";
             this.direction = -1;
-            this.momentum = PARAMS.GAME.clamp(
+            this.momentum = clamp(
                 this.momentum - this.acceleration, 
                 this.speed * -1, 
                 this.speed
             );
         }
-        else if(PARAMS.GAME.keys["d"] || PARAMS.GAME.right) {
+        else if (PARAMS.GAME.keys["d"] || PARAMS.GAME.right) {
             if (this.momentum < 0) this.momentum / 3;
             this.x += (this.speed + this.momentum) * PARAMS.GAME.clockTick;
             this.tag = "move";
             this.direction = 1;
-            this.momentum = PARAMS.GAME.clamp(
+            this.momentum = clamp(
                 this.momentum + this.acceleration, 
                 this.speed * -1, 
                 this.speed
             );
-        }
-        else {
+        } else {
             this.x += this.momentum * PARAMS.GAME.clockTick;
             this.tag = this.direction > 0 ? "idle" : "idle_left";
             this.momentum = this.direction > 0 ?
-                PARAMS.GAME.clamp(this.momentum - this.acceleration, 0, this.speed) :
-                PARAMS.GAME.clamp(this.momentum + this.acceleration, this.speed * -1, 0);
+                clamp(this.momentum - this.acceleration, 0, this.speed) :
+                clamp(this.momentum + this.acceleration, this.speed * -1, 0);
         }
 
         // Jump
@@ -107,6 +110,8 @@ class Slime extends AnimatedEntity {
                     if (entity.tag != "Disabled") { // charge collected
                         entity.tag = "Disabled";
                     }
+                } else if (entity instanceof Tile) {
+                    console.log("collidin");
                 }
             }
         });
@@ -114,12 +119,11 @@ class Slime extends AnimatedEntity {
     }
 
     /**
-     * Draws the slime every tick at the appropriate position.
+     * Draws the current slime's {@link Slime.tag} animation. Called on every clock tick.
      * @param {CanvasRenderingContext2D} ctx The canvas which the slime will be drawn on.
      */
     draw(ctx) {
         super.draw(ctx);
-        
     }
     
 }
