@@ -23,13 +23,18 @@ class Slime extends AnimatedEntity {
         this.decceleration = this.speed / 45;
         this.direction = 1;
         this.rise = -1;
-        this.bounce = 8;
-        this.gravity = .1;
+        this.bounce = 12;
+        this.gravity = .7;
+        // this.bounce = 8;
+        // this.gravity = .1;
 
         // Conditions
         this.canJump = true;
         this.canDash = true;
         this.isAirborne = true;
+        this.isAnitgrav = false;
+        this.lastX = this.x;
+        this.lastY = this.y;
 
         // Charges
         this.charges = {
@@ -91,11 +96,11 @@ class Slime extends AnimatedEntity {
         }
 
         // Jump
-        // console.log(this.canJump)
+        this.canJump = true; // Allow Midair for Debugging
         if((PARAMS.GAME.keys[" "] || PARAMS.GAME.A) && this.canJump) {
             this.canJump = false;
-            console.log("jump");
-            // this.jumpTimer = PARAMS.GAME.currentFrame;
+            // console.log("jump");
+            this.jumpTimer = PARAMS.GAME.currentFrame;
             this.rise = this.bounce;
             this.isAirborne = true;
         }
@@ -106,14 +111,16 @@ class Slime extends AnimatedEntity {
             console.log("smash");
             this.dashTimer = PARAMS.GAME.currentFrame;
         }
-        // if (!this.canJump && PARAMS.GAME.currentFrame - this.jumpTimer > 45) this.canJump = true;
         if (!this.canDash && PARAMS.GAME.currentFrame - this.dashTimer > 30) this.canDash = true;
 
         // Rise
         this.y -= this.rise;
+        if (this.rise < -10){
+            this.canJump = false;
+        }
 
         // Gravity
-        if (this.rise > -100){
+        if (this.rise > -30){
             this.rise -= this.gravity;
         }
 
@@ -141,14 +148,27 @@ class Slime extends AnimatedEntity {
                         this.y = this.y + (collisions.topIntersect);
                     } else {
                         this.y = this.y + (collisions.bottomIntersect);
-                        this.rise = -1;
                         this.isAirborne = true;
-                        this.canJump = true;
+                        if (PARAMS.GAME.currentFrame - this.jumpTimer > 15) this.canJump = true;
                     }
                     this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(5*PARAMS.SCALE));
                     break;
             }
         });
+        
+        // Reset momentum on stop
+        if (this.x == this.lastX){
+            this.momentum = 0;
+        }
+        
+        // Reset rise on stop
+        if (this.y == this.lastY){
+            this.rise = -1;
+        }
+
+        // Update previous pos markers
+        this.lastX = this.x;
+        this.lastY = this.y;
 
     }
 
