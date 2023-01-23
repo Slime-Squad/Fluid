@@ -1,26 +1,40 @@
 /**
- * Currently creates a slime entity with the ability to move with WASD or a xbox controller
- * 1/15/2023: Added Momentum based movement and WIP 'bounce' animation
+ * Class representation of a playable Slime entity
  * @author Xavier Hines
  * @author Nathan Brown
+ * @author Jasper Newkirk
  */
 class Slime extends AnimatedEntity {
-
-    constructor(game, tag, x, y, loop = true) {
-        
-        super(game, "./assets/graphics/characters/slimeBounce", tag, x, y, loop);
-        Object.assign(this, {game, tag, x, y, loop});
+    /**
+     * Creates a new instance of a playable slime entity.
+     * @param {string} tag The name of the current animation of the slime
+     * @param {number} x The x-coordinate associated with the top-left corner of the slime's sprite on the canvas.
+     * @param {number} y The y-coordinate associated with the top-left corner of the slime's sprite on the canvas.
+     */
+    constructor(tag, x, y) {
+        super("./assets/graphics/characters/slimeBounce", tag, x, y);
+        Object.assign(this, {tag, x, y});
         this.hitbox = new HitBox(x, y, 12*PARAMS.SCALE, 10*PARAMS.SCALE);
 
         // Movement
-        this.speed = 250;
+        this.speed = 350;
         this.momentum = 0;
-        this.acceleration = this.speed / 45;
+        this.acceleration = this.speed / 30;
+        this.decceleration = this.speed / 45;
         this.direction = 1;
+        this.rise = -1;
+        this.bounce = 12;
+        this.gravity = .3;
+        // this.bounce = 8;
+        // this.gravity = .1;
 
         // Conditions
         this.canJump = true;
         this.canDash = true;
+        this.isAirborne = true;
+        this.isAnitgrav = false;
+        this.lastX = this.x;
+        this.lastY = this.y;
 
         // Charges
         this.charges = {
@@ -37,92 +51,138 @@ class Slime extends AnimatedEntity {
     };
 
     /**
-     * Function called on every {@link AnimatedEntity.game.clockTick}.
+     * Function called on every clock tick.
      */
     update() {
         
         // CONTROLS
 
         // Up and Down
-        if(this.game.keys["w"] || this.game.up) {
-            this.y -= this.speed * this.game.clockTick;
-        }
-        if(this.game.keys["s"] || this.game.down) {
-            this.y += this.speed * this.game.clockTick;
-        }
+        // if(PARAMS.GAME.keys["w"] || PARAMS.GAME.up) {
+        //     this.y -= this.speed * PARAMS.GAME.clockTick;
+        // }
+        // if(PARAMS.GAME.keys["s"] || PARAMS.GAME.down) {
+        //     this.y += this.speed * PARAMS.GAME.clockTick;
+        // }
         
         // Left and Right
-        if(this.game.keys["a"] || this.game.left) {
-            if (this.momentum > 0) this.momentum / 3;
-            this.x += (this.speed * -1 + this.momentum) * this.game.clockTick;
+        if(PARAMS.GAME.keys["a"] || PARAMS.GAME.left) {
+            if (this.momentum > 0) this.momentum / 5;
+            this.x += (this.speed * -1 + this.momentum) * PARAMS.GAME.clockTick;
             this.tag = "move_left";
             this.direction = -1;
-            this.momentum = this.game.clamp(
+            this.momentum = clamp(
                 this.momentum - this.acceleration, 
                 this.speed * -1, 
                 this.speed
             );
         }
-        else if(this.game.keys["d"] || this.game.right) {
-            if (this.momentum < 0) this.momentum / 3;
-            this.x += (this.speed + this.momentum) * this.game.clockTick;
+        else if(PARAMS.GAME.keys["d"] || PARAMS.GAME.right) {
+            if (this.momentum < 0) this.momentum / 5;
+            this.x += (this.speed + this.momentum) * PARAMS.GAME.clockTick;
             this.tag = "move";
             this.direction = 1;
-            this.momentum = this.game.clamp(
+            this.momentum = clamp(
                 this.momentum + this.acceleration, 
                 this.speed * -1, 
                 this.speed
             );
-        }
-        else {
-            this.x += this.momentum * this.game.clockTick;
+        } else {
+            this.x += this.momentum * PARAMS.GAME.clockTick;
             this.tag = this.direction > 0 ? "idle" : "idle_left";
             this.momentum = this.direction > 0 ?
-                this.game.clamp(this.momentum - this.acceleration, 0, this.speed) :
-                this.game.clamp(this.momentum + this.acceleration, this.speed * -1, 0);
+                clamp(this.momentum - this.acceleration, 0, this.speed) :
+                clamp(this.momentum + this.acceleration, this.speed * -1, 0);
         }
 
         // Jump
-        // console.log(this.canJump)
-        if((this.game.keys[" "] || this.game.A) && this.canJump) {
+        //this.canJump = true; // Allow Midair for Debugging
+        if((PARAMS.GAME.keys[" "] || PARAMS.GAME.A) && this.canJump) {
             this.canJump = false;
-            console.log("jump");
-            this.jumpTimer = this.game.currentFrame;
+            // console.log("jump");
+            this.jumpTimer = PARAMS.GAME.currentFrame;
+            this.rise = this.bounce;
+            this.isAirborne = true;
         }
 
         // Dash
-        if((this.game.keys["j"] || this.game.B) && this.canDash) {
+        if((PARAMS.GAME.keys["j"] || PARAMS.GAME.B) && this.canDash) {
             this.canDash = false;
             console.log("smash");
-            this.dashTimer = this.game.currentFrame;
+            this.dashTimer = PARAMS.GAME.currentFrame;
         }
-        if (!this.canJump && this.game.currentFrame - this.jumpTimer > 45) this.canJump = true;
-        if (!this.canDash && this.game.currentFrame - this.dashTimer > 30) this.canDash = true;
+        if (!this.canDash && PARAMS.GAME.currentFrame - this.dashTimer > 30) this.canDash = true;
+
+        // Rise
+        this.y -= this.rise;
+        if (this.rise < -10){
+            this.canJump = false;
+        }
+
+        // Gravity
+        if (this.rise > -30){
+            this.rise -= this.gravity;
+        }
 
         // HANDLE COLLISIONS
-        this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(6*PARAMS.SCALE));
-        this.game.entities.forEach(entity => {
-            if (entity.hitbox && this.hitbox.collide(entity.hitbox)) {
-                if (entity instanceof Charge) {
+        this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(5*PARAMS.SCALE));
+        PARAMS.GAME.entities.forEach(entity => {
+            if (!entity.hitbox) return;
+            if (entity instanceof Slime) return;
+            let collisions = this.hitbox.collide(entity.hitbox);
+            if (!collisions) return;
+            // console.log(collisions);
+            // console.log(entity.constructor.name);
+            switch (entity.constructor.name){
+                case 'Charge':
                     if (entity.tag != "Disabled") { // charge collected
                         entity.tag = "Disabled";
                     }
-                }
+                    break;
+                case 'Tile':
+                    if (collisions.direction === 'left'){
+                        this.x = this.x + (collisions.leftIntersect);
+                    } else if (collisions.direction === 'right'){
+                        this.x = this.x + (collisions.rightIntersect);
+                    } else if (collisions.direction ==='top'){
+                        this.y = this.y + (collisions.topIntersect);
+                    } else {
+                        this.y = this.y + (collisions.bottomIntersect);
+                        this.isAirborne = true;
+                        if (PARAMS.GAME.currentFrame - this.jumpTimer > 15) this.canJump = true;
+                    }
+                    this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(5*PARAMS.SCALE));
+                    break;
             }
         });
+        
+        // Reset momentum on stop
+        if (this.x == this.lastX){
+            this.momentum = 0;
+        }
+        
+        // Reset rise on stop
+        if (this.y == this.lastY){
+            this.rise = -1;
+        }
+
+        // Update previous pos markers
+        this.lastX = this.x;
+        this.lastY = this.y;
 
     }
 
     /**
-     * Draws the slime every tick at the appropriate position.
+     * Draws the current slime's {@link Slime.tag} animation. Called on every clock tick.
      * @param {CanvasRenderingContext2D} ctx The canvas which the slime will be drawn on.
      */
     draw(ctx) {
         super.draw(ctx);
         if (PARAMS.DEBUG) {
-            ctx.font = "12px segoe ui";
-            ctx.fillStyle = "white";
-            ctx.fillText("SLIME: x=" + this.x + " y=" + this.y, this.x + 6*PARAMS.SCALE - this.game.camera.x, this.y + 20*PARAMS.SCALE - this.game.camera.y);
+            ctx.font = "30px segoe ui";
+            ctx.fillStyle = "red";
+            ctx.fillText("Rise:" + Math.round(this.rise), this.x - PARAMS.GAME.camera.x, this.y - PARAMS.GAME.camera.y - 50);
+            ctx.fillText("Momentum:" + Math.round(this.momentum), this.x - PARAMS.GAME.camera.x, this.y - PARAMS.GAME.camera.y);
         }
     }
     

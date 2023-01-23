@@ -1,8 +1,8 @@
 /**
- * Class representation of a charge item.
- * @author Jasper Newkirk
+ * Class representation of a Magmasquito item.
+ * @author Xavier Hines
  */
-class Charge extends AnimatedEntity {
+class Magmasquito extends AnimatedEntity {
     /**
      * Creates a new instance of a charge item.
      * @param {String} tag The type of charge to be placed. One of "Earth", "Fire", "Ice", "Electric", or "Disabled".
@@ -11,9 +11,9 @@ class Charge extends AnimatedEntity {
      * @param {boolean} loop Whether the charge's animation loops over again, after having finished playing once.
      */
     constructor(tag, x, y, loop = true) {
-        super("./assets/graphics/item/charge", tag, x, y, loop);
+        super("./assets/graphics/characters/magmasquito", tag, x, y, loop);
         Object.assign(this, { tag, x, y, loop });
-        this.hitbox = new HitBox(x, y, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
+        this.hitbox = new HitBox(x, y, 20*PARAMS.SCALE, 20*PARAMS.SCALE);
         this.originalTag = tag;
         this.elapsedTime = 0;
     }
@@ -22,14 +22,9 @@ class Charge extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        if (this.originalTag == "Disabled") return;
-        if (this.tag == "Disabled") {
-            this.elapsedTime += PARAMS.GAME.clockTick;
-        }
+    }
 
-        if (this.elapsedTime >= 5) {
-            this.tag = this.originalTag;
-            this.elapsedTime = 0;
-        }
+    draw(ctx) {
+        super.draw(ctx)
     }
 }

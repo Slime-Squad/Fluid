@@ -1,0 +1,34 @@
+{
+    "maps": [
+        {
+            "fileName": "../../../mapping_tools/level1.tmx",
+            "height": 480,
+            "width": 480,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "../../../mapping_tools/level2.tmx",
+            "height": 320,
+            "width": 640,
+            "x": 480,
+            "y": 40
+        },
+        {
+            "fileName": "../../../mapping_tools/level2a.tmx",
+            "height": 80,
+            "width": 80,
+            "x": 448,
+            "y": 136
+        },
+        {
+            "fileName": "../../../mapping_tools/level3.tmx",
+            "height": 960,
+            "width": 1440,
+            "x": -1440,
+            "y": -168
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}

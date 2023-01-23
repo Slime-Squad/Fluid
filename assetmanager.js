@@ -32,7 +32,7 @@ class AssetManager {
      * Attempts to download and cache all files present in the {@link AssetManager.downloadQueue}.
      * @param {function} callback The function to be called once the {@link AssetManager.downloadQueue} has finished downloading and caching all files. 
      */
-    async downloadAll(callback) {
+    downloadAll(callback) {
         if (this.downloadQueue.length === 0) setTimeout(callback, 10);
         for (let i = 0; i < this.downloadQueue.length; i++) {
 
@@ -42,14 +42,14 @@ class AssetManager {
             
             switch(ext) {
                 case 'png':
-                    let img = new Image;
+                    const img = new Image;
                     this.handleEventListeners(img, callback);
                     img.src = path;
                     this.cache[path] = img;
                     break;
                 case 'wav':
                 case 'mp3':
-                    let aud = new Audio();
+                    const aud = new Audio();
                     this.handleEventListeners(aud, callback, () => {
                         aud.addEventListener("ended", function () {
                             aud.pause();
@@ -60,27 +60,32 @@ class AssetManager {
                     aud.load();
                     this.cache[path] = aud;
                     break;
+                case 'world':
                 case 'json':
-                    await fetch(path)
-                        .then((response) => response.json())
-                        .then((json) => {
-                            if (json["frames"] !== undefined) { // is an animation
-                                let anim = new Frames(path);
-                                anim.init(json);
-                                this.cache[path] = anim;
-                                return anim;
+                    let json = new XMLHttpRequest();
+                    this.handleEventListeners(json, callback, () => {
+                        json.onreadystatechange = () => {
+                            if (json.readyState == 4 && json.status == 200) {
+                                json = JSON.parse(json.responseText);
+                                if (json["frames"] !== undefined) { // is an animation
+                                    const anim = new Frames(path);
+                                    anim.init(json);
+                                    this.cache[path] = anim;
+                                    return anim;
+                                } else if (json["maps"] !== undefined) { // is a world
+                                    this.world = new World(path);
+                                    this.world.init(json);
+                                    this.cache[path] = this.world;
+                                    return this.world;
+                                } else if (json["layers"] !== undefined) { // is a room
+                                    this.world.rooms[path.split(".")[1].split("/").slice(-1).toString()].init(json);
+                                }
                             }
-                        })
-                        .then((asset) => {
-                            console.log("Loaded " + asset.src);
-                            this.successCount++;
-                            if (this.isDone()) callback();
-                        })
-                        .catch(() => {
-                            console.log("Error loading " + path);
-                            this.errorCount++;
-                            if (this.isDone()) callback();
-                        });
+                        }
+                    });
+                    json.src = path;
+                    json.open("GET", path, false);
+                    json.send();
                     break;
             }
         }
@@ -96,13 +101,13 @@ class AssetManager {
         asset.addEventListener("load", () => {
             console.log("Loaded " + asset.src);
             this.successCount++;
-            if (this.isDone()) callback();
+            if (this.isDone()) callback(this.requests);
         });
 
         asset.addEventListener("error", () => {
             console.log("Error loading " + asset.src);
             this.errorCount++;
-            if (this.isDone()) callback();
+            if (this.isDone()) callback(this.requests);
         });
 
         optionalListeners();
