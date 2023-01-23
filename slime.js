@@ -24,7 +24,7 @@ class Slime extends AnimatedEntity {
         this.direction = 1;
         this.rise = -1;
         this.bounce = 12;
-        this.gravity = .7;
+        this.gravity = .3;
         // this.bounce = 8;
         // this.gravity = .1;
 
@@ -96,7 +96,7 @@ class Slime extends AnimatedEntity {
         }
 
         // Jump
-        this.canJump = true; // Allow Midair for Debugging
+        //this.canJump = true; // Allow Midair for Debugging
         if((PARAMS.GAME.keys[" "] || PARAMS.GAME.A) && this.canJump) {
             this.canJump = false;
             // console.log("jump");
@@ -178,6 +178,12 @@ class Slime extends AnimatedEntity {
      */
     draw(ctx) {
         super.draw(ctx);
+        if (PARAMS.DEBUG) {
+            ctx.font = "30px segoe ui";
+            ctx.fillStyle = "red";
+            ctx.fillText("Rise:" + Math.round(this.rise), this.x - PARAMS.GAME.camera.x, this.y - PARAMS.GAME.camera.y - 50);
+            ctx.fillText("Momentum:" + Math.round(this.momentum), this.x - PARAMS.GAME.camera.x, this.y - PARAMS.GAME.camera.y);
+        }
     }
     
 }
