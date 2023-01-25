@@ -1,6 +1,14 @@
 {
     "graphics": {
         "characters": [
+            "batterflea.json",
+            "batterflea.png",
+            "bubble.json",
+            "bubble.png",
+            "magmasquito.json",
+            "magmasquito.png",
+            "skiwi.json",
+            "skiwi.png",
             "slimeBounce.png",
             "slimeBounce.json",
             "SlimeSlide.png",
