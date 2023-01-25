@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "level3.tmx",
+    "activeFile": "level2.tmx",
     "expandedProjectPaths": [
     ],
     "fileStates": {
@@ -40,40 +40,40 @@
             "scale": 0.75,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": -751.3333333333333,
-                "y": 367.33333333333326
+                "x": 239.33333333333331,
+                "y": 240.66666666666669
             }
         },
         "level2.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 2,
+            "scale": 4,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 97.66666666666663,
-                "y": 180.99999999999997
+                "x": -298.625,
+                "y": -11.375
             }
         },
         "level2a.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 2,
+            "scale": 11,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 482.3333333333333,
-                "y": -4.333333333333371
+                "x": 44.68181818181818,
+                "y": 12.22727272727273
             }
         },
         "level3.tmx": {
-            "scale": 0.75,
+            "scale": 4,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1280.6666666666665,
-                "y": 497.99999999999994
+                "x": 1870.125,
+                "y": 373.875
             }
         },
         "map_rules.tmx": {
             "scale": 5.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 297.54545454545456,
-                "y": 375.54545454545456
+                "x": 239.9090909090909,
+                "y": 479.9090909090909
             }
         },
         "stone.tsx": {
@@ -81,7 +81,7 @@
             "scaleInEditor": 1
         },
         "tools.tsx": {
-            "scaleInDock": 8,
+            "scaleInDock": 11,
             "scaleInEditor": 1
         }
     },
@@ -110,10 +110,10 @@
     "recentFiles": [
         "map_rules.tmx",
         "level1.tmx",
-        "level2.tmx",
-        "level2a.tmx",
         "stone.tsx",
         "level3.tmx",
+        "level2a.tmx",
+        "level2.tmx",
         "ice.tsx",
         "fire.tsx",
         "tools.tsx",
