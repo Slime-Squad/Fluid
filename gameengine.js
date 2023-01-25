@@ -90,10 +90,10 @@ class GameEngine {
     };
 
     draw() {
-        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height); // Clear canvas
+        this.ctx.clearRect(0, 0, PARAMS.WIDTH, PARAMS.HEIGHT); // Clear canvas
 
         for (let i = this.entities.length - 1; i >= 0; i--) {
-            this.entities[i].draw(this.ctx, this);
+            this.entities[i].draw(this.ctx);
         }
 
         this.camera.draw(this.ctx); 

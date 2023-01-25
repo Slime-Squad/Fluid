@@ -22,7 +22,7 @@ class SceneManager {
 
         Object.keys(world.rooms).forEach((roomName) => {
             const room = world.rooms[roomName];
-            const order = ["bg", "map", "entity", "fg"];
+            const order = ["fg", "entity", "map", "bg"];
             order.forEach((layer) => {
                 if (room.tiles[layer]) { // layer exists
                     room.tiles[layer].forEach((tile) => {

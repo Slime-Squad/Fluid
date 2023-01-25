@@ -69,6 +69,9 @@ class Room {
                                 case 5:
                                     this.tiles[layer].push(new Charge("Ice", x, y));
                                     break;
+                                case 6:
+                                    // TODO: Place batterflea here
+                                    break;
                             }
                         } else {
                             this.tiles[layer].push(
@@ -77,7 +80,10 @@ class Room {
                                     this.x*PARAMS.SCALE + ((index)%(this.w/8))*8*PARAMS.SCALE,
                                     this.y*PARAMS.SCALE + Math.floor((index)/(this.w/8))*8*PARAMS.SCALE,
                                     (elem%13)*8,
-                                    Math.floor(elem/13)*8
+                                    Math.floor(elem/13)*8,
+                                    8,
+                                    8,
+                                    layer == "map"
                                 )
                             );
                         }
