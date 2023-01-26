@@ -104,14 +104,15 @@ class GameEngine {
      */
     gamepadUpdate() {
         this.gamepad = navigator.getGamepads()[0];
-        if (this.gamepad && !this.keyboardActive) {
-            this.A = this.gamepad.buttons[0].pressed;
-            this.B = this.gamepad.buttons[1].pressed;
+        let gamepad = this.gamepad;
+        if (gamepad != null && !this.keyboardActive) {
+            this.A = gamepad.buttons[0].pressed;
+            this.B = gamepad.buttons[1].pressed;
             //checks if d-pad is used or joysticks meet a certain threshold
-            this.left = this.gamepad.buttons[14].pressed || this.gamepad.axes[0] < -0.3;
-            this.right = this.gamepad.buttons[15].pressed || this.gamepad.axes[0] > 0.3;
-            this.up = this.gamepad.buttons[12].pressed || this.gamepad.axes[1] < -0.3;
-            this.down = this.gamepad.buttons[13].pressed || this.gamepad.axes [1] > 0.3;
+            this.left = gamepad.buttons[14].pressed || gamepad.axes[0] < -0.3;
+            this.right = gamepad.buttons[15].pressed || gamepad.axes[0] > 0.3;
+            this.up = gamepad.buttons[12].pressed || gamepad.axes[1] < -0.3;
+            this.down = gamepad.buttons[13].pressed || gamepad.axes [1] > 0.3;
         }
     }
 
