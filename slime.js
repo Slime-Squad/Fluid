@@ -15,7 +15,7 @@ class Slime extends AnimatedEntity {
         super("./assets/graphics/characters/slimeBounce", tag, x, y);
         Object.assign(this, {tag, x, y});
         this.hitbox = new HitBox(x, y, 12*PARAMS.SCALE, 10*PARAMS.SCALE);
-
+        
         // Movement
         this.speed = 2 * PARAMS.SCALE;
         this.momentum = 0;
@@ -54,7 +54,7 @@ class Slime extends AnimatedEntity {
     update() {
         
         // CONTROLS
-
+        
         // Up and Down
         // if(GAME.keys["w"] || GAME.up) {
         //     this.y -= this.speed * TICKMOD;
@@ -153,17 +153,17 @@ class Slime extends AnimatedEntity {
                         this.y = this.y + (collisions.bottomIntersect);
                         this.isAirborne = true;
                         if (GAME.currentFrame - this.jumpTimer > 15) this.canJump = true;
-                    }
+        }
                     this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(5*PARAMS.SCALE));
                     break;
             }
         });
-        
+
         // Reset momentum on stop
         if (this.x == this.lastX){
             this.momentum = 0;
         }
-        
+
         // Reset rise on stop
         if (this.y == this.lastY){
             this.rise = -1;
@@ -187,7 +187,7 @@ class Slime extends AnimatedEntity {
             // ctx.fillText("Rise:" + Math.round(this.rise), this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
             // ctx.fillText("Momentum:" + Math.round(this.momentum), this.x - GAME.camera.x, this.y - GAME.camera.y);
             ctx.fillText("Jump Timer:" + Math.round(this.jumpTimer), this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
-        }
     }
+}
     
 }
