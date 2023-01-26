@@ -26,21 +26,21 @@ fetch(ASSET_PATHS)
 	.then(() => 
 		ASSET_MANAGER.downloadAll(() => {
 		
-			const gameEngine = new GameEngine();
+			GAME = new GameEngine();
 			const canvas = document.getElementById("gameWorld");
 			const ctx = canvas.getContext("2d");
 
 			ctx.imageSmoothingEnabled = false; // disable antialiasing
 
-			PARAMS.TICK = gameEngine.clockTick;
+			PARAMS.TICK = GAME.clockTick;
 			PARAMS.BLOCKSIZE = PARAMS.BITWIDTH*PARAMS.SCALE;
 			PARAMS.WIDTH = canvas.getAttribute("width");
 			PARAMS.HEIGHT = canvas.getAttribute("height");
-			PARAMS.GAME = gameEngine;
+			PARAMS.GAME = GAME;
 			
-			gameEngine.init(ctx);
+			GAME.init(ctx);
 		
-			gameEngine.start();
+			GAME.start();
 		
 		})
 	);
