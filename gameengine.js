@@ -80,7 +80,7 @@ class GameEngine {
         });
 
        //declares keyboard active and listens for keyboard events
-       this.ctx.canvas.addEventListener("keydown", event => {this.keyboardActive = true; this.keys[event.key] = true;});
+       this.ctx.canvas.addEventListener("keydown", event => {this.keyboardActive = true; this.keys[event.key] = true; event.preventDefault();});
        this.ctx.canvas.addEventListener("keyup", event => {this.keyboardActive = false; this.keys[event.key] = false});
     };
 
