@@ -70,6 +70,7 @@ class Room {
                                     this.tiles[layer].push(new Charge("Ice", x, y));
                                     break;
                                 case 6:
+                                    this.tiles[layer].push(new Batterflea("", x, y));
                                     // TODO: Place batterflea here
                                     break;
                             }
