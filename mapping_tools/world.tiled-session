@@ -6,6 +6,7 @@
     "activeFile": "level2.tmx",
     "expandedProjectPaths": [
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         ":/automap-tiles.tsx": {
             "scaleInDock": 3
@@ -40,40 +41,40 @@
             "scale": 0.75,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 239.33333333333331,
-                "y": 240.66666666666669
+                "x": 80.66666666666663,
+                "y": 240.66666666666663
             }
         },
         "level2.tmx": {
             "scale": 4,
-            "selectedLayer": 4,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": -298.625,
-                "y": -11.375
+                "x": 275.375,
+                "y": 128.375
             }
         },
         "level2a.tmx": {
-            "scale": 11,
+            "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 44.68181818181818,
-                "y": 12.22727272727273
+                "x": 115.5,
+                "y": 263.5
             }
         },
         "level3.tmx": {
-            "scale": 4,
-            "selectedLayer": 2,
+            "scale": 1.5,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 1870.125,
-                "y": 373.875
+                "x": 1969.6666666666665,
+                "y": 497.6666666666667
             }
         },
         "map_rules.tmx": {
             "scale": 5.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 239.9090909090909,
-                "y": 479.9090909090909
+                "x": 242.4545454545455,
+                "y": 67.36363636363636
             }
         },
         "stone.tsx": {
@@ -88,9 +89,9 @@
     "last.exportedFilePath": "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Week 4/Fluid/assets/world/room",
     "last.externalTilesetPath": "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Week 4/Fluid/mapping_tools",
     "last.imagePath": "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Week 4/Fluid/assets/graphics/map",
-    "last.worldFilePath": "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Week 4/Fluid/assets/world/world",
+    "last.worldFilePath": "C:/School/UWT Winter 2023/491 Comp Worlds/Slime_Game/assets/world/world",
     "loadedWorlds": [
-        "C:/Users/jaspe/OneDrive - UW/Documents/__TCSS_491_A/Week 4/Fluid/assets/world/world/level.world"
+        "C:/School/UWT Winter 2023/491 Comp Worlds/Slime_Game/assets/world/world/level.world"
     ],
     "map.height": 180,
     "map.lastUsedExportFilter": "All Files (*)",
