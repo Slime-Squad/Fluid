@@ -18,14 +18,14 @@ class Slime extends AnimatedEntity {
         
         // Movement
         this.speed = 2 * PARAMS.SCALE;
-        this.dashSpeed = 8;
+        this.dashSpeed = 16;
         this.momentum = 0;
         this.acceleration = this.speed / 45;
         this.decceleration = this.speed / 30;
         this.direction = 1;
         this.rise = -1;
         this.bounce = 4 * PARAMS.SCALE;
-        this.gravity = .75;
+        this.gravity = .685;
 
         // Conditions
         this.canJump = true;
@@ -118,7 +118,7 @@ class Slime extends AnimatedEntity {
         }
         if (!this.canDash) this.currentDashTime += TICKMOD; 
         if (!this.canDash && (this.currentDashTime>= this.dashTimer - 1)) this.canDash = true;
-        if (!this.canDash && this.currentDashTime < 20 ) {
+        if (!this.canDash && this.currentDashTime < 15 ) {
             if(PARAMS.GAME.keys["a"]) this.x -= this.dashSpeed * TICKMOD;
             if(PARAMS.GAME.keys["d"]) this.x += this.dashSpeed * TICKMOD;
         }

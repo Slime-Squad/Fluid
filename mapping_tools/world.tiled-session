@@ -38,43 +38,43 @@
             "scaleInEditor": 1
         },
         "level1.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 2,
+            "scale": 3,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 80.66666666666663,
-                "y": 240.66666666666663
+                "x": 296,
+                "y": 282
             }
         },
         "level2.tmx": {
-            "scale": 4,
-            "selectedLayer": 2,
+            "scale": 3,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 275.375,
-                "y": 128.375
+                "x": 38.66666666666666,
+                "y": 175
             }
         },
         "level2a.tmx": {
-            "scale": 1,
+            "scale": 4,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 115.5,
-                "y": 263.5
+                "x": -224.5,
+                "y": 171.5
             }
         },
         "level3.tmx": {
-            "scale": 1.5,
+            "scale": 3,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 1969.6666666666665,
-                "y": 497.6666666666667
+                "x": 1736.3333333333333,
+                "y": 450
             }
         },
         "map_rules.tmx": {
             "scale": 5.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 242.4545454545455,
-                "y": 67.36363636363636
+                "x": 242.1818181818182,
+                "y": 67.45454545454545
             }
         },
         "stone.tsx": {
@@ -109,10 +109,10 @@
     ],
     "project": "world.tiled-project",
     "recentFiles": [
+        "level1.tmx",
         "level2.tmx",
         "level2a.tmx",
         "map_rules.tmx",
-        "level1.tmx",
         "stone.tsx",
         "level3.tmx",
         "ice.tsx",
