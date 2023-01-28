@@ -1,6 +1,6 @@
 /**
  * Class to extend for the creation of an Animated Entity.
- * @author Jasper Newkirk
+ * @author Jasper Newkirk, Nathan Brown
  */
 class AnimatedEntity {
     /**
@@ -26,7 +26,7 @@ class AnimatedEntity {
         if (this.hitbox && PARAMS.DEBUG) {
             ctx.strokeStyle = "red";
             ctx.beginPath();
-            ctx.rect(this.hitbox.left - PARAMS.GAME.camera.x, this.hitbox.top - PARAMS.GAME.camera.y, this.hitbox.width, this.hitbox.height);   
+            ctx.rect(this.hitbox.left - PARAMS.GAME.camera.x, this.hitbox.top - PARAMS.GAME.camera.y, this.hitbox.width, this.hitbox.height);
             ctx.stroke();
             ctx.font = "12px segoe ui";
             ctx.fillStyle = "white";
@@ -40,4 +40,17 @@ class AnimatedEntity {
     update() {
         
     }
+
+    /*tileCollision(collision){
+        if (collision.direction === 'left'){
+            this.x = this.x + (collision.leftIntersect);
+        } else if (collision.direction === 'right'){
+            this.x = this.x + (collision.rightIntersect);
+        } else if (collision.direction ==='top'){
+            this.y = this.y + (collision.topIntersect);
+        } else {
+            this.y = this.y + (collision.bottomIntersect);
+        }
+        this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(5*PARAMS.SCALE));
+    }*/
 }

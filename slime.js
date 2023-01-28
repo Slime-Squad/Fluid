@@ -1,8 +1,6 @@
 /**
  * Class representation of a playable Slime entity
- * @author Xavier Hines
- * @author Nathan Brown
- * @author Jasper Newkirk
+ * @author Xavier Hines, Nathan Brown, @author Jasper Newkirk
  */
 class Slime extends AnimatedEntity {
     /**
@@ -14,7 +12,7 @@ class Slime extends AnimatedEntity {
     constructor(tag, x, y) {
         super("./assets/graphics/characters/slimeBounce", tag, x, y);
         Object.assign(this, {tag, x, y});
-        this.hitbox = new HitBox(x, y, 12*PARAMS.SCALE, 10*PARAMS.SCALE);
+        this.hitbox = new HitBox(x, y, 12*PARAMS.SCALE, 12*PARAMS.SCALE);
         
         // Movement
         this.speed = 2 * PARAMS.SCALE;
@@ -135,14 +133,16 @@ class Slime extends AnimatedEntity {
         }
 
         // HANDLE COLLISIONS
-        this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(5*PARAMS.SCALE));
+        this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(4*PARAMS.SCALE));
+        let xDiff = this.lastX - this.x;
+        let yDiff = this.lastY - this.y;
+        let totalCollisions = 0;
         GAME.entities.forEach(entity => {
             if (!entity.hitbox) return;
             if (entity instanceof Slime) return;
-            let collisions = this.hitbox.collide(entity.hitbox);
-            if (!collisions) return;
-            // console.log(collisions);
-            // console.log(entity.constructor.name);
+            let collision = this.hitbox.collide2(entity.hitbox);
+            if (!collision) return;
+            totalCollisions++;
             switch (entity.constructor.name){
                 case 'Charge':
                     if (entity.tag != "Disabled") { // charge collected
@@ -150,30 +150,48 @@ class Slime extends AnimatedEntity {
                     }
                     break;
                 case 'Tile':
-                    if (collisions.direction === 'left'){
-                        this.x = this.x + (collisions.leftIntersect);
-                    } else if (collisions.direction === 'right'){
-                        this.x = this.x + (collisions.rightIntersect);
-                    } else if (collisions.direction ==='top'){
-                        this.y = this.y + (collisions.topIntersect);
+                    if (Math.abs(xDiff) > 20 || Math.abs(yDiff) > 20){
+                        // console.log(collision.direction);
+                        // console.log("xDiff: " + xDiff);
+                        // console.log("yDiff: " + yDiff);
+                    }
+                    if (collision.direction === 'left'){
+                    // if (collision.direction === 'left' && collision.leftIntersect > 0){
+                        // console.log("left_isct: " + collision.leftIntersect);
+                        this.x = this.x + (collision.leftIntersect);
+                    } else if (collision.direction === 'right'){
+                        this.x = this.x + (collision.rightIntersect);
+                    } else if (collision.direction ==='top'){
+                        this.y = this.y + (collision.topIntersect);
                     } else {
-                        this.y = this.y + (collisions.bottomIntersect);
+                        this.y = this.y + (collision.bottomIntersect);
                         this.isAirborne = true;
                         if (GAME.currentFrame - this.jumpTimer > 15) this.canJump = true;
         }
-                    this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(5*PARAMS.SCALE));
+                    this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(4*PARAMS.SCALE));
                     break;
             }
         });
 
+        if (totalCollisions > 5){
+            console.log("collisions: " + totalCollisions);
+            this.x = this.lastX;
+            this.y = this.lastY;
+        }
+
+        if (Math.abs(xDiff) > 32 || Math.abs(yDiff) > 32){
+            console.log("xDiff: " + xDiff);
+            console.log("yDiff: " + yDiff);
+        }
+
         // Reset momentum on stop
         if (this.x == this.lastX){
-            this.momentum = 0;
+            this.momentum *= .2;
         }
 
         // Reset rise on stop
         if (this.y == this.lastY){
-            this.rise = -1;
+            this.rise *= .2;
         }
 
         // Update previous pos markers

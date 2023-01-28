@@ -1,6 +1,6 @@
 /**
  * Class to create a hitbox around an entity to handle collisions.
- * @author Jasper Newkirk, Chris Marriott
+ * @author Jasper Newkirk, Nathan Brown, Chris Marriott
  */
 class HitBox {
     /**
@@ -14,6 +14,7 @@ class HitBox {
         Object.assign(this, { x, y, width, height });
         this.left = x;
         this.top = y;
+        this.center = { x: x + width / 2, y: y + height / 2 };
         this.right = this.left + this.width;
         this.bottom = this.top + this.height;
     }
@@ -23,13 +24,41 @@ class HitBox {
      * @param {HitBox} o The other hitbox.
      * @returns Whether the current hitbox and the given hitbox exist within the same space as one another.
      */
-    // collide(o) {
-    //     if (this.right > o.left && this.left < o.right && this.top < o.bottom && this.bottom > o.top) return true;
-    //     return false;
-    // }
-
+    collide2(o) {
+        if (o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height){
+            return false;
+        } else {
+            this.direction;
+            let vector = {x : this.center.x - o.center.x, y : this.center.y - o.center.y};
+            // let distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+            // let norm = {x : vector.x / distance, y: vector.y / distance};
+            this.leftIntersect = o.right - this.left;
+            this.rightIntersect = o.left - this.right;
+            this.topIntersect = o.bottom - this.top;
+            this.bottomIntersect = o.top - this.bottom;
+            if (Math.abs(vector.x) > Math.abs(vector.y)){
+                if (vector.x > 0){
+                    this.direction = 'left';
+                }
+                if (vector.x < 0){
+                    this.direction = 'right';
+                }
+            } else {
+                if (vector.y > 0){
+                    this.direction = 'top';
+                }
+                if (vector.y < 0){
+                    this.direction = 'bottom';
+                }
+            }
+            if (this.direction) return this;
+        } return false;
+    }
     collide(o) {
-        if (this.right > o.left && this.left < o.right && this.top < o.bottom && this.bottom > o.top){
+        // if (this.right > o.left && this.left < o.right && this.top < o.bottom && this.bottom > o.top){
+        if (o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height){
+            return false;
+        } else{
             this.direction = 'bottom';
             this.leftIntersect = o.right - this.left;
             this.rightIntersect = o.left - this.right;
@@ -50,11 +79,23 @@ class HitBox {
             } else if (this.bottom > o.bottom){
                 this.direction = 'top';
             }
-            // console.log(this.direction);
             return this;
         }
-        return false;
     }
+    
+    // getCollisions(){
+    //     let collisions = {};
+    //     GAME.entities.forEach(entity => {
+    //         if (!entity.hitbox) return;
+    //         if (entity.hitbox === this) return;
+    //         let collision = this.hitbox.collide(entity.hitbox);
+    //         if(collision) collisions.push({
+    //             entity: entity,
+    //             collision: collision
+    //         });
+    //     })
+    //     return collisions;
+    // }
 
     /**
      * Updates the current hitbox's position to reflect the given x and y coordinates.
@@ -64,6 +105,7 @@ class HitBox {
     updatePos(x, y) {
         this.left = x;
         this.top = y;
+        this.center = {x: x + this.width / 2, y: y + this.height / 2};
         this.right = this.left + this.width;
         this.bottom = this.top + this.height;
     }
