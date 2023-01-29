@@ -4,7 +4,7 @@
  */
 class Room {
     /**
-     * 
+     * Constructs a new room, responsible for containing a collection of {@link Tile}s.
      * @param {object} layers A dictionary of lists where every key is a layer and every value is a {@link Tile} index array.
      * @param {*} x The x-coordinate associated with the top-left corner of the room.
      * @param {*} y The y-coordinate associated with the top-left corner of the room.
@@ -39,7 +39,6 @@ class Room {
                 this.layers[layer["name"]] = [firstgids[gid], tiles]; // tileset path, tile indices array
             }
         });
-        console.log(this)
         // init tiles
         this.tiles = {};
         Object.keys(this.layers).forEach((layer) => {
@@ -72,8 +71,15 @@ class Room {
                                 case 6:
                                     // TODO: Place batterflea here
                                     break;
+                                case 18:
+                                    this.tiles[layer].push(new KillBox(x, y));
+                                    break;
+                                case 19:
+                                    this.tiles[layer].push(new Checkpoint("Idle", x, y));
+                                    break;
                             }
                         } else {
+                            const hasHitbox = (layer == "map") ? this.isAirAdjacent(index) : false;
                             this.tiles[layer].push(
                                 new Tile(
                                     img,
@@ -83,7 +89,7 @@ class Room {
                                     Math.floor(elem/13)*8,
                                     8,
                                     8,
-                                    layer == "map"
+                                    hasHitbox
                                 )
                             );
                         }
@@ -91,5 +97,28 @@ class Room {
                 });
             }
         });
+    }
+
+    /**
+     * Returns hether the given {@link Tile} object is adjacent to a null tile. Used to determine whether the tile should recieve a {@link HitBox}.
+     * @param {number} index The index of the current {@link Tile} object to be placed.
+     * @returns Whether the given {@link Tile} object is adjacent to a null tile.
+     */
+    isAirAdjacent(index) {
+        const w = this.w/8;
+        if (this.layers["map"][1][index] >= 0) {
+            let dirs = [1,-1,w,w+1,w-1,-w,-w+1,-w-1]
+            if ((index+1)%w == 0) { // on right edge
+                dirs = [-1,w,w-1,-w,-w-1]
+            } else if (index%w == 0) { // on left edge
+                dirs = [1,w,w+1,-w,-w+1]
+            }
+            for (let i = 0; i < dirs.length; i++) {
+                if (this.layers["map"][1][index+dirs[i]] !== undefined) {
+                    if (this.layers["map"][1][index+dirs[i]] < 0) return true;
+                }
+            }
+        }
+        return false;
     }
 }
