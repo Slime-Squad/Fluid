@@ -24,14 +24,14 @@ class Tile {
      * @param {CanvasRenderingContext2D} ctx The canvas to be displayed upon.
      */
     draw(ctx) { 
-        const x = this.x - Math.round(PARAMS.GAME.camera.x);
-        const y = this.y - Math.round(PARAMS.GAME.camera.y);
+        const x = this.x - GAME.camera.x;
+        const y = this.y - GAME.camera.y;
         if (x > -this.w*PARAMS.SCALE && x < PARAMS.WIDTH && y > -this.h*PARAMS.SCALE && y < PARAMS.HEIGHT) {
             ctx.drawImage(this.img, this.imgX, this.imgY, this.w, this.h, x, y, this.w*PARAMS.SCALE, this.h*PARAMS.SCALE);
             if (this.hasHitbox && PARAMS.DEBUG) {
                 ctx.strokeStyle = "red";
                 ctx.beginPath();
-                ctx.rect(this.hitbox.left - PARAMS.GAME.camera.x, this.hitbox.top - PARAMS.GAME.camera.y, this.hitbox.width, this.hitbox.height);   
+                ctx.rect(this.hitbox.left - GAME.camera.x, this.hitbox.top - GAME.camera.y, this.hitbox.width, this.hitbox.height);   
                 ctx.stroke();
             }
         }
