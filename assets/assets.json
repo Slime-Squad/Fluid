@@ -1,5 +1,9 @@
 {
     "graphics": {
+        "camera": [
+            "dead_screen.png",
+            "dead_screen.json"
+        ],
         "characters": [
             "batterflea.json",
             "batterflea.png",
@@ -17,7 +21,9 @@
 
         "item": [
             "charge.png",
-            "charge.json"
+            "charge.json",
+            "checkpoint.png",
+            "checkpoint.json"
         ],
         "map": [
             "ice.png",
