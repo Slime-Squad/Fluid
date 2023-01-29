@@ -24,7 +24,7 @@ class Charge extends AnimatedEntity {
     update() {
         if (this.originalTag == "Disabled") return;
         if (this.tag == "Disabled") {
-            this.elapsedTime += PARAMS.GAME.clockTick;
+            this.elapsedTime += GAME.clockTick;
         }
 
         if (this.elapsedTime >= 5) {

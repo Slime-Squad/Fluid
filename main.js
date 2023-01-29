@@ -28,7 +28,8 @@ fetch(ASSET_PATHS)
 		
 			GAME = new GameEngine();
 			const canvas = document.getElementById("gameWorld");
-			const ctx = canvas.getContext("2d");
+
+			const ctx = canvas.getContext("2d", { alpha: false });
 
 			ctx.imageSmoothingEnabled = false; // disable antialiasing
 
@@ -36,7 +37,7 @@ fetch(ASSET_PATHS)
 			PARAMS.BLOCKSIZE = PARAMS.BITWIDTH*PARAMS.SCALE;
 			PARAMS.WIDTH = canvas.getAttribute("width");
 			PARAMS.HEIGHT = canvas.getAttribute("height");
-			PARAMS.GAME = GAME;
+			
 			
 			GAME.init(ctx);
 		
