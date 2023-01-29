@@ -98,6 +98,21 @@ const getDistance = (p1, p2) => {
     return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 };
 
+/*const getCollisions = (collider) => {
+    let collisions = [];
+        GAME.entities.forEach(entity => {
+            if (!entity.hitbox || entity === collider) return;
+            let collision = collider.hitbox.collide(entity.hitbox);
+            collision.entity = entity;
+            if(collision) collisions.push(collision);
+        })
+        return collisions;
+}*/
+
+// const lineLineIntersect = (x1, y1, x2, y2, x3, y3, x4, y4){
+//     v1 = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
+// }
+
 /**
  * Returns the given num, limited to the given range between min and max.
  * @author Nathan Brown

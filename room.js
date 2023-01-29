@@ -69,8 +69,18 @@ class Room {
                                     this.tiles[layer].push(new Charge("Ice", x, y));
                                     break;
                                 case 6:
-                                    // TODO: Place batterflea here
+                                    this.tiles[layer].push(new Batterflea("", x, y));                                   
                                     break;
+                                case 7:
+                                    this.tiles[layer].push(new Bubble("Idle", x, y));                                   
+                                    break;
+                                case 8:
+                                    this.tiles[layer].push(new Magmasquito("Squito", x, y));
+                                    break;
+                                case 9:
+                                    this.tiles[layer].push(new Skiwi("Wii", x, y));                                    
+                                    break;
+
                                 case 18:
                                     this.tiles[layer].push(new KillBox(x, y));
                                     break;
