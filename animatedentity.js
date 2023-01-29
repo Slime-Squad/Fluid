@@ -15,22 +15,22 @@ class AnimatedEntity {
         Object.assign(this, { path, tag, x, y, loop });
         this.spritesheet = ASSET_MANAGER.getAsset(this.path + ".png");
         this.frames = ASSET_MANAGER.getAsset(this.path + ".json");
-        this.timer = {frameIndex:0, elapsedTime:0}; // handles frame timing
+        this.frameTimer = {frameIndex:0, elapsedTime:0}; // handles frame timing
     }
     /**
      * Draws the current entity's {@link AnimatedEntity.tag} animation. Called on every clock tick.
      * @param {CanvasRenderingContext2D} ctx The canvas to which the animation will be displayed upon.
      */
     draw(ctx) {
-        this.frames.animateTag(ctx, this.x - PARAMS.GAME.camera.x, this.y - PARAMS.GAME.camera.y, this.timer, this.spritesheet, this.tag, this.loop);
+        this.frames.animateTag(ctx, this.x - GAME.camera.x, this.y - GAME.camera.y, this.frameTimer, this.spritesheet, this.tag, this.loop);
         if (this.hitbox && PARAMS.DEBUG) {
             ctx.strokeStyle = "red";
             ctx.beginPath();
-            ctx.rect(this.hitbox.left - PARAMS.GAME.camera.x, this.hitbox.top - PARAMS.GAME.camera.y, this.hitbox.width, this.hitbox.height);   
+            ctx.rect(this.hitbox.left - GAME.camera.x, this.hitbox.top - GAME.camera.y, this.hitbox.width, this.hitbox.height);   
             ctx.stroke();
             ctx.font = "12px segoe ui";
             ctx.fillStyle = "white";
-            ctx.fillText(this.constructor.name.toUpperCase() + ": x=" + this.x + " y=" + this.y, this.hitbox.left - PARAMS.GAME.camera.x, this.hitbox.bottom - PARAMS.GAME.camera.y + 4*PARAMS.SCALE);
+            ctx.fillText(this.constructor.name.toUpperCase() + ": x=" + this.x + " y=" + this.y, this.hitbox.left - GAME.camera.x, this.hitbox.bottom - GAME.camera.y + 4*PARAMS.SCALE);
         }
     }
 
@@ -39,5 +39,17 @@ class AnimatedEntity {
      */
     update() {
         
+    }
+    
+    /**
+     * Swaps the current entity's animation for another, starting from the first frame.
+     * @param {string} tag The name of the new animation of the entity.
+     * @param {*} loop Whether the entity's new animation loops over again, after having finished playing once.
+     */
+    swapTag(tag, loop = false) {
+        this.tag = tag;
+        this.loop = loop;
+        this.frameTimer.frameIndex = 0;
+        this.frameTimer.elapsedTime = 0;
     }
 }
