@@ -55,35 +55,29 @@ class Frames {
      * @param {CanvasRenderingContext2D} ctx The canvas to which the animation will be displayed upon.
      * @param {number} x The x-coordinate associated with the top-left corner of the animation's sprite on the canvas.
      * @param {number} y The y-coordinate associated with the top-left corner of the animation's sprite on the canvas.
-     * @param {AnimatedEntity.Timer} Timer The {@link AnimatedEntity.timer} instance used to handle frame timing for the animation.
+     * @param {AnimatedEntity.Timer} frameTimer The {@link AnimatedEntity.frameTimer} instance used to handle frame timing for the animation.
      * @param {HTMLImageElement} spritesheet The spritesheet image associated with the animation.
      * @param {String} tag The name of the animation to be animated, as it is defined in the JSON file used to initialize this {@link Frames} instance.
      * @param {boolean} loop Whether the entity's animation loops over again, after having finished playing once.
      */
-    animateTag(ctx, x, y, Timer, spritesheet, tag, loop = true, direction = 1) {
+    animateTag(ctx, x, y, frameTimer, spritesheet, tag, loop = true) {
         
-        Timer.elapsedTime += PARAMS.GAME.clockTick;
-        if (this.animations[tag].length <= Timer.frameIndex) {
+        frameTimer.elapsedTime += GAME.clockTick;
+        if (this.animations[tag].length <= frameTimer.frameIndex) {
             if (!loop) {
                 // dereference function if not a looping animation (saves unneccessary computation)
                 this.isDone(ctx, spritesheet, tag, x, y);
                 return;
             }
-            Timer.frameIndex = 0;
+            frameTimer.frameIndex = 0;
         }
 
-        const frame = this.animations[tag][Timer.frameIndex];
+        const frame = this.animations[tag][frameTimer.frameIndex];
 
-        if (Timer.elapsedTime >= frame.duration) {
-            Timer.elapsedTime = 0;
-            Timer.frameIndex++;
+        if (frameTimer.elapsedTime >= frame.duration) {
+            frameTimer.elapsedTime = 0;
+            frameTimer.frameIndex++;
         }
-
-        // REMOVE FOR GLOW
-        // ctx.shadowColor = PARAMS.COLORS.DARKGREEN;
-        // ctx.shadowOffsetX = 0;
-        // ctx.shadowOffsetY = 0;
-        // ctx.shadowBlur = 15;
 
         ctx.drawImage(spritesheet, frame.x, frame.y, frame.w, frame.h, x, y,
             frame.w*PARAMS.SCALE, frame.h*PARAMS.SCALE);
@@ -98,12 +92,12 @@ class Frames {
      * @param {number} y The y-coordinate associated with the top-left corner of the frame's sprite on the canvas.
      */
     isDone(ctx, spritesheet, tag, x, y) {
-            ctx.drawImage(spritesheet, this.animations[tag][0].x, 
-                this.animations[tag][0].y, 
-                this.animations[tag][0].w, 
-                this.animations[tag][0].h, 
+            ctx.drawImage(spritesheet, this.animations[tag].slice(-1)[0].x, 
+                this.animations[tag].slice(-1)[0].y, 
+                this.animations[tag].slice(-1)[0].w, 
+                this.animations[tag].slice(-1)[0].h, 
                 x, y, 
-                this.animations[tag][0].w*PARAMS.SCALE, 
-                this.animations[tag][0].h*PARAMS.SCALE);
+                this.animations[tag].slice(-1)[0].w*PARAMS.SCALE, 
+                this.animations[tag].slice(-1)[0].h*PARAMS.SCALE);
     }
 }
