@@ -109,3 +109,22 @@ const getDistance = (p1, p2) => {
 const clamp = (num, min, max) => {
     return Math.min(Math.max(num, min), max);
 }
+
+/**
+ * Function called upon browser load and resize. Resizes the canvas to be centered and visible to the user at all times.
+ */
+const resizeCanvas = () => {
+    const canvas = document.getElementById("gameWorld");
+
+    const scaleX = window.innerWidth / canvas.width;
+    const scaleY = window.innerHeight / canvas.height;
+
+    const scale = Math.min(scaleX, scaleY);
+    
+    canvas.style.marginLeft = Math.max((window.innerWidth - canvas.width*scale)/2, 0) + "px";
+    canvas.style.transformOrigin = "0 0"; //scale from top left
+    canvas.style.transform = `scale(${scale})`;
+}
+
+window.addEventListener("resize", resizeCanvas);
+window.addEventListener("load", resizeCanvas);
