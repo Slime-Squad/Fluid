@@ -16,6 +16,8 @@ class Slime extends AnimatedEntity {
         Object.assign(this, {tag, x, y});
         this.hitbox = new HitBox(x, y, 12*PARAMS.SCALE, 10*PARAMS.SCALE);
         
+        this.spawnX = this.x;
+        this.spawnY = this.y;
         // Movement
         this.speed = 2 * PARAMS.SCALE;
         this.dashSpeed = 8;
@@ -25,9 +27,10 @@ class Slime extends AnimatedEntity {
         this.direction = 1;
         this.rise = -1;
         this.bounce = 4 * PARAMS.SCALE;
-        this.gravity = .75;
+        this.gravity = .5;
 
         // Conditions
+        this.isAlive = true;
         this.canJump = true;
         this.canDash = true;
         this.isAirborne = true;
@@ -119,8 +122,8 @@ class Slime extends AnimatedEntity {
         if (!this.canDash) this.currentDashTime += 1; 
         if (!this.canDash && (this.currentDashTime>= this.dashTimer - 1)) this.canDash = true;
         if (!this.canDash && this.currentDashTime < 20 ) {
-            if(PARAMS.GAME.keys["a"]) this.x -= this.dashSpeed;
-            if(PARAMS.GAME.keys["d"]) this.x += this.dashSpeed;
+            if(GAME.keys["a"]) this.x -= this.dashSpeed;
+            if(GAME.keys["d"]) this.x += this.dashSpeed;
         }
 
         // Rise
@@ -151,17 +154,28 @@ class Slime extends AnimatedEntity {
                     break;
                 case 'Tile':
                     if (collisions.direction === 'left'){
-                        this.x = this.x + (collisions.leftIntersect);
+                        this.x += collisions.leftIntersect;
                     } else if (collisions.direction === 'right'){
-                        this.x = this.x + (collisions.rightIntersect);
+                        this.x += collisions.rightIntersect;
                     } else if (collisions.direction ==='top'){
-                        this.y = this.y + (collisions.topIntersect);
+                        this.y += collisions.topIntersect;
                     } else {
-                        this.y = this.y + (collisions.bottomIntersect);
+                        this.y += collisions.bottomIntersect;
                         this.isAirborne = true;
                         if (GAME.currentFrame - this.jumpTimer > 15) this.canJump = true;
-        }
+                    }
                     this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(5*PARAMS.SCALE));
+                    break;
+                case 'Checkpoint':
+                    if (entity.tag == "Idle") {
+                        entity.swapTag("Collected");
+                        entity.hitbox = null;
+                        this.spawnX = entity.x;
+                        this.spawnY = entity.y;
+                    }
+                    break;
+                case 'KillBox':
+                    if (this.isAlive) this.kill();
                     break;
             }
         });
@@ -193,8 +207,34 @@ class Slime extends AnimatedEntity {
             ctx.fillStyle = "red";
             // ctx.fillText("Rise:" + Math.round(this.rise), this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
             // ctx.fillText("Momentum:" + Math.round(this.momentum), this.x - GAME.camera.x, this.y - GAME.camera.y);
-            ctx.fillText("Jump Timer:" + Math.round(this.jumpTimer), this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
+            ctx.fillText("Spawn: x=" + this.spawnX + " y=" + this.spawnY, this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
+        }
     }
-}
+
+    /**
+     * Function responsible for killing the current Slime entity and playing a camera animation as the slime is respawned.
+     * @author Jasper Newkirk
+     */
+    kill() {
+        this.isAlive = false;
+        GAME.camera.deathScreen.swapTag("Died");
+        const animationTime = 1;
+        const deltaX = Math.round((this.spawnX - PARAMS.WIDTH/2 - GAME.camera.x)/animationTime*GAME.clockTick);
+        const deltaY = Math.round((this.spawnY - PARAMS.HEIGHT/2 - GAME.camera.y)/animationTime*GAME.clockTick);
+        GAME.camera.freeze(animationTime, 
+            (ctx, camera) => {
+                camera.x += deltaX;
+                camera.y += deltaY;
+            }, 
+            () => {
+                GAME.camera.deathScreen.swapTag("Respawn");
+                this.momentum = 0;
+                this.x = this.spawnX;
+                this.y = this.spawnY;
+                this.isAlive = true;
+            }
+        );
+
+    }
     
 }
