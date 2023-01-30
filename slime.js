@@ -124,8 +124,8 @@ class Slime extends AnimatedEntity {
         if (!this.canDash) this.currentDashTime += GAME.tickMod; 
         if (!this.canDash && (this.currentDashTime>= this.dashTimer - 1)) this.canDash = true;
         if (!this.canDash && this.currentDashTime < 15 ) {
-            if(GAME.keys["a"]) this.x -= this.dashSpeed * GAME.tickMod;
-            if(GAME.keys["d"]) this.x += this.dashSpeed * GAME.tickMod;
+            if(GAME.keys["a"] || GAME.left) this.x -= this.dashSpeed * GAME.tickMod;
+            if(GAME.keys["d"] || GAME.right) this.x += this.dashSpeed * GAME.tickMod;
         }
 
         // Rise
