@@ -136,6 +136,7 @@ class GameEngine {
 
     loop() {
         this.clockTick = this.timer.tick();
+        this.tickMod = this.clockTick * 60;
         this.update();
         this.gamepadUpdate();
         this.draw();
