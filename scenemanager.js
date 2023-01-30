@@ -47,9 +47,8 @@ class SceneManager {
             this.elapsedFreezeTime += GAME.clockTick;
             if (this.elapsedFreezeTime >= this.freezeTimer) this.unfreeze();
         } else {
-            // this.x = Math.round(lerp(this.x, GAME.slime.x - PARAMS.WIDTH/2 + 8*PARAMS.SCALE + PARAMS.SCALE*45*GAME.slime.momentum, GAME.clockTick));
-            this.x = Math.round(lerp(this.x, GAME.slime.x - PARAMS.WIDTH/2 + 8*PARAMS.SCALE + PARAMS.SCALE*8*GAME.slime.momentum, GAME.clockTick*60/10));
-            this.y = Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE - Math.min(0,PARAMS.SCALE*4*GAME.slime.rise), GAME.clockTick*60/10));
+            this.x = Math.round(lerp(this.x, GAME.slime.x - PARAMS.WIDTH/2 + 8*PARAMS.SCALE + PARAMS.SCALE*8*GAME.slime.momentum, GAME.tickMod/10));
+            this.y = Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE - Math.min(0,PARAMS.SCALE*4*GAME.slime.rise), GAME.tickMod/10));
         }
         this.deathScreen.x = this.x - 3*PARAMS.SCALE;
         this.deathScreen.y = this.y - 3*PARAMS.SCALE;
