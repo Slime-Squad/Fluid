@@ -112,11 +112,13 @@ class Slime extends AnimatedEntity {
             this.jumpTimer = 0;
             this.rise = this.bounce + (this.momentum / 2) * this.direction;
             this.isAirborne = true;
+            console.log("A");
         }
         this.jumpTimer += GAME.clockTick;
 
         // Dash
         if((GAME.keys["j"] || GAME.B) && this.canDash) {
+            console.log("B");
             this.canDash = false;
             this.dashTimer = 120;
             this.currentDashTime = 0;
@@ -124,8 +126,8 @@ class Slime extends AnimatedEntity {
         if (!this.canDash) this.currentDashTime += GAME.tickMod; 
         if (!this.canDash && (this.currentDashTime>= this.dashTimer - 1)) this.canDash = true;
         if (!this.canDash && this.currentDashTime < 15 ) {
-            if(GAME.keys["a"]) this.x -= this.dashSpeed * GAME.tickMod;
-            if(GAME.keys["d"]) this.x += this.dashSpeed * GAME.tickMod;
+            if(GAME.keys["a"] || GAME.left) this.x -= this.dashSpeed * GAME.tickMod;
+            if(GAME.keys["d"] || GAME.right) this.x += this.dashSpeed * GAME.tickMod;
         }
 
         // Rise
