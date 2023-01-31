@@ -39,6 +39,8 @@ class Slime extends AnimatedEntity {
         this.isAnitgrav = false;
         this.lastX = this.x;
         this.lastY = this.y;
+        this.xDiff = 0;
+        this.yDiff = 0;
 
         // Charges
         this.charges = {
@@ -107,7 +109,7 @@ class Slime extends AnimatedEntity {
         //this.canJump = true; // Allow Midair for Debugging
         if((GAME.keys[" "] || GAME.A) && this.canJump) {
             this.canJump = false;
-            // console.log("jump");
+            this.canDash = true;
             this.jumpTimer = 0;
             this.rise = this.bounce + (this.momentum / 2) * this.direction;
             this.isAirborne = true;
@@ -117,15 +119,14 @@ class Slime extends AnimatedEntity {
         // Dash
         if((GAME.keys["j"] || GAME.B) && this.canDash) {
             this.canDash = false;
-            console.log("smash");
             this.dashTimer = 120;
             this.currentDashTime = 0;
         }
         if (!this.canDash) this.currentDashTime += GAME.tickMod; 
         if (!this.canDash && (this.currentDashTime>= this.dashTimer - 1)) this.canDash = true;
         if (!this.canDash && this.currentDashTime < 15 ) {
-            if(GAME.keys["a"]) this.x -= this.dashSpeed * GAME.tickMod;
-            if(GAME.keys["d"]) this.x += this.dashSpeed * GAME.tickMod;
+            if(GAME.keys["a"] || GAME.left) this.x -= this.dashSpeed * GAME.tickMod;
+            if(GAME.keys["d"] || GAME.right) this.x += this.dashSpeed * GAME.tickMod;
         }
 
         // Rise
@@ -152,6 +153,26 @@ class Slime extends AnimatedEntity {
             totalCollisions++;
             switch (entity.constructor.name){
                 case 'Charge':
+                    switch(entity.tag) {
+                        case 'Disabled':
+                            break;
+                        case 'Electric':
+                            this.charges.Electric++;
+                            entity.tag = "Disabled";
+                            break;
+                        case 'Fire':
+                            this.charges.Fire++;
+                            entity.tag = "Disabled";
+                            break;
+                        case 'Ice':
+                            this.charges.Ice++;
+                            entity.tag = "Disabled";
+                            break;
+                        case 'Earth':
+                            this.charges.Earth++;
+                            entity.tag = "Disabled";
+                            break;
+                    }
                     if (entity.tag != "Disabled") { // charge collected
                         entity.tag = "Disabled";
                     }
@@ -173,7 +194,7 @@ class Slime extends AnimatedEntity {
                                 )
                         ){
                             collision.direction = 'bottom';
-                            console.log("collision reset to bottom")
+                            console.log("collision reset to bottom");
                         }
                     }
                     /*tileCollisions.push({
@@ -202,7 +223,7 @@ class Slime extends AnimatedEntity {
                         entity.hitbox = null;
                         this.spawnX = entity.x;
                         this.spawnY = entity.y;
-                    }
+                    } 
                     break;
                 case 'KillBox':
                     if (this.isAlive) this.kill();
@@ -267,6 +288,9 @@ class Slime extends AnimatedEntity {
             // ctx.fillText("Rise:" + Math.round(this.rise), this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
             // ctx.fillText("Momentum:" + Math.round(this.momentum), this.x - GAME.camera.x, this.y - GAME.camera.y);
             // ctx.fillText("Spawn: x=" + this.spawnX + " y=" + this.spawnY, this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
+            ctx.fillText("Charges: " + Object.values(this.charges), this.x - GAME.camera.x, this.y - GAME.camera.y - 100);
+            ctx.fillText("Rise:" + this.rise, this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
+            ctx.fillText("Momentum:" + this.momentum, this.x - GAME.camera.x, this.y - GAME.camera.y);
         }
     }
 
@@ -277,13 +301,12 @@ class Slime extends AnimatedEntity {
     kill() {
         this.isAlive = false;
         GAME.camera.deathScreen.swapTag("Died");
-        const animationTime = 1;
-        const deltaX = Math.round((this.spawnX - PARAMS.WIDTH/2 - GAME.camera.x)/animationTime*GAME.clockTick);
-        const deltaY = Math.round((this.spawnY - PARAMS.HEIGHT/2 - GAME.camera.y)/animationTime*GAME.clockTick);
-        GAME.camera.freeze(animationTime, 
+        const targetX = this.spawnX - PARAMS.WIDTH/2  + 8*PARAMS.SCALE;
+        const targetY = this.spawnY - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE;
+        GAME.camera.freeze(1, 
             (ctx, camera) => {
-                camera.x += deltaX;
-                camera.y += deltaY;
+                camera.x = Math.round(lerp(camera.x, targetX, GAME.tickMod/30));
+                camera.y = Math.round(lerp(camera.y, targetY, GAME.tickMod/30));
             }, 
             () => {
                 GAME.camera.deathScreen.swapTag("Respawn");

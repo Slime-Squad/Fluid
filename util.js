@@ -9,7 +9,7 @@ const rgb = (r, g, b) => `rgba(${r}, ${g}, ${b})`;
 /** Global Parameters */
 const PARAMS = { 
     BITWIDTH: 8,
-    SCALE: 4,
+    SCALE: 6,
     DEBUG: true,
     COLORS: {
         DARKGREEN: rgb(91, 166, 117),
@@ -85,7 +85,7 @@ window.requestAnimFrame = (() => {
          * @param {DOM} element DOM ELEMENT
          */
         ((callback, element) => {
-            window.setTimeout(callback, 1000 / 60);
+            window.setTimeout(callback, 1000/60);
         });
 })();
 
@@ -134,6 +134,18 @@ const linePlaneIntersect = (originX, originY, endX, endY, planeLeft, planeRight,
 const clamp = (num, min, max) => {
     return Math.min(Math.max(num, min), max);
 }
+
+/**
+ * Returns the linear interpolation between two points.
+ * @author Jasper Newkirk
+ * @param {number} start The starting position of the linear interpolation.
+ * @param {number} stop The ending position of the linear interpolation.
+ * @param {number} speed The speed of the linear interpolation (between 0 and 1).
+ * @returns The linear interpolation between two points.
+ */
+const lerp = (start, stop, speed) => {
+    return speed * (stop - start) + start;
+};
 
 /**
  * Function called upon browser load and resize. Resizes the canvas to be centered and visible to the user at all times.
