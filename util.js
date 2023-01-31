@@ -114,8 +114,9 @@ const linePlaneIntersect = (originX, originY, endX, endY, planeLeft, planeRight,
     let yDistance = planeY - originY;
     let slope = endX - originX == 0 ? 0 : (endY - originY) / (endX - originX);
     let xIntersect = originX + slope * yDistance;
-    console.log("xSect: " + xIntersect + " planeLeft: " + planeLeft + " planeRight: " + planeRight);
-    if (yDistance < 0 || xIntersect < planeLeft + PARAMS.SCALE || xIntersect > planeRight - PARAMS.SCALE){ 
+    let offset = 0 + PARAMS.SCALE;
+    // console.log("xSect: " + xIntersect + " planeLeft: " + planeLeft + " planeRight: " + planeRight);
+    if (yDistance < 0 || xIntersect < planeLeft + offset || xIntersect > planeRight - offset){ 
         return false;
     }
     return true;
