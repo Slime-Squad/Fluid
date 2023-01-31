@@ -109,9 +109,18 @@ const getDistance = (p1, p2) => {
         return collisions;
 }*/
 
-// const lineLineIntersect = (x1, y1, x2, y2, x3, y3, x4, y4){
-//     v1 = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
-// }
+// determine x val of intersection with top of entity's hitbox
+const linePlaneIntersect = (originX, originY, endX, endY, planeLeft, planeRight, planeY) => {
+    let yDistance = planeY - originY;
+    let slope = endX - originX == 0 ? 0 : (endY - originY) / (endX - originX);
+    let xIntersect = originX + slope * yDistance;
+    console.log("xSect: " + xIntersect + " planeLeft: " + planeLeft + " planeRight: " + planeRight);
+    if (yDistance < 0 || xIntersect < planeLeft + PARAMS.SCALE || xIntersect > planeRight - PARAMS.SCALE){ 
+        return false;
+    }
+    return true;
+}
+
 
 /**
  * Returns the given num, limited to the given range between min and max.

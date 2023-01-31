@@ -27,6 +27,7 @@ class Slime extends AnimatedEntity {
         this.decceleration = this.speed / 30;
         this.direction = 1;
         this.rise = -1;
+        this.MINRISE = -6 * PARAMS.SCALE;
         this.bounce = 4 * PARAMS.SCALE;
         this.gravity = .685;
 
@@ -134,16 +135,17 @@ class Slime extends AnimatedEntity {
         }
 
         // Gravity
-        if (this.rise > -6 * PARAMS.SCALE){
+        if (this.rise > this.MINRISE){
             let hangtime = this.jumpTimer < 0.52 ? this.jumpTimer > 0.44 ? 0.1 : 1 : 1;
             this.rise -= this.gravity * GAME.tickMod * hangtime;
         }
 
         // HANDLE COLLISIONS
         this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding);
-        let xDiff = this.lastX - this.x;
-        let yDiff = this.lastY - this.y;
+        let xDiff = this.x - this.lastX;
+        let yDiff = this.y - this.lastY;
         let totalCollisions = 0;
+        let tileCollisions = [];
         GAME.entities.forEach(entity => {
             if (!entity.hitbox || !this.isAlive) return;
             if (entity instanceof Slime) return;
@@ -157,14 +159,34 @@ class Slime extends AnimatedEntity {
                     }
                     break;
                 case 'Tile':
-                    if (Math.abs(xDiff) > 20 || Math.abs(yDiff) > 20){
-                        // console.log(collision.direction);
-                        // console.log("xDiff: " + xDiff);
-                        // console.log("yDiff: " + yDiff);
+                    let lastHitboxLeft = this.lastX + this.leftPadding;
+                    let lastHitboxRight = this.lastX + this.leftPadding + this.hitbox.width;
+                    let lastHitboxBottom = this.lastY + this.hitbox.height + this.topPadding;
+                    let lastHitboxCenter = {x: lastHitboxLeft + this.hitbox.width / 2, y: lastHitboxBottom - this.hitbox.height / 2 };
+                    if (collision.direction !== 'bottom'){
+                        if ( 
+                            linePlaneIntersect(
+                                lastHitboxLeft, lastHitboxBottom, this.hitbox.left, this.hitbox.bottom, 
+                                entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
+                                ) ||
+                            linePlaneIntersect(
+                                lastHitboxRight, lastHitboxBottom, this.hitbox.right, this.hitbox.bottom, 
+                                entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
+                                )
+                        ){
+                            collision.direction = 'bottom';
+                            console.log("collision reset to bottom")
+                        }
                     }
+                    tileCollisions.push({
+                        direction: collision.direction,
+                        hitbox: entity.hitbox,
+                        distance: Math.sqrt(
+                                (entity.hitbox.center.x - lastHitboxCenter.x) * (entity.hitbox.center.x - lastHitboxCenter.x) + 
+                                (entity.hitbox.center.y - lastHitboxCenter.y) * (entity.hitbox.center.y - lastHitboxCenter.y)
+                            )
+                    });
                     if (collision.direction === 'left'){
-                    // if (collision.direction === 'left' && collision.leftIntersect > 0){
-                        // console.log("left_isct: " + collision.leftIntersect);
                         this.x = entity.hitbox.right - this.leftPadding;
                     } else if (collision.direction === 'right'){
                         this.x = entity.hitbox.left - this.hitbox.width - this.rightPadding;
@@ -173,7 +195,14 @@ class Slime extends AnimatedEntity {
                     } else {
                         this.y = entity.hitbox.top - this.hitbox.height - this.topPadding;
                         if (GAME.currentFrame - this.jumpTimer > 15) this.canJump = true;
-        }
+                    }
+                    // if (Math.abs(this.x - this.lastX) >= 4 * PARAMS.SCALE){
+                    //     console.log("xDiff: " + xDiff);
+                    //     this.x = this.lastX + this.direction;
+                    // }
+                    // if (Math.abs(this.y - this.lastY) >= 4 * PARAMS.SCALE){
+                    //     this.y = this.lastY - this.rise / Math.abs(this.rise) //- (this.rise / Math.abs(this.rise)) * PARAMS.SCALE;
+                    // }
                     this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding);
                     break;
                 case 'Checkpoint':
@@ -190,15 +219,29 @@ class Slime extends AnimatedEntity {
             }
         });
 
+        // Apply Collisions in descending order of distance
+        /*if (tileCollisions.length > 0){
+            tileCollisions.sort((a, b) => {return b.distance - a.distance});
+            tileCollisions.forEach((collision) => {
+                if (collision.direction === "bottom") {
+                    this.y = collision.hitbox.top - this.hitbox.height - this.topPadding;
+                    if (GAME.currentFrame - this.jumpTimer > 15) this.canJump = true;
+                } else if (collision.direction === 'left'){
+                    this.x = collision.hitbox.right - this.leftPadding;
+                } else if (collision.direction === 'right'){
+                    this.x = collision.hitbox.left - this.hitbox.width - this.rightPadding;
+                } else {
+                    this.y = collision.hitbox.bottom - this.topPadding;
+                }
+            });
+        }
+        this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding);*/
+
+
         if (totalCollisions > 5){
             console.log("collisions: " + totalCollisions);
             this.x = this.lastX;
             this.y = this.lastY;
-        }
-
-        if (Math.abs(xDiff) > 32 || Math.abs(yDiff) > 32){
-            console.log("xDiff: " + xDiff);
-            console.log("yDiff: " + yDiff);
         }
 
         // Reset momentum on stop
@@ -226,6 +269,9 @@ class Slime extends AnimatedEntity {
         if (PARAMS.DEBUG) {
             ctx.font = "30px segoe ui";
             ctx.fillStyle = "red";
+            if (this.rise <= this.MINRISE){
+                ctx.fillText("!", this.hitbox.center.x - GAME.camera.x, this.hitbox.top - 3 * PARAMS.SCALE - GAME.camera.y);
+            };
             // ctx.fillText("Jump Timer:" + this.jumpTimer.toFixed(2), this.x - GAME.camera.x, this.y - GAME.camera.y - 150);
             // ctx.fillText("Rise:" + Math.round(this.rise), this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
             // ctx.fillText("Momentum:" + Math.round(this.momentum), this.x - GAME.camera.x, this.y - GAME.camera.y);
