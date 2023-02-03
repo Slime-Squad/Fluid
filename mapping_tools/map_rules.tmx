@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="60" height="120" tilewidth="8" tileheight="8" infinite="0" nextlayerid="6" nextobjectid="1">
  <properties>
+  <property name="DeleteTiles" type="bool" value="true"/>
   <property name="MatchInOrder" type="bool" value="false"/>
   <property name="NoOverlappingOutput" type="bool" value="false"/>
   <property name="OverflowBorder" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" source=":/automap-tiles.tsx"/>
  <tileset firstgid="6" source="tools.tsx"/>
- <tileset firstgid="330" source="stone.tsx"/>
+ <tileset firstgid="330" source="fire.tsx"/>
  <layer id="1" name="regions" width="60" height="120">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
