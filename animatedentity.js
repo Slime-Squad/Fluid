@@ -52,17 +52,4 @@ class AnimatedEntity {
         this.frameTimer.frameIndex = 0;
         this.frameTimer.elapsedTime = 0;
     }
-    
-    /*tileCollision(collision){
-        if (collision.direction === 'left'){
-            this.x = this.x + (collision.leftIntersect);
-        } else if (collision.direction === 'right'){
-            this.x = this.x + (collision.rightIntersect);
-        } else if (collision.direction ==='top'){
-            this.y = this.y + (collision.topIntersect);
-        } else {
-            this.y = this.y + (collision.bottomIntersect);
-        }
-        this.hitbox.updatePos(this.x+(2*PARAMS.SCALE), this.y+(5*PARAMS.SCALE));
-    }*/
 }

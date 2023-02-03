@@ -29,7 +29,7 @@ class Slime extends AnimatedEntity {
         this.rise = -1;
         this.MINRISE = -6 * PARAMS.SCALE;
         this.bounce = 4 * PARAMS.SCALE;
-        this.gravity = .685;
+        this.gravity = 1;
 
         // Conditions
         this.isAlive = true;
@@ -141,17 +141,21 @@ class Slime extends AnimatedEntity {
             this.rise -= this.gravity * GAME.tickMod * hangtime;
         }
 
+        this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding); // update position before checking collision
+
         // HANDLE COLLISIONS
-        this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding);
         let totalCollisions = 0;
         // let tileCollisions = [];
         GAME.entities.forEach(entity => {
+            // Fill collection with confirmed collisions
             if (!entity.hitbox || !this.isAlive) return;
             if (entity instanceof Slime) return;
             let collision = this.hitbox.collide2(entity.hitbox);
             if (!collision) return;
             totalCollisions++;
+            // End determining collisions
             switch (entity.constructor.name){
+                // Move behavior to Charge
                 case 'Charge':
                     switch(entity.tag) {
                         case 'Disabled':
@@ -177,6 +181,7 @@ class Slime extends AnimatedEntity {
                         entity.tag = "Disabled";
                     }
                     break;
+                // Move to Tile
                 case 'Tile':
                     let lastHitboxLeft = this.lastX + this.leftPadding;
                     let lastHitboxRight = this.lastX + this.leftPadding + this.hitbox.width;
@@ -230,6 +235,95 @@ class Slime extends AnimatedEntity {
                     break;
             }
         });
+
+        /*GAME.entities.forEach(entity => {
+            if (!entity.hitbox || !this.isAlive) return;
+            if (entity instanceof this) return;
+            let entityCollided = this.hitbox.collide3(entity.hitbox);
+            if (!entityCollided) return;
+            totalCollisions++;
+            switch (entity.constructor.name){
+                // Move behavior to Charge
+                case 'Charge':
+                    switch(entity.tag) {
+                        case 'Disabled':
+                            break;
+                        case 'Electric':
+                            this.charges.Electric++;
+                            entity.tag = "Disabled";
+                            break;
+                        case 'Fire':
+                            this.charges.Fire++;
+                            entity.tag = "Disabled";
+                            break;
+                        case 'Ice':
+                            this.charges.Ice++;
+                            entity.tag = "Disabled";
+                            break;
+                        case 'Earth':
+                            this.charges.Earth++;
+                            entity.tag = "Disabled";
+                            break;
+                    }
+                    if (entity.tag != "Disabled") { // charge collected
+                        entity.tag = "Disabled";
+                    }
+                    break;
+                // Move to Tile
+                case 'Tile':
+                    let lastHitboxLeft = this.lastX + this.leftPadding;
+                    let lastHitboxRight = this.lastX + this.leftPadding + this.hitbox.width;
+                    let lastHitboxBottom = this.lastY + this.hitbox.height + this.topPadding;
+                    // let lastHitboxCenter = {x: lastHitboxLeft + this.hitbox.width / 2, y: lastHitboxBottom - this.hitbox.height / 2 };
+                    if (collision.direction !== 'bottom'){
+                        if ( 
+                            linePlaneIntersect(
+                                lastHitboxLeft, lastHitboxBottom, this.hitbox.left, this.hitbox.bottom, 
+                                entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
+                                ) ||
+                            linePlaneIntersect(
+                                lastHitboxRight, lastHitboxBottom, this.hitbox.right, this.hitbox.bottom, 
+                                entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
+                                )
+                        ){
+                            collision.direction = 'bottom';
+                            console.log("collision reset to bottom");
+                        }
+                    }
+                    /*tileCollisions.push({
+                        direction: collision.direction,
+                        hitbox: entity.hitbox,
+                        distance: Math.sqrt(
+                                (entity.hitbox.center.x - lastHitboxCenter.x) * (entity.hitbox.center.x - lastHitboxCenter.x) + 
+                                (entity.hitbox.center.y - lastHitboxCenter.y) * (entity.hitbox.center.y - lastHitboxCenter.y)
+                            )
+                    });
+                    if (collision.direction === 'left'){
+                        this.x = entity.hitbox.right - this.leftPadding;
+                    } else if (collision.direction === 'right'){
+                        this.x = entity.hitbox.left - this.hitbox.width - this.rightPadding;
+                    } else if (collision.direction ==='top'){
+                        this.y = entity.hitbox.bottom - this.topPadding;
+                    } else {
+                        this.y = entity.hitbox.top - this.hitbox.height - this.topPadding;
+                        if (GAME.currentFrame - this.jumpTimer > 15) this.canJump = true;
+                    }
+                    this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding);
+                    break;
+                case 'Checkpoint':
+                    if (entity.tag == "Idle") {
+                        entity.swapTag("Collected");
+                        entity.hitbox = null;
+                        this.spawnX = entity.x;
+                        this.spawnY = entity.y;
+                    } 
+                    break;
+                case 'KillBox':
+                    if (this.isAlive) this.kill();
+                    break;
+            }
+        });*/
+
 
         // Apply Collisions in descending order of distance
         /*if (tileCollisions.length > 0){

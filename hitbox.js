@@ -24,6 +24,13 @@ class HitBox {
      * @param {HitBox} o The other hitbox.
      * @returns Whether the current hitbox and the given hitbox exist within the same space as one another.
      */
+    collide3(o) {
+        if (o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height){
+            return false;
+        } else {
+            return o;
+        }
+    }
     collide2(o) {
         if (o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height){
             return false;
