@@ -2,7 +2,9 @@
     "graphics": {
         "camera": [
             "dead_screen.png",
-            "dead_screen.json"
+            "dead_screen.json",
+            "health.png",
+            "health.json"
         ],
         "characters": [
             "batterflea.json",

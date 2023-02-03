@@ -17,6 +17,7 @@ class Slime extends AnimatedEntity {
         this.leftPadding = this.rightPadding;
         this.hitbox = new HitBox(x + this.leftPadding, y + this.topPadding, 10*PARAMS.SCALE, 10*PARAMS.SCALE);
         
+        
         this.spawnX = this.x;
         this.spawnY = this.y;
         // Movement
@@ -54,14 +55,12 @@ class Slime extends AnimatedEntity {
         this.jumpTimer = 0;
         this.dashTimer = 0;
         this.currentDashTime = 0;
-    
     };
 
     /**
      * Function called on every clock tick.
      */
     update() {
-        
         // CONTROLS
         
         // Up and Down
@@ -232,6 +231,9 @@ class Slime extends AnimatedEntity {
                     break;
                 case 'KillBox':
                     if (this.isAlive) this.kill();
+                    break;
+                case 'Bubble':
+                    GAME.camera.slimeHealth.damage();
                     break;
             }
         });
