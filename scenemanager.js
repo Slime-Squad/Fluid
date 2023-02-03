@@ -10,6 +10,7 @@ class SceneManager {
         this.x = 0;
         this.y = 0;
         this.deathScreen = new DeathScreen();
+        this.slimeHealth = new Health();
         this.start = Date.now();
         this.isFrozen = false;
         this.frames = 0;
@@ -21,20 +22,31 @@ class SceneManager {
      */
     loadTest() {
         const world = ASSET_MANAGER.getAsset("./assets/world/world/level.world");
+        // Camera entities (always visible)
         GAME.addEntity(this.deathScreen);
+        GAME.addEntity(this.slimeHealth);
 
-        const order = ["fg", "entity", "map", "bg"];
-        order.forEach((layer) => {
-            Object.keys(world.rooms).forEach((roomName) => {
-                const room = world.rooms[roomName];
-                console.log("loading", layer)
-                if (room.tiles[layer]) { // layer exists
-                    room.tiles[layer].forEach((tile) => {
-                        GAME.addEntity(tile);
-                    });
-                }
+        const layerCache = {"fg": [], "entity": [], "map": [], "bg": []};
+        Object.keys(world.rooms).forEach((roomName) => {
+            const room = world.rooms[roomName];
+            Object.keys(room.tiles).forEach((layer) => {
+                room.tiles[layer].forEach((entity) => {
+                    layerCache[layer].push(entity);
+                });
             });
         });
+        // enforce entity loading order (first means will be on top of other entities)
+        layerCache["entity"].sort((a, b) => {
+            const entityLoadOrder = ['Slime', 'Bubble'];
+            return entityLoadOrder.indexOf(b.constructor.name) - entityLoadOrder.indexOf(a.constructor.name);
+        });
+        layerCache["entity"].forEach((entity) => console.log(entity.constructor.name));
+        const order = ["fg", "entity", "map", "bg"];
+        order.forEach((layer) => {
+            console.log("adding", layer);
+            layerCache[layer].forEach((entity) => GAME.addEntity(entity))
+        });
+
         this.x = GAME.slime.x - PARAMS.WIDTH/2 + 8*PARAMS.SCALE;
         this.y = GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE;
     }
