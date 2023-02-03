@@ -43,6 +43,22 @@ class GameEngine {
         gameLoop();
     };
 
+    /*start() {
+        this.running = true;
+        const fpsInterval = 1000 / 2;
+        let then = Date.now();
+        const gameLoop = () => {
+            requestAnimFrame(gameLoop, this.ctx.canvas);
+            const now = Date.now();
+            const elapsed = now - then;
+            if (elapsed > fpsInterval) {
+                then = now - (elapsed % fpsInterval);
+                this.loop();
+            }
+        };
+        gameLoop();
+    };*/
+
     startInput() {
         const getXandY = e => ({
             x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,

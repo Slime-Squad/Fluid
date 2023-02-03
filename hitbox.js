@@ -29,25 +29,19 @@ class HitBox {
             return false;
         } else {
             this.direction;
-            let vector = {x : this.center.x - o.center.x, y : this.center.y - o.center.y};
-            // let distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-            // let norm = {x : vector.x / distance, y: vector.y / distance};
-            this.leftIntersect = o.right - this.left;
-            this.rightIntersect = o.left - this.right;
-            this.topIntersect = o.bottom - this.top;
-            this.bottomIntersect = o.top - this.bottom;
-            if (Math.abs(vector.x) > Math.abs(vector.y)){
-                if (vector.x > 0){
+            this.vector = {x : this.center.x - o.center.x, y : this.center.y - o.center.y};
+            if (Math.abs(this.vector.x) > Math.abs(this.vector.y)){
+                if (this.vector.x > 0){
                     this.direction = 'left';
                 }
-                if (vector.x < 0){
+                if (this.vector.x <= 0){
                     this.direction = 'right';
                 }
             } else {
-                if (vector.y > 0){
+                if (this.vector.y > 0){
                     this.direction = 'top';
                 }
-                if (vector.y < 0){
+                if (this.vector.y <= 0){
                     this.direction = 'bottom';
                 }
             }
