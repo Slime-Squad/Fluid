@@ -357,7 +357,7 @@ class Slime extends AnimatedEntity {
         // Reset rise on stop
         if (this.y == this.lastY){
             this.rise = -1;
-            this.canJump = GAME.A || this.timers.landTimer < 0.15 ? false : true;
+            this.canJump = GAME.A || this.timers.landTimer < 0.01 ? false : true;
             this.isAirborne = false;
         }
 
