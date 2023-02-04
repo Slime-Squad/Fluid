@@ -97,16 +97,18 @@ class Slime extends AnimatedEntity {
 
         // Jump
         //this.canJump = true; // Allow Midair for Debugging
+        if (!GAME.A) this.isJumping = false;
         if(GAME.A && !(this.isAirborne) && this.canJump){
             this.isJumping = true;
-        }
-        if(this.isJumping && this.canJump) {
             this.canJump = false;
             this.canDash = true;
-            this.isJumping = false;
             this.isAirborne = true;
             this.timers.jumpTimer = 0;
             this.rise = this.bounce + Math.abs(this.momentum / 2);
+        }
+        if(this.isJumping) {
+        } else {
+            this.rise = Math.min(this.rise, 1 * PARAMS.SCALE);
         }
 
         // Dash
