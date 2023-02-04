@@ -69,7 +69,7 @@ class Room {
                                     this.tiles[layer].push(new Charge("Ice", x, y));
                                     break;
                                 case 6:
-                                    this.tiles[layer].push(new Batterflea("", x, y));                                   
+                                    this.tiles[layer].push(new Batterflea("Jump", x, y));                                   
                                     break;
                                 case 7:
                                     this.tiles[layer].push(new Bubble("Idle", x, y));                                   
