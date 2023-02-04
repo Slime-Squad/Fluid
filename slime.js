@@ -17,16 +17,17 @@ class Slime extends AnimatedEntity {
         this.leftPadding = this.rightPadding;
         this.hitbox = new HitBox(x + this.leftPadding, y + this.topPadding, 10*PARAMS.SCALE, 10*PARAMS.SCALE);
         
-        
         this.spawnX = this.x;
         this.spawnY = this.y;
+        
         // Movement
-        this.speed = 2 * PARAMS.SCALE;
-        this.dashSpeed = 16;
+        this.maxSpeed = 1.75 * PARAMS.SCALE;
+        this.speed = this.maxSpeed;
+        this.dashSpeed = 7 * PARAMS.SCALE;
         this.momentum = 0;
         this.maxMom = (this.speed * 0.66).toFixed(2);
-        this.acceleration = this.speed / 45;
-        this.decceleration = this.speed / 30;
+        this.acceleration = this.speed / 30;
+        this.decceleration = this.speed / 45;
         this.direction = 1;
         this.rise = -1;
         this.MINRISE = -6 * PARAMS.SCALE;
@@ -35,9 +36,9 @@ class Slime extends AnimatedEntity {
 
         // Flags
         this.isAlive = true;
-        this.canJump = true;
         this.isJumping = false;
         this.isAirborne = false;
+        this.canJump = true;
         this.canDash = true;
         this.lastX = this.x;
         this.lastY = this.y;
@@ -56,7 +57,6 @@ class Slime extends AnimatedEntity {
             landTimer : 0,
             dashTimer : 0
         }
-        this.currentDashTime = 0;
     };
 
     /**
@@ -66,76 +66,16 @@ class Slime extends AnimatedEntity {
         // CONTROLS
         
         // Left and Right
-        if(GAME.left) {
-            if (this.momentum > 0) this.momentum /= 2;
-            this.x += (this.speed * -1 + this.momentum) * GAME.tickMod;
-            this.tag = "move_left";
-            this.direction = -1;
-            this.momentum = clamp(
-                this.momentum - this.acceleration * GAME.tickMod,
-                this.maxMom * -1,
-                this.maxMom
-            );
-        }
-        else if(GAME.right) {
-            if (this.momentum < 0) this.momentum /= 2;
-            this.x += (this.speed + this.momentum) * GAME.tickMod;
-            this.tag = "move";
-            this.direction = 1;
-            this.momentum = clamp(
-                this.momentum + this.acceleration * GAME.tickMod,
-                this.maxMom * -1,
-                this.maxMom
-            );
-        } else {
-            this.x += this.momentum * GAME.tickMod;
-            this.tag = this.direction > 0 ? "idle" : "idle_left";
-            this.momentum = this.direction > 0 ?
-                clamp(this.momentum - this.decceleration * GAME.tickMod, 0, this.maxMom) :
-                clamp(this.momentum + this.decceleration * GAME.tickMod, this.maxMom * -1, 0);
-        }
+        this.move();
 
         // Jump
-        //this.canJump = true; // Allow Midair for Debugging
-        if (!GAME.A) this.isJumping = false;
-        if(GAME.A && !(this.isAirborne) && this.canJump){
-            this.isJumping = true;
-            this.canJump = false;
-            this.canDash = true;
-            this.isAirborne = true;
-            this.timers.jumpTimer = 0;
-            this.rise = this.bounce + Math.abs(this.momentum / 2);
-        }
-        if(this.isJumping) {
-        } else {
-            this.rise = Math.min(this.rise, 1 * PARAMS.SCALE);
-        }
+        this.jump();
 
         // Dash
-        if((GAME.keys["j"] || GAME.B) && this.canDash) {
-            this.canDash = false;
-            this.dashTimer = 120;
-            this.currentDashTime = 0;
-        }
-        if (!this.canDash) this.currentDashTime += GAME.tickMod; 
-        if (!this.canDash && (this.currentDashTime>= this.dashTimer - 1)) this.canDash = true;
-        if (!this.canDash && this.currentDashTime < 15 ) {
-            if(GAME.keys["a"] || GAME.left) this.x -= this.dashSpeed * GAME.tickMod;
-            if(GAME.keys["d"] || GAME.right) this.x += this.dashSpeed * GAME.tickMod;
-        }
+        this.dash();
 
         // Rise
-        this.y -= this.rise * GAME.tickMod;
-        if (this.rise < -1.5 * PARAMS.SCALE){
-            this.canJump = false;
-        }
-
-        // Gravity
-        if (this.rise > this.MINRISE){
-            // In my defense I was snorting lines when I wrote this line - npb
-            let hangtime = this.rise > 0 ? 0.7 : 1;
-            this.rise -= this.gravity * GAME.tickMod * hangtime;
-        }
+        this.fall();
 
         this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding); // update position before checking collision
 
@@ -383,6 +323,7 @@ class Slime extends AnimatedEntity {
                 ctx.fillText("!", this.hitbox.center.x - GAME.camera.x, this.hitbox.top - 3 * PARAMS.SCALE - GAME.camera.y);
             };
             // ctx.fillText("Jump Timer:" + this.timers.jumpTimer.toFixed(2), this.x - GAME.camera.x, this.y - GAME.camera.y - 150);
+            ctx.fillText("Dash Timer:" + this.timers.dashTimer.toFixed(2), this.x - GAME.camera.x, this.y - GAME.camera.y + 150);
             // ctx.fillText("Rise:" + Math.round(this.rise), this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
             // ctx.fillText("Momentum:" + Math.round(this.momentum), this.x - GAME.camera.x, this.y - GAME.camera.y);
             // ctx.fillText("Spawn: x=" + this.spawnX + " y=" + this.spawnY, this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
@@ -396,6 +337,86 @@ class Slime extends AnimatedEntity {
         Object.keys(this.timers).forEach(timer => {
             this.timers[timer] += GAME.clockTick;
         });
+    }
+
+    move() {
+        if(GAME.left) {
+            if (this.momentum > 0) this.momentum /= 2;
+            this.x += (this.speed * -1 + this.momentum) * GAME.tickMod;
+            this.tag = "move_left";
+            this.direction = -1;
+            this.momentum = clamp(
+                this.momentum - this.acceleration * GAME.tickMod,
+                this.maxMom * -1,
+                this.maxMom
+            );
+        } else if(GAME.right) {
+            if (this.momentum < 0) this.momentum /= 2;
+            this.x += (this.speed + this.momentum) * GAME.tickMod;
+            this.tag = "move";
+            this.direction = 1;
+            this.momentum = clamp(
+                this.momentum + this.acceleration * GAME.tickMod,
+                this.maxMom * -1,
+                this.maxMom
+            );
+        } else {
+            this.x += this.momentum * GAME.tickMod;
+            this.tag = this.direction > 0 ? "idle" : "idle_left";
+            this.momentum = this.direction > 0 ?
+                clamp(this.momentum - this.decceleration * GAME.tickMod, 0, this.maxMom) :
+                clamp(this.momentum + this.decceleration * GAME.tickMod, this.maxMom * -1, 0);
+        }
+    }
+
+    jump() {
+        //this.canJump = true; // Allow Midair for Debugging
+        if (!GAME.A) this.isJumping = false;
+        if(GAME.A && !(this.isAirborne) && this.canJump){
+            this.isJumping = true;
+            this.canJump = false;
+            this.isAirborne = true;
+            this.timers.jumpTimer = 0;
+            this.rise = this.bounce + Math.abs(this.momentum / 2);
+        }
+        if(this.isJumping) {
+        } else {
+            this.rise = Math.min(this.rise, 1 * PARAMS.SCALE);
+        }
+    }
+
+    dash(){
+        if (!this.canDash){
+            if (this.timers.dashTimer > 1) {
+                this.canDash = true;
+            }
+            if (this.timers.dashTimer < 0.15) {
+                this.x += this.dashSpeed * GAME.tickMod * this.direction;
+                this.rise = 0;
+                this.speed = 0;
+            } else {
+                this.speed = this.maxSpeed;
+            }
+        } else if (GAME.B) {
+            this.canDash = false;
+            this.timers.dashTimer = 0;
+            this.speed = 0;
+            this.momentum = this.maxMom * this.direction;
+        }
+    }
+
+    fall(){
+        this.y -= this.rise * GAME.tickMod;
+        if (this.rise < -1.5 * PARAMS.SCALE){
+            this.canJump = false;
+        }
+
+        // Gravity
+        if (this.rise > this.MINRISE){
+            // In my defense I was snorting lines when I wrote this line - npb
+            let hangtime = this.rise > 0 ? 0.7 : 1;
+            this.rise -= this.gravity * GAME.tickMod * hangtime;
+        }
     }
 
     /**
