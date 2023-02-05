@@ -17,4 +17,25 @@ class Checkpoint extends AnimatedEntity {
         this.height = 16*PARAMS.SCALE;
         this.hitbox = new HitBox(this.x, this.y, this.width, this.height);
     }
+
+    /**
+     * Response to colliding with player.
+     */
+    collideWithPlayer(){
+        if (this.tag == "Idle") {
+            this.swapTag("Collected");
+            this.hitbox = null;
+            GAME.slime.spawnX = this.x;
+            GAME.slime.spawnY = this.y;
+        }
+        GAME.entities.forEach(entity =>{
+            if (this === entity) return;
+            if (entity.constructor.name != "Checkpoint") return;
+            if (entity.tag == "Collected") {
+                entity.swapTag("Idle", true);
+                entity.hitbox = new HitBox(entity.x, entity.y, entity.width, entity.height)
+            }
+        });
+    }
+
 }

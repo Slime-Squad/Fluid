@@ -20,10 +20,33 @@ class HitBox {
     }
 
     /**
+     * Retrieve a list of valid collisions between this hitbox and all other entities.
+     * @returns list of entities collided.
+     */
+    getCollisions(){
+        let collisions = [];
+        GAME.entities.forEach(entity => {
+            if (!entity.hitbox) return;// || !super.isAlive) return;
+            // if (entity.hitbox instanceof this.constructor) return;
+            if (!this.collide3(entity.hitbox)) return;
+            // console.log(entity.constructor.name);
+            collisions.push(entity);
+        });
+        return collisions;
+    }
+
+    /**
      * Returns whether the current hitbox and the given hitbox exist within the same space as one another.
      * @param {HitBox} o The other hitbox.
      * @returns Whether the current hitbox and the given hitbox exist within the same space as one another.
      */
+    collide3(o) {
+        if (o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height){
+            return false;
+        } else {
+            return true;
+        }
+    }
     collide2(o) {
         if (o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height){
             return false;
@@ -76,20 +99,35 @@ class HitBox {
             return this;
         }
     }
-    
-    // getCollisions(){
-    //     let collisions = {};
-    //     GAME.entities.forEach(entity => {
-    //         if (!entity.hitbox) return;
-    //         if (entity.hitbox === this) return;
-    //         let collision = this.hitbox.collide(entity.hitbox);
-    //         if(collision) collisions.push({
-    //             entity: entity,
-    //             collision: collision
-    //         });
-    //     })
-    //     return collisions;
-    // }
+
+    /**
+     * Uses a vector to return the side this hitbox colliding with the other hitbox. Intended for use with square / square collisions.
+     * @param {*} o the other hitbox this is colliding with
+     * @returns String direction
+     */
+    getCollisionDirection(o){
+        let direction = 'bottom';
+        this.leftIntersect = o.right - this.left;
+        this.rightIntersect = o.left - this.right;
+        this.topIntersect = o.bottom - this.top;
+        this.bottomIntersect = o.top - this.bottom;
+        if (this.left < o.left){
+            if (Math.abs(this.rightIntersect) < Math.abs(this.topIntersect) && Math.abs(this.rightIntersect) < Math.abs(this.bottomIntersect)){
+                direction = 'right';
+            } else if (this.bottom > o.bottom){
+                direction = 'top';
+            }
+        } else if (this.right > o.right){
+            if (Math.abs(this.leftIntersect) < Math.abs(this.topIntersect) && Math.abs(this.leftIntersect) < Math.abs(this.bottomIntersect)){
+                direction = 'left';
+            } else if (this.bottom > o.bottom){
+                direction = 'top';
+            }
+        } else if (this.bottom > o.bottom){
+            direction = 'top';
+        }
+        return direction;
+    }
 
     /**
      * Updates the current hitbox's position to reflect the given x and y coordinates.

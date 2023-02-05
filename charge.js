@@ -32,4 +32,14 @@ class Charge extends AnimatedEntity {
             this.elapsedTime = 0;
         }
     }
+
+    /**
+     * Response to colliding with player.
+     */
+    collideWithPlayer(){
+        if (this.tag != "Disabled") { // charge collected
+            GAME.slime.charges[this.tag]++;
+            this.tag = "Disabled";
+        }
+    }
 }

@@ -17,31 +17,31 @@ class Slime extends AnimatedEntity {
         this.leftPadding = this.rightPadding;
         this.hitbox = new HitBox(x + this.leftPadding, y + this.topPadding, 10*PARAMS.SCALE, 10*PARAMS.SCALE);
         
-        
         this.spawnX = this.x;
         this.spawnY = this.y;
+        
         // Movement
-        this.speed = 2 * PARAMS.SCALE;
-        this.dashSpeed = 16;
+        this.maxSpeed = 1.75 * PARAMS.SCALE;
+        this.speed = this.maxSpeed;
+        this.dashSpeed = 7 * PARAMS.SCALE;
         this.momentum = 0;
-        this.acceleration = this.speed / 45;
-        this.decceleration = this.speed / 30;
+        this.maxMom = (this.speed * 0.66).toFixed(2);
+        this.acceleration = this.speed / 30;
+        this.decceleration = this.speed / 45;
         this.direction = 1;
         this.rise = -1;
         this.MINRISE = -6 * PARAMS.SCALE;
-        this.bounce = 4 * PARAMS.SCALE;
+        this.bounce = 3.5 * PARAMS.SCALE;
         this.gravity = 1;
-
-        // Conditions
-        this.isAlive = true;
-        this.canJump = true;
-        this.canDash = true;
-        this.isAirborne = true;
-        this.isAnitgrav = false;
         this.lastX = this.x;
         this.lastY = this.y;
-        this.xDiff = 0;
-        this.yDiff = 0;
+
+        // Flags
+        this.isAlive = true;
+        this.isJumping = false;
+        this.isAirborne = false;
+        this.canJump = true;
+        this.canDash = true;
 
         // Charges
         this.charges = {
@@ -52,9 +52,11 @@ class Slime extends AnimatedEntity {
         }
 
         // Timers
-        this.jumpTimer = 0;
-        this.dashTimer = 0;
-        this.currentDashTime = 0;
+        this.timers = {
+            jumpTimer: 0,
+            landTimer : 0,
+            dashTimer : 0
+        }
     };
 
     /**
@@ -63,94 +65,33 @@ class Slime extends AnimatedEntity {
     update() {
         // CONTROLS
         
-        // Up and Down
-        // if(GAME.keys["w"] || GAME.up) {
-        //     this.y -= this.speed * GAME.tickMod;
-        // }
-        // if(GAME.keys["s"] || GAME.down) {
-        //     this.y += this.speed * GAME.tickMod;
-        // }
-
-        // const TICKMOD = GAME.clockTick * 60;
-        const MAXMOM = this.speed / 1.5;
-        
         // Left and Right
-        if(GAME.keys["a"] || GAME.left) {
-            if (this.momentum > 0) this.momentum /= 2;
-            this.x += (this.speed * -1 + this.momentum) * GAME.tickMod;
-            this.tag = "move_left";
-            this.direction = -1;
-            this.momentum = clamp(
-                this.momentum - this.acceleration * GAME.tickMod,
-                MAXMOM * -1,
-                MAXMOM
-            );
-        }
-        else if(GAME.keys["d"] || GAME.right) {
-            if (this.momentum < 0) this.momentum /= 2;
-            this.x += (this.speed + this.momentum) * GAME.tickMod;
-            this.tag = "move";
-            this.direction = 1;
-            this.momentum = clamp(
-                this.momentum + this.acceleration * GAME.tickMod,
-                MAXMOM * -1,
-                MAXMOM
-            );
-        } else {
-            this.x += this.momentum * GAME.tickMod;
-            this.tag = this.direction > 0 ? "idle" : "idle_left";
-            this.momentum = this.direction > 0 ?
-                clamp(this.momentum - this.decceleration * GAME.tickMod, 0, MAXMOM) :
-                clamp(this.momentum + this.decceleration * GAME.tickMod, MAXMOM * -1, 0);
-        }
+        this.moveX();
 
         // Jump
-        //this.canJump = true; // Allow Midair for Debugging
-        if((GAME.keys[" "] || GAME.A) && this.canJump) {
-            this.canJump = false;
-            this.canDash = true;
-            this.jumpTimer = 0;
-            this.rise = this.bounce + (this.momentum / 2) * this.direction;
-            this.isAirborne = true;
-        }
-        this.jumpTimer += GAME.clockTick;
+        this.jump();
 
         // Dash
-        if((GAME.keys["j"] || GAME.B) && this.canDash) {
-            this.canDash = false;
-            this.dashTimer = 120;
-            this.currentDashTime = 0;
-        }
-        if (!this.canDash) this.currentDashTime += GAME.tickMod; 
-        if (!this.canDash && (this.currentDashTime>= this.dashTimer - 1)) this.canDash = true;
-        if (!this.canDash && this.currentDashTime < 15 ) {
-            if(GAME.keys["a"] || GAME.left) this.x -= this.dashSpeed * GAME.tickMod;
-            if(GAME.keys["d"] || GAME.right) this.x += this.dashSpeed * GAME.tickMod;
-        }
+        this.dash();
 
         // Rise
-        this.y -= this.rise * GAME.tickMod;
-        if (this.rise < -1.5 * PARAMS.SCALE){
-            this.canJump = false;
-        }
+        this.moveY();
 
-        // Gravity
-        if (this.rise > this.MINRISE){
-            let hangtime = this.jumpTimer < 0.52 ? this.jumpTimer > 0.44 ? 0.1 : 1 : 1;
-            this.rise -= this.gravity * GAME.tickMod * hangtime;
-        }
+        this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding); // update position before checking collision
 
-        // HANDLE COLLISIONS
-        this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding);
+        /*// HANDLE COLLISIONS
         let totalCollisions = 0;
         // let tileCollisions = [];
         GAME.entities.forEach(entity => {
+            // Fill collection with confirmed collisions
             if (!entity.hitbox || !this.isAlive) return;
             if (entity instanceof Slime) return;
             let collision = this.hitbox.collide2(entity.hitbox);
             if (!collision) return;
             totalCollisions++;
+            // End determining collisions
             switch (entity.constructor.name){
+                // Move behavior to Charge
                 case 'Charge':
                     switch(entity.tag) {
                         case 'Disabled':
@@ -176,6 +117,7 @@ class Slime extends AnimatedEntity {
                         entity.tag = "Disabled";
                     }
                     break;
+                // Move to Tile
                 case 'Tile':
                     let lastHitboxLeft = this.lastX + this.leftPadding;
                     let lastHitboxRight = this.lastX + this.leftPadding + this.hitbox.width;
@@ -203,7 +145,7 @@ class Slime extends AnimatedEntity {
                                 (entity.hitbox.center.x - lastHitboxCenter.x) * (entity.hitbox.center.x - lastHitboxCenter.x) + 
                                 (entity.hitbox.center.y - lastHitboxCenter.y) * (entity.hitbox.center.y - lastHitboxCenter.y)
                             )
-                    });*/
+                    });*//*
                     if (collision.direction === 'left'){
                         this.x = entity.hitbox.right - this.leftPadding;
                     } else if (collision.direction === 'right'){
@@ -212,7 +154,6 @@ class Slime extends AnimatedEntity {
                         this.y = entity.hitbox.bottom - this.topPadding;
                     } else {
                         this.y = entity.hitbox.top - this.hitbox.height - this.topPadding;
-                        if (GAME.currentFrame - this.jumpTimer > 15) this.canJump = true;
                     }
                     this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding);
                     break;
@@ -231,7 +172,16 @@ class Slime extends AnimatedEntity {
                     GAME.camera.slimeHealth.damage();
                     break;
             }
+        });*/
+
+        let collisions = this.hitbox.getCollisions();
+        collisions.forEach(entity =>{
+            if (entity.collideWithPlayer){
+                console.log(entity.constructor.name);
+                entity.collideWithPlayer();
+            }
         });
+
 
         // Apply Collisions in descending order of distance
         /*if (tileCollisions.length > 0){
@@ -239,7 +189,7 @@ class Slime extends AnimatedEntity {
             tileCollisions.forEach((collision) => {
                 if (collision.direction === "bottom") {
                     this.y = collision.hitbox.top - this.hitbox.height - this.topPadding;
-                    if (GAME.currentFrame - this.jumpTimer > 15) this.canJump = true;
+                    if (GAME.currentFrame - this.timers.jumpTimer > 15) this.canJump = true;
                 } else if (collision.direction === 'left'){
                     this.x = collision.hitbox.right - this.leftPadding;
                 } else if (collision.direction === 'right'){
@@ -251,26 +201,25 @@ class Slime extends AnimatedEntity {
         }
         this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding);*/
 
-
-        if (totalCollisions > 5){
-            console.log("collisions: " + totalCollisions);
-            this.x = this.lastX;
-            this.y = this.lastY;
-        }
-
         // Reset momentum on stop
         if (this.x == this.lastX){
             this.momentum = 0;
         }
 
+        // Reset landTimer while in the air
+        if (this.isAirborne) this.timers.landTimer = 0;
+
         // Reset rise on stop
         if (this.y == this.lastY){
             this.rise = -1;
+            this.canJump = GAME.A || this.timers.landTimer < 0.01 ? false : true;
+            this.isAirborne = false;
         }
 
-        // Update previous pos markers
+        // End of Cycle Update Values
         this.lastX = this.x;
         this.lastY = this.y;
+        this.tickTimers();
 
     }
 
@@ -286,13 +235,104 @@ class Slime extends AnimatedEntity {
             if (this.rise <= this.MINRISE){
                 ctx.fillText("!", this.hitbox.center.x - GAME.camera.x, this.hitbox.top - 3 * PARAMS.SCALE - GAME.camera.y);
             };
-            // ctx.fillText("Jump Timer:" + this.jumpTimer.toFixed(2), this.x - GAME.camera.x, this.y - GAME.camera.y - 150);
+            // ctx.fillText("Jump Timer:" + this.timers.jumpTimer.toFixed(2), this.x - GAME.camera.x, this.y - GAME.camera.y - 150);
+            ctx.fillText("Dash Timer:" + this.timers.dashTimer.toFixed(2), this.x - GAME.camera.x, this.y - GAME.camera.y + 150);
             // ctx.fillText("Rise:" + Math.round(this.rise), this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
             // ctx.fillText("Momentum:" + Math.round(this.momentum), this.x - GAME.camera.x, this.y - GAME.camera.y);
             // ctx.fillText("Spawn: x=" + this.spawnX + " y=" + this.spawnY, this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
             ctx.fillText("Charges: " + Object.values(this.charges), this.x - GAME.camera.x, this.y - GAME.camera.y - 100);
             ctx.fillText("Rise:" + this.rise, this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
             ctx.fillText("Momentum:" + this.momentum, this.x - GAME.camera.x, this.y - GAME.camera.y);
+        }
+    }
+    
+    tickTimers() {
+        Object.keys(this.timers).forEach(timer => {
+            this.timers[timer] += GAME.clockTick;
+        });
+    }
+
+    /////////////////////
+    /* State Functions */
+    /////////////////////
+
+    moveX() {
+        if(GAME.left) {
+            if (this.momentum > 0) this.momentum /= 2;
+            this.x += (this.speed * -1 + this.momentum) * GAME.tickMod;
+            this.tag = "move_left";
+            this.direction = -1;
+            this.momentum = clamp(
+                this.momentum - this.acceleration * GAME.tickMod,
+                this.maxMom * -1,
+                this.maxMom
+            );
+        } else if(GAME.right) {
+            if (this.momentum < 0) this.momentum /= 2;
+            this.x += (this.speed + this.momentum) * GAME.tickMod;
+            this.tag = "move";
+            this.direction = 1;
+            this.momentum = clamp(
+                this.momentum + this.acceleration * GAME.tickMod,
+                this.maxMom * -1,
+                this.maxMom
+            );
+        } else {
+            this.x += this.momentum * GAME.tickMod;
+            this.tag = this.direction > 0 ? "idle" : "idle_left";
+            this.momentum = this.direction > 0 ?
+                clamp(this.momentum - this.decceleration * GAME.tickMod, 0, this.maxMom) :
+                clamp(this.momentum + this.decceleration * GAME.tickMod, this.maxMom * -1, 0);
+        }
+    }
+
+    jump() {
+        //this.canJump = true; // Allow Midair for Debugging
+        if (!GAME.A) this.isJumping = false;
+        if(GAME.A && !(this.isAirborne) && this.canJump){
+            this.isJumping = true;
+            this.canJump = false;
+            this.isAirborne = true;
+            this.timers.jumpTimer = 0;
+            this.rise = this.bounce + Math.abs(this.momentum / 2);
+        }
+        if(this.isJumping) {
+        } else {
+            this.rise = Math.min(this.rise, 1 * PARAMS.SCALE);
+        }
+    }
+
+    dash(){
+        if (!this.canDash){
+            if (this.timers.dashTimer > 1) {
+                this.canDash = true;
+            }
+            if (this.timers.dashTimer < 0.15) {
+                this.x += this.dashSpeed * GAME.tickMod * this.direction;
+                this.rise = 0;
+                this.speed = 0;
+            } else {
+                this.speed = this.maxSpeed;
+            }
+        } else if (GAME.B) {
+            this.canDash = false;
+            this.timers.dashTimer = 0;
+            this.speed = 0;
+            this.momentum = this.maxMom * this.direction;
+        }
+    }
+
+    moveY(){
+        this.y -= this.rise * GAME.tickMod;
+        if (this.rise < -1.5 * PARAMS.SCALE){
+            this.canJump = false;
+        }
+
+        // Gravity
+        if (this.rise > this.MINRISE){
+            // In my defense I was snorting lines when I wrote this line - npb
+            let hangtime = this.rise > 0 ? 0.7 : 1;
+            this.rise -= this.gravity * GAME.tickMod * hangtime;
         }
     }
 

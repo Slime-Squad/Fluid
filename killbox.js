@@ -31,4 +31,11 @@ class KillBox {
             ctx.fillText("KILL", this.x - GAME.camera.x, this.y - GAME.camera.y);
         }
     }
+
+    /**
+     * Response to colliding with player.
+     */
+    collideWithPlayer(){
+        if (GAME.slime.isAlive) GAME.slime.kill();
+    }
 }
