@@ -146,11 +146,18 @@ const resizeCanvas = () => {
     const scaleY = window.innerHeight / canvas.height;
 
     const scale = Math.min(scaleX, scaleY);
-    
+
     canvas.style.marginLeft = Math.max((window.innerWidth - canvas.width*scale)/2, 0) + "px";
     canvas.style.transformOrigin = "0 0"; //scale from top left
     canvas.style.transform = `scale(${scale})`;
 }
-
+/**
+ * Disables spacebar scrolling.
+*/
+window.addEventListener('keydown', function(e) {
+    if(e.keyCode == 32 && e.target == document.body) {
+        e.preventDefault();
+    }
+});
 window.addEventListener("resize", resizeCanvas);
 window.addEventListener("load", resizeCanvas);
