@@ -43,5 +43,45 @@ class Tile {
     update() {
         
     }
+
+    collideWithPlayer(){
+        this.collideWithEntity(GAME.slime);
+        console.log(GAME.slime.constructor.name);
+    }
+
+    /**
+     * Response to colliding with entity.
+     */
+    collideWithEntity(entity){
+        let directionOfEntity = entity.hitbox.getCollisionDirection(this.hitbox);
+        let lastEntityLeft = entity.lastX + entity.leftPadding;
+        let lastEntityRight = entity.lastX + entity.leftPadding + entity.hitbox.width;
+        let lastEntityBottom = entity.lastY + entity.hitbox.height + entity.topPadding;
+        if (directionOfEntity !== 'bottom'){
+            if ( 
+                linePlaneIntersect(
+                    lastEntityLeft, lastEntityBottom, entity.hitbox.left, entity.hitbox.bottom, 
+                    this.hitbox.left, this.hitbox.right, this.hitbox.top
+                    ) ||
+                linePlaneIntersect(
+                    lastEntityRight, lastEntityBottom, entity.hitbox.right, entity.hitbox.bottom, 
+                    this.hitbox.left, this.hitbox.right, this.hitbox.top
+                    )
+            ){
+                directionOfEntity = 'bottom';
+            }
+        }
+        if (directionOfEntity === 'left'){
+            entity.x = this.hitbox.right - entity.leftPadding;
+        } else if (directionOfEntity === 'right'){
+            entity.x = this.hitbox.left - entity.hitbox.width - entity.rightPadding;
+        } else if (directionOfEntity ==='top'){
+            entity.y = this.hitbox.bottom - entity.topPadding;
+        } else {
+            entity.y = this.hitbox.top - entity.hitbox.height - entity.topPadding;
+            if (GAME.currentFrame - entity.timers.jumpTimer > 15) entity.canJump = true;
+        }
+        entity.hitbox.updatePos(entity.x+entity.leftPadding, entity.y+entity.topPadding);
+    }
 }
 

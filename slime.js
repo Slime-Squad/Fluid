@@ -33,6 +33,8 @@ class Slime extends AnimatedEntity {
         this.MINRISE = -6 * PARAMS.SCALE;
         this.bounce = 3.5 * PARAMS.SCALE;
         this.gravity = 1;
+        this.lastX = this.x;
+        this.lastY = this.y;
 
         // Flags
         this.isAlive = true;
@@ -40,8 +42,6 @@ class Slime extends AnimatedEntity {
         this.isAirborne = false;
         this.canJump = true;
         this.canDash = true;
-        this.lastX = this.x;
-        this.lastY = this.y;
 
         // Charges
         this.charges = {
@@ -66,7 +66,7 @@ class Slime extends AnimatedEntity {
         // CONTROLS
         
         // Left and Right
-        this.move();
+        this.moveX();
 
         // Jump
         this.jump();
@@ -75,11 +75,11 @@ class Slime extends AnimatedEntity {
         this.dash();
 
         // Rise
-        this.fall();
+        this.moveY();
 
         this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding); // update position before checking collision
 
-        // HANDLE COLLISIONS
+        /*// HANDLE COLLISIONS
         let totalCollisions = 0;
         // let tileCollisions = [];
         GAME.entities.forEach(entity => {
@@ -145,7 +145,7 @@ class Slime extends AnimatedEntity {
                                 (entity.hitbox.center.x - lastHitboxCenter.x) * (entity.hitbox.center.x - lastHitboxCenter.x) + 
                                 (entity.hitbox.center.y - lastHitboxCenter.y) * (entity.hitbox.center.y - lastHitboxCenter.y)
                             )
-                    });*/
+                    });*//*
                     if (collision.direction === 'left'){
                         this.x = entity.hitbox.right - this.leftPadding;
                     } else if (collision.direction === 'right'){
@@ -172,95 +172,15 @@ class Slime extends AnimatedEntity {
                     GAME.camera.slimeHealth.damage();
                     break;
             }
-        });
-
-        /*GAME.entities.forEach(entity => {
-            if (!entity.hitbox || !this.isAlive) return;
-            if (entity instanceof this) return;
-            let entityCollided = this.hitbox.collide3(entity.hitbox);
-            if (!entityCollided) return;
-            totalCollisions++;
-            switch (entity.constructor.name){
-                // Move behavior to Charge
-                case 'Charge':
-                    switch(entity.tag) {
-                        case 'Disabled':
-                            break;
-                        case 'Electric':
-                            this.charges.Electric++;
-                            entity.tag = "Disabled";
-                            break;
-                        case 'Fire':
-                            this.charges.Fire++;
-                            entity.tag = "Disabled";
-                            break;
-                        case 'Ice':
-                            this.charges.Ice++;
-                            entity.tag = "Disabled";
-                            break;
-                        case 'Earth':
-                            this.charges.Earth++;
-                            entity.tag = "Disabled";
-                            break;
-                    }
-                    if (entity.tag != "Disabled") { // charge collected
-                        entity.tag = "Disabled";
-                    }
-                    break;
-                // Move to Tile
-                case 'Tile':
-                    let lastHitboxLeft = this.lastX + this.leftPadding;
-                    let lastHitboxRight = this.lastX + this.leftPadding + this.hitbox.width;
-                    let lastHitboxBottom = this.lastY + this.hitbox.height + this.topPadding;
-                    // let lastHitboxCenter = {x: lastHitboxLeft + this.hitbox.width / 2, y: lastHitboxBottom - this.hitbox.height / 2 };
-                    if (collision.direction !== 'bottom'){
-                        if ( 
-                            linePlaneIntersect(
-                                lastHitboxLeft, lastHitboxBottom, this.hitbox.left, this.hitbox.bottom, 
-                                entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
-                                ) ||
-                            linePlaneIntersect(
-                                lastHitboxRight, lastHitboxBottom, this.hitbox.right, this.hitbox.bottom, 
-                                entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
-                                )
-                        ){
-                            collision.direction = 'bottom';
-                            console.log("collision reset to bottom");
-                        }
-                    }
-                    /*tileCollisions.push({
-                        direction: collision.direction,
-                        hitbox: entity.hitbox,
-                        distance: Math.sqrt(
-                                (entity.hitbox.center.x - lastHitboxCenter.x) * (entity.hitbox.center.x - lastHitboxCenter.x) + 
-                                (entity.hitbox.center.y - lastHitboxCenter.y) * (entity.hitbox.center.y - lastHitboxCenter.y)
-                            )
-                    });
-                    if (collision.direction === 'left'){
-                        this.x = entity.hitbox.right - this.leftPadding;
-                    } else if (collision.direction === 'right'){
-                        this.x = entity.hitbox.left - this.hitbox.width - this.rightPadding;
-                    } else if (collision.direction ==='top'){
-                        this.y = entity.hitbox.bottom - this.topPadding;
-                    } else {
-                        this.y = entity.hitbox.top - this.hitbox.height - this.topPadding;
-                        if (GAME.currentFrame - this.timers.jumpTimer > 15) this.canJump = true;
-                    }
-                    this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding);
-                    break;
-                case 'Checkpoint':
-                    if (entity.tag == "Idle") {
-                        entity.swapTag("Collected");
-                        entity.hitbox = null;
-                        this.spawnX = entity.x;
-                        this.spawnY = entity.y;
-                    } 
-                    break;
-                case 'KillBox':
-                    if (this.isAlive) this.kill();
-                    break;
-            }
         });*/
+
+        let collisions = this.hitbox.getCollisions();
+        collisions.forEach(entity =>{
+            if (entity.collideWithPlayer){
+                console.log(entity.constructor.name);
+                entity.collideWithPlayer();
+            }
+        });
 
 
         // Apply Collisions in descending order of distance
@@ -280,13 +200,6 @@ class Slime extends AnimatedEntity {
             });
         }
         this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding);*/
-
-
-        if (totalCollisions > 5){
-            console.log("collisions: " + totalCollisions);
-            this.x = this.lastX;
-            this.y = this.lastY;
-        }
 
         // Reset momentum on stop
         if (this.x == this.lastX){
@@ -339,7 +252,11 @@ class Slime extends AnimatedEntity {
         });
     }
 
-    move() {
+    /////////////////////
+    /* State Functions */
+    /////////////////////
+
+    moveX() {
         if(GAME.left) {
             if (this.momentum > 0) this.momentum /= 2;
             this.x += (this.speed * -1 + this.momentum) * GAME.tickMod;
@@ -405,7 +322,7 @@ class Slime extends AnimatedEntity {
         }
     }
 
-    fall(){
+    moveY(){
         this.y -= this.rise * GAME.tickMod;
         if (this.rise < -1.5 * PARAMS.SCALE){
             this.canJump = false;

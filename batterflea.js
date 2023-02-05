@@ -126,7 +126,7 @@ class Batterflea extends AnimatedEntity {
                                 )
                         ){
                             collision.direction = 'bottom';
-                            console.log("collision reset to bottom");
+                            // console.log("collision reset to bottom");
                         }
                     }
                     if (collision.direction === 'left'){
@@ -148,7 +148,7 @@ class Batterflea extends AnimatedEntity {
         });
 
         if (totalCollisions > 5){
-            console.log("collisions: " + totalCollisions);
+            // console.log("collisions: " + totalCollisions);
             this.x = this.lastX;
             this.y = this.lastY;
         }

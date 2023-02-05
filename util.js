@@ -98,17 +98,6 @@ const getDistance = (p1, p2) => {
     return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 };
 
-/*const getCollisions = (collider) => {
-    let collisions = [];
-        GAME.entities.forEach(entity => {
-            if (!entity.hitbox || entity === collider) return;
-            let collision = collider.hitbox.collide(entity.hitbox);
-            collision.entity = entity;
-            if(collision) collisions.push(collision);
-        })
-        return collisions;
-}*/
-
 // determine x val of intersection with top of entity's hitbox
 const linePlaneIntersect = (originX, originY, endX, endY, planeLeft, planeRight, planeY) => {
     let yDistance = planeY - originY;
