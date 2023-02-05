@@ -61,11 +61,9 @@ class Frames {
      * @param {boolean} loop Whether the entity's animation loops over again, after having finished playing once.
      */
     animateTag(ctx, x, y, frameTimer, spritesheet, tag, loop = true) {
-        
         frameTimer.elapsedTime += GAME.clockTick;
         if (this.animations[tag].length <= frameTimer.frameIndex) {
             if (!loop) {
-                // dereference function if not a looping animation (saves unneccessary computation)
                 this.isDone(ctx, spritesheet, tag, x, y);
                 return;
             }
@@ -84,7 +82,7 @@ class Frames {
     }
 
     /**
-     * Freezes the current animation being displayed on the first frame. Intended for use on animations not meant to loop indefinitely.
+     * Freezes the current animation being displayed on the last frame. Intended for use on animations not meant to loop indefinitely.
      * @param {CanvasRenderingContext2D} ctx The canvas to which the frame will be displayed upon.
      * @param {HTMLImageElement} spritesheet The spritesheet image associated with the animation the frame exists in.
      * @param {String} tag The name of the animation in which the frame exists in, as it is defined in the JSON file used to initialize this {@link Frames} instance.
