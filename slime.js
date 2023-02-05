@@ -16,10 +16,10 @@ class Slime extends AnimatedEntity {
         this.rightPadding = PARAMS.SCALE * 3;
         this.leftPadding = this.rightPadding;
         this.hitbox = new HitBox(x + this.leftPadding, y + this.topPadding, 10*PARAMS.SCALE, 10*PARAMS.SCALE);
-        
+
         this.spawnX = this.x;
         this.spawnY = this.y;
-        
+
         // Movement
         this.maxSpeed = 1.75 * PARAMS.SCALE;
         this.speed = this.maxSpeed;
@@ -237,9 +237,6 @@ class Slime extends AnimatedEntity {
             };
             // ctx.fillText("Jump Timer:" + this.timers.jumpTimer.toFixed(2), this.x - GAME.camera.x, this.y - GAME.camera.y - 150);
             ctx.fillText("Dash Timer:" + this.timers.dashTimer.toFixed(2), this.x - GAME.camera.x, this.y - GAME.camera.y + 150);
-            // ctx.fillText("Rise:" + Math.round(this.rise), this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
-            // ctx.fillText("Momentum:" + Math.round(this.momentum), this.x - GAME.camera.x, this.y - GAME.camera.y);
-            // ctx.fillText("Spawn: x=" + this.spawnX + " y=" + this.spawnY, this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
             ctx.fillText("Charges: " + Object.values(this.charges), this.x - GAME.camera.x, this.y - GAME.camera.y - 100);
             ctx.fillText("Rise:" + this.rise, this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
             ctx.fillText("Momentum:" + this.momentum, this.x - GAME.camera.x, this.y - GAME.camera.y);
@@ -345,11 +342,11 @@ class Slime extends AnimatedEntity {
         GAME.camera.deathScreen.swapTag("Died");
         const targetX = this.spawnX - PARAMS.WIDTH/2  + 8*PARAMS.SCALE;
         const targetY = this.spawnY - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE;
-        GAME.camera.freeze(1, 
+        GAME.camera.freeze(1,
             (ctx, camera) => {
                 camera.x = Math.round(lerp(camera.x, targetX, GAME.tickMod/30));
                 camera.y = Math.round(lerp(camera.y, targetY, GAME.tickMod/30));
-            }, 
+            },
             () => {
                 GAME.camera.deathScreen.swapTag("Respawn");
                 this.momentum = 0;
@@ -360,5 +357,5 @@ class Slime extends AnimatedEntity {
         );
 
     }
-    
+
 }

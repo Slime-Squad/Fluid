@@ -27,4 +27,8 @@ class Bubble extends AnimatedEntity {
     draw(ctx) {
         super.draw(ctx)
     }
+
+    collideWithPlayer() {
+        GAME.camera.slimeHealth.damage();
+    }
 }
