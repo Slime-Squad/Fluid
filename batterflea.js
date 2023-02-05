@@ -118,7 +118,7 @@ class Batterflea extends AnimatedEntity {
                                 lastHitboxRight, lastHitboxBottom, this.hitbox.right, this.hitbox.bottom, 
                                 entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
                                 )
-                        ){
+                        ) {
                             collision.direction = 'bottom';
                             // console.log("collision reset to bottom");
                         }
