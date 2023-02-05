@@ -1,1 +1,3 @@
 *.tiled-session
+*.vscode
+.gitignore
