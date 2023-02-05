@@ -4,7 +4,9 @@
             "dead_screen.png",
             "dead_screen.json",
             "health.png",
-            "health.json"
+            "health.json",
+            "backdrop.png",
+            "backdrop.json"
         ],
         "characters": [
             "batterflea.json",

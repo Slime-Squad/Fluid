@@ -11,6 +11,7 @@ class SceneManager {
         this.y = 0;
         this.deathScreen = new DeathScreen();
         this.slimeHealth = new Health();
+        this.backDrop = new BackDrop("dirt");
         this.start = Date.now();
         this.isFrozen = false;
         this.frames = 0;
@@ -46,6 +47,8 @@ class SceneManager {
             console.log("adding", layer);
             layerCache[layer].forEach((entity) => GAME.addEntity(entity))
         });
+
+        GAME.addEntity(this.backDrop);
 
         this.x = GAME.slime.x - PARAMS.WIDTH/2 + 8*PARAMS.SCALE;
         this.y = GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE;
