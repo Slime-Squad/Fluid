@@ -69,16 +69,16 @@ class Room {
                                     this.tiles[layer].push(new Charge("Ice", x, y));
                                     break;
                                 case 6:
-                                    this.tiles[layer].push(new Batterflea("", x, y));                                   
+                                    this.tiles[layer].push(new Batterflea("Jump", x, y));                                   
                                     break;
                                 case 7:
                                     this.tiles[layer].push(new Bubble("Idle", x, y));                                   
                                     break;
                                 case 8:
-                                    this.tiles[layer].push(new Magmasquito("Squito", x, y));
+                                    this.tiles[layer].push(new Magmasquito("Walk", x, y));
                                     break;
                                 case 9:
-                                    this.tiles[layer].push(new Skiwi("Wii", x, y));                                    
+                                    this.tiles[layer].push(new Skiwi("Walk", x, y));                                    
                                     break;
 
                                 case 18:

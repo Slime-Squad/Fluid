@@ -20,6 +20,7 @@ class Batterflea extends AnimatedEntity {
         this.lastX = x;
         this.lastY = y;
         this.speed = PARAMS.SCALE;
+        this.isAlive = true;
         this.isAirborne = false;
         this.canJump = true;
         this.jumpTimer = 0;
@@ -27,7 +28,7 @@ class Batterflea extends AnimatedEntity {
         this.direction = 1;
         this.rise = -1;
         this.MINRISE = -6 * PARAMS.SCALE;
-        this.bounce = 2.5 * PARAMS.SCALE;
+        this.bounce = 3 * PARAMS.SCALE;
         this.gravity = 1;
 
 
@@ -39,28 +40,19 @@ class Batterflea extends AnimatedEntity {
     update() {
         this.hop();
         this.checkCollision();
-
-        //Back and forth movement
-       // if (this.directionTimer > 120) {
-        //     this.x += this.speed * TICKMOD;
-        //     if (this.directionTimer > 240) this.directionTimer =0;
-        //     this.directionTimer += TICKMOD;
-        // } else {
-        //     this.x -= this.speed * TICKMOD;
-        //     this.directionTimer += TICKMOD;
-        // }
- 
-        //Handle collision
-
-
-
     }
 
     hop() {
-        //TODO: improve tracking speed. Moves normal speed to left but very fast to the right.
-        var dist = (this.x - GAME.slime.x) + (this.y - GAME.slime.y);
-        this.x += ((GAME.slime.x - this.x) / dist * this.speed) * GAME.tickMod;
-
+        if(this.jumpTimer > 60) {
+            this.canJump = true;
+        }
+        
+        if((this.x < GAME.slime.x) && this.isAirborne) {
+            this.x += 1;
+        } 
+        if((this.x > GAME.slime.x) && this.isAirborne) {
+            this.x -= 1;
+        }
 
         if(this.canJump) {
             this.canJump = false;
@@ -87,6 +79,8 @@ class Batterflea extends AnimatedEntity {
         }
 
         // Update previous pos markers
+        this.lastX = this.x;
+        this.lastY = this.y;
 
     }
 
@@ -137,7 +131,7 @@ class Batterflea extends AnimatedEntity {
                         this.y = entity.hitbox.bottom;
                     } else {
                         this.y = entity.hitbox.top - this.hitbox.height;
-                        if (GAME.currentFrame - this.jumpTimer > 15) this.canJump = true;
+                        this.isAirborne = false;
                     }
                     this.hitbox.updatePos(this.x, this.y);
                     break;
@@ -152,6 +146,10 @@ class Batterflea extends AnimatedEntity {
             this.x = this.lastX;
             this.y = this.lastY;
         }
+    }
+
+    kill() {
+        this.isAlive = false;
     }
 
     draw(ctx) {
