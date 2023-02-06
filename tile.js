@@ -1,6 +1,6 @@
 /**
  * Class representation of a map tile within a {@link Room}.
- * @author Jasper Newkirk
+ * @author Jasper Newkirk, Nathan Brown
  */
 class Tile {
     /**
@@ -16,7 +16,7 @@ class Tile {
      */
     constructor(img, x, y, imgX, imgY, w=8, h=8, hasHitbox=true) {
         Object.assign(this, { img, x, y, imgX, imgY, w, h, hasHitbox });
-        if (this.hasHitbox) this.hitbox = new HitBox(this.x, this.y, this.w*PARAMS.SCALE, this.h*PARAMS.SCALE);
+        if (this.hasHitbox) this.hitbox = new HitBox(this.x, this.y, 0, 0, this.w*PARAMS.SCALE, this.h*PARAMS.SCALE);
     }
 
     /**
@@ -44,44 +44,42 @@ class Tile {
         
     }
 
+    /**
+     * Function responsible for handling the collision behavior of the tile (this) and player
+     */
     collideWithPlayer(){
         this.collideWithEntity(GAME.slime);
-        console.log(GAME.slime.constructor.name);
     }
 
     /**
-     * Response to colliding with entity.
+     * Function responsible for handling the collision behavior of the tile (this) and another entity.
+     * @param {AnimatedEntity} entity - the entity colliding with the tile (this)
      */
     collideWithEntity(entity){
+        // entity.hitbox.updatePos(entity.x, entity.y); // this didn't work... why?
         let directionOfEntity = entity.hitbox.getCollisionDirection(this.hitbox);
-        let lastEntityLeft = entity.lastX + entity.leftPadding;
-        let lastEntityRight = entity.lastX + entity.leftPadding + entity.hitbox.width;
-        let lastEntityBottom = entity.lastY + entity.hitbox.height + entity.topPadding;
+        const lastHitboxLeft = entity.lastX + entity.hitbox.leftPad;
+        const lastHitboxRight = entity.lastX + entity.hitbox.leftPad + entity.hitbox.width;
+        const lastHitboxBottom = entity.lastY + entity.hitbox.height + entity.hitbox.topPad;
         if (directionOfEntity !== 'bottom'){
             if ( 
                 linePlaneIntersect(
-                    lastEntityLeft, lastEntityBottom, entity.hitbox.left, entity.hitbox.bottom, 
+                    lastHitboxLeft, lastHitboxBottom, entity.hitbox.left, entity.hitbox.bottom, 
                     this.hitbox.left, this.hitbox.right, this.hitbox.top
                     ) ||
                 linePlaneIntersect(
-                    lastEntityRight, lastEntityBottom, entity.hitbox.right, entity.hitbox.bottom, 
+                    lastHitboxRight, lastHitboxBottom, entity.hitbox.right, entity.hitbox.bottom, 
                     this.hitbox.left, this.hitbox.right, this.hitbox.top
                     )
             ){
                 directionOfEntity = 'bottom';
             }
         }
-        if (directionOfEntity === 'left'){
-            entity.x = this.hitbox.right - entity.leftPadding;
-        } else if (directionOfEntity === 'right'){
-            entity.x = this.hitbox.left - entity.hitbox.width - entity.rightPadding;
-        } else if (directionOfEntity ==='top'){
-            entity.y = this.hitbox.bottom - entity.topPadding;
-        } else {
-            entity.y = this.hitbox.top - entity.hitbox.height - entity.topPadding;
-            if (GAME.currentFrame - entity.timers.jumpTimer > 15) entity.canJump = true;
-        }
-        entity.hitbox.updatePos(entity.x+entity.leftPadding, entity.y+entity.topPadding);
+        if (directionOfEntity === 'left') entity.x = this.hitbox.right - entity.hitbox.leftPad;
+        else if (directionOfEntity === 'right') entity.x = this.hitbox.left - entity.hitbox.width - entity.hitbox.leftPad;
+        else if (directionOfEntity ==='top') entity.y = this.hitbox.bottom - entity.hitbox.topPad;
+        else entity.y = this.hitbox.top - entity.hitbox.height - entity.hitbox.topPad;
+        entity.hitbox.updatePos(entity.x, entity.y);
     }
 }
 

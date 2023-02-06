@@ -16,6 +16,8 @@ class AnimatedEntity {
         this.spritesheet = ASSET_MANAGER.getAsset(this.path + ".png");
         this.frames = ASSET_MANAGER.getAsset(this.path + ".json");
         this.frameTimer = {frameIndex:0, elapsedTime:0}; // handles frame timing
+        this.lastX = x;
+        this.lastY = y;
     }
     /**
      * Draws the current entity's {@link AnimatedEntity.tag} animation. Called on every clock tick.
@@ -38,7 +40,10 @@ class AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        
+        // End of Cycle Update Values
+        this.lastX = this.x;
+        this.lastY = this.y;
+        this.tickTimers();
     }
 
     /**
@@ -51,5 +56,24 @@ class AnimatedEntity {
         this.loop = loop;
         this.frameTimer.frameIndex = 0;
         this.frameTimer.elapsedTime = 0;
+    }
+    
+    /**
+     * Collection of calls and values to assign at the end of an entity's update().
+     */
+    endOfCycleUpdates(){
+        this.lastX = this.x;
+        this.lastY = this.y;
+        this.tickTimers();
+    }
+
+    /**
+     * Increment every timer (modified by clockTick)
+     */
+    tickTimers() {
+        if (!this.timers) return;
+        Object.keys(this.timers).forEach(timer => {
+            this.timers[timer] += GAME.clockTick;
+        });
     }
 }

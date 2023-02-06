@@ -13,7 +13,7 @@ class Batterflea extends AnimatedEntity {
     constructor(tag, x, y, loop = true) {
         super("./assets/graphics/characters/batterflea", tag, x, y, loop);
         Object.assign(this, { tag, x, y, loop });
-        this.hitbox = new HitBox(x, y, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
+        this.hitbox = new HitBox(x, y, 0, 0, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
 
         this.spawnX = x;
         this.spawnY = y;
@@ -39,13 +39,17 @@ class Batterflea extends AnimatedEntity {
      */
     update() {
         this.hop();
-        this.checkCollision();
+        
+        this.hitbox.updatePos(this.x, this.y);
+        this.hitbox.getCollisions().forEach((entity) => {
+            if (entity.collideWithEntity) entity.collideWithEntity(this);
+        });
+
+        this.endOfCycleUpdates();
     }
 
     hop() {
-        if(this.jumpTimer > 60) {
-            this.canJump = true;
-        }
+        if(this.jumpTimer > 60) this.canJump = true;
         
         if((this.x < GAME.slime.x) && this.isAirborne) {
             this.x += 1;
@@ -78,75 +82,71 @@ class Batterflea extends AnimatedEntity {
             this.rise = -1;
         }
 
-        // Update previous pos markers
-        this.lastX = this.x;
-        this.lastY = this.y;
-
     }
 
     //TODO: UPDATE COLLISION
-    checkCollision() {
-        this.hitbox.updatePos(this.x+(PARAMS.SCALE), this.y+(PARAMS.SCALE));
-        let totalCollisions = 0;
-        GAME.entities.forEach(entity => {
-            if (!entity.hitbox) return;
-            if (entity instanceof Batterflea) return;
-            let collision = this.hitbox.collide2(entity.hitbox);
-            if (!collision) return;
-            totalCollisions++;
-            // console.log(collisions);
-            // console.log(entity.constructor.name);
-            switch (entity.constructor.name){
-                case 'Slime':
-                    entity.kill();
-                    //TODO set batterfleas actual spawn
-                    this.x = this.spawnX;
-                    this.y = this.spawnY;
-                    break;
-                case 'Tile':
-                    let lastHitboxLeft = this.lastX;
-                    let lastHitboxRight = this.lastX + this.hitbox.width;
-                    let lastHitboxBottom = this.lastY + this.topPadding;
-                    // let lastHitboxCenter = {x: lastHitboxLeft + this.hitbox.width / 2, y: lastHitboxBottom - this.hitbox.height / 2 };
-                    if (collision.direction !== 'bottom'){
-                        if ( 
-                            linePlaneIntersect(
-                                lastHitboxLeft, lastHitboxBottom, this.hitbox.left, this.hitbox.bottom, 
-                                entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
-                                ) ||
-                            linePlaneIntersect(
-                                lastHitboxRight, lastHitboxBottom, this.hitbox.right, this.hitbox.bottom, 
-                                entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
-                                )
-                        ) {
-                            collision.direction = 'bottom';
-                            // console.log("collision reset to bottom");
-                        }
-                    }
-                    if (collision.direction === 'left'){
-                        this.x = entity.hitbox.right;
-                    } else if (collision.direction === 'right'){
-                        this.x = entity.hitbox.left - this.hitbox.width;
-                    } else if (collision.direction ==='top'){
-                        this.y = entity.hitbox.bottom;
-                    } else {
-                        this.y = entity.hitbox.top - this.hitbox.height;
-                        this.isAirborne = false;
-                    }
-                    this.hitbox.updatePos(this.x, this.y);
-                    break;
-                case 'KillBox':
-                    if (this.isAlive) this.kill();
-                    break;
-            }
-        });
+    // checkCollision() {
+    //     this.hitbox.updatePos(this.x+(PARAMS.SCALE), this.y+(PARAMS.SCALE));
+    //     let totalCollisions = 0;
+    //     GAME.entities.forEach(entity => {
+    //         if (!entity.hitbox) return;
+    //         if (entity instanceof Batterflea) return;
+    //         let collision = this.hitbox.collide2(entity.hitbox);
+    //         if (!collision) return;
+    //         totalCollisions++;
+    //         // console.log(collisions);
+    //         // console.log(entity.constructor.name);
+    //         switch (entity.constructor.name){
+    //             case 'Slime':
+    //                 entity.kill();
+    //                 //TODO set batterfleas actual spawn
+    //                 this.x = this.spawnX;
+    //                 this.y = this.spawnY;
+    //                 break;
+    //             case 'Tile':
+    //                 let lastHitboxLeft = this.lastX;
+    //                 let lastHitboxRight = this.lastX + this.hitbox.width;
+    //                 let lastHitboxBottom = this.lastY + this.topPadding;
+    //                 // let lastHitboxCenter = {x: lastHitboxLeft + this.hitbox.width / 2, y: lastHitboxBottom - this.hitbox.height / 2 };
+    //                 if (collision.direction !== 'bottom'){
+    //                     if ( 
+    //                         linePlaneIntersect(
+    //                             lastHitboxLeft, lastHitboxBottom, this.hitbox.left, this.hitbox.bottom, 
+    //                             entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
+    //                             ) ||
+    //                         linePlaneIntersect(
+    //                             lastHitboxRight, lastHitboxBottom, this.hitbox.right, this.hitbox.bottom, 
+    //                             entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
+    //                             )
+    //                     ) {
+    //                         collision.direction = 'bottom';
+    //                         // console.log("collision reset to bottom");
+    //                     }
+    //                 }
+    //                 if (collision.direction === 'left'){
+    //                     this.x = entity.hitbox.right;
+    //                 } else if (collision.direction === 'right'){
+    //                     this.x = entity.hitbox.left - this.hitbox.width;
+    //                 } else if (collision.direction ==='top'){
+    //                     this.y = entity.hitbox.bottom;
+    //                 } else {
+    //                     this.y = entity.hitbox.top - this.hitbox.height;
+    //                     this.isAirborne = false;
+    //                 }
+    //                 this.hitbox.updatePos(this.x, this.y);
+    //                 break;
+    //             case 'KillBox':
+    //                 if (this.isAlive) this.kill();
+    //                 break;
+    //         }
+    //     });
 
-        if (totalCollisions > 5){
-            // console.log("collisions: " + totalCollisions);
-            this.x = this.lastX;
-            this.y = this.lastY;
-        }
-    }
+    //     if (totalCollisions > 5){
+    //         // console.log("collisions: " + totalCollisions);
+    //         this.x = this.lastX;
+    //         this.y = this.lastY;
+    //     }
+    // }
 
     kill() {
         this.isAlive = false;

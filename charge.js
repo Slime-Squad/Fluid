@@ -13,7 +13,7 @@ class Charge extends AnimatedEntity {
     constructor(tag, x, y, loop = true) {
         super("./assets/graphics/item/charge", tag, x, y, loop);
         Object.assign(this, { tag, x, y, loop });
-        this.hitbox = new HitBox(x, y, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
+        this.hitbox = new HitBox(x, y, 0, 0, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
         this.originalTag = tag;
         this.elapsedTime = 0;
     }

@@ -10,10 +10,10 @@ class HitBox {
      * @param {number} width The width of the hitbox on the canvas.
      * @param {number} height The height of the hitbox on the canvas.
      */
-    constructor(x, y, width, height) {
-        Object.assign(this, { x, y, width, height });
-        this.left = x;
-        this.top = y;
+    constructor(x, y, leftPad, topPad, width, height) {
+        Object.assign(this, { x, y, leftPad, topPad, width, height });
+        this.left = x + leftPad;
+        this.top = y + topPad;
         this.center = { x: x + width / 2, y: y + height / 2 };
         this.right = this.left + this.width;
         this.bottom = this.top + this.height;
@@ -29,7 +29,6 @@ class HitBox {
             if (!entity.hitbox) return;// || !super.isAlive) return;
             // if (entity.hitbox instanceof this.constructor) return;
             if (!this.collide3(entity.hitbox)) return;
-            // console.log(entity.constructor.name);
             collisions.push(entity);
         });
         return collisions;
@@ -135,8 +134,8 @@ class HitBox {
      * @param {number} y The y-coordinate associated with the top-left corner of the hitbox on the canvas.
      */
     updatePos(x, y) {
-        this.left = x;
-        this.top = y;
+        this.left = x + this.leftPad;
+        this.top = y + this.topPad;
         this.center = {x: x + this.width / 2, y: y + this.height / 2};
         this.right = this.left + this.width;
         this.bottom = this.top + this.height;

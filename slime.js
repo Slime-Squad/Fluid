@@ -12,10 +12,7 @@ class Slime extends AnimatedEntity {
     constructor(tag, x, y) {
         super("./assets/graphics/characters/slimeBounce", tag, x, y);
         Object.assign(this, {tag, x, y});
-        this.topPadding = PARAMS.SCALE * 5;
-        this.rightPadding = PARAMS.SCALE * 3;
-        this.leftPadding = this.rightPadding;
-        this.hitbox = new HitBox(x + this.leftPadding, y + this.topPadding, 10*PARAMS.SCALE, 10*PARAMS.SCALE);
+        this.hitbox = new HitBox(x, y, PARAMS.SCALE * 3, PARAMS.SCALE * 5, 10*PARAMS.SCALE, 10*PARAMS.SCALE);
 
         this.spawnX = this.x;
         this.spawnY = this.y;
@@ -63,148 +60,25 @@ class Slime extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        // CONTROLS
         
-        // Left and Right
         this.moveX();
 
-        // Jump
         this.jump();
 
-        // Dash
         this.dash();
 
-        // Rise
         this.moveY();
 
-        this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding); // update position before checking collision
+        this.hitbox.updatePos(this.x, this.y);
 
-        /*// HANDLE COLLISIONS
-        let totalCollisions = 0;
-        // let tileCollisions = [];
-        GAME.entities.forEach(entity => {
-            // Fill collection with confirmed collisions
-            if (!entity.hitbox || !this.isAlive) return;
-            if (entity instanceof Slime) return;
-            let collision = this.hitbox.collide2(entity.hitbox);
-            if (!collision) return;
-            totalCollisions++;
-            // End determining collisions
-            switch (entity.constructor.name){
-                // Move behavior to Charge
-                case 'Charge':
-                    switch(entity.tag) {
-                        case 'Disabled':
-                            break;
-                        case 'Electric':
-                            this.charges.Electric++;
-                            entity.tag = "Disabled";
-                            break;
-                        case 'Fire':
-                            this.charges.Fire++;
-                            entity.tag = "Disabled";
-                            break;
-                        case 'Ice':
-                            this.charges.Ice++;
-                            entity.tag = "Disabled";
-                            break;
-                        case 'Earth':
-                            this.charges.Earth++;
-                            entity.tag = "Disabled";
-                            break;
-                    }
-                    if (entity.tag != "Disabled") { // charge collected
-                        entity.tag = "Disabled";
-                    }
-                    break;
-                // Move to Tile
-                case 'Tile':
-                    let lastHitboxLeft = this.lastX + this.leftPadding;
-                    let lastHitboxRight = this.lastX + this.leftPadding + this.hitbox.width;
-                    let lastHitboxBottom = this.lastY + this.hitbox.height + this.topPadding;
-                    // let lastHitboxCenter = {x: lastHitboxLeft + this.hitbox.width / 2, y: lastHitboxBottom - this.hitbox.height / 2 };
-                    if (collision.direction !== 'bottom'){
-                        if ( 
-                            linePlaneIntersect(
-                                lastHitboxLeft, lastHitboxBottom, this.hitbox.left, this.hitbox.bottom, 
-                                entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
-                                ) ||
-                            linePlaneIntersect(
-                                lastHitboxRight, lastHitboxBottom, this.hitbox.right, this.hitbox.bottom, 
-                                entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
-                                )
-                        ){
-                            collision.direction = 'bottom';
-                            console.log("collision reset to bottom");
-                        }
-                    }
-                    /*tileCollisions.push({
-                        direction: collision.direction,
-                        hitbox: entity.hitbox,
-                        distance: Math.sqrt(
-                                (entity.hitbox.center.x - lastHitboxCenter.x) * (entity.hitbox.center.x - lastHitboxCenter.x) + 
-                                (entity.hitbox.center.y - lastHitboxCenter.y) * (entity.hitbox.center.y - lastHitboxCenter.y)
-                            )
-                    });*//*
-                    if (collision.direction === 'left'){
-                        this.x = entity.hitbox.right - this.leftPadding;
-                    } else if (collision.direction === 'right'){
-                        this.x = entity.hitbox.left - this.hitbox.width - this.rightPadding;
-                    } else if (collision.direction ==='top'){
-                        this.y = entity.hitbox.bottom - this.topPadding;
-                    } else {
-                        this.y = entity.hitbox.top - this.hitbox.height - this.topPadding;
-                    }
-                    this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding);
-                    break;
-                case 'Checkpoint':
-                    if (entity.tag == "Idle") {
-                        entity.swapTag("Collected");
-                        entity.hitbox = null;
-                        this.spawnX = entity.x;
-                        this.spawnY = entity.y;
-                    } 
-                    break;
-                case 'KillBox':
-                    if (this.isAlive) this.kill();
-                    break;
-                case 'Bubble':
-                    GAME.camera.slimeHealth.damage();
-                    break;
-            }
-        });*/
+        ///////////////
+        /* COLLISION */
+        ///////////////
 
-        let collisions = this.hitbox.getCollisions();
-        collisions.forEach(entity =>{
-            if (entity.collideWithPlayer){
-                console.log(entity.constructor.name);
-                entity.collideWithPlayer();
-            }
-        });
-
-
-        // Apply Collisions in descending order of distance
-        /*if (tileCollisions.length > 0){
-            tileCollisions.sort((a, b) => {return b.distance - a.distance});
-            tileCollisions.forEach((collision) => {
-                if (collision.direction === "bottom") {
-                    this.y = collision.hitbox.top - this.hitbox.height - this.topPadding;
-                    if (GAME.currentFrame - this.timers.jumpTimer > 15) this.canJump = true;
-                } else if (collision.direction === 'left'){
-                    this.x = collision.hitbox.right - this.leftPadding;
-                } else if (collision.direction === 'right'){
-                    this.x = collision.hitbox.left - this.hitbox.width - this.rightPadding;
-                } else {
-                    this.y = collision.hitbox.bottom - this.topPadding;
-                }
-            });
-        }
-        this.hitbox.updatePos(this.x+this.leftPadding, this.y+this.topPadding);*/
+        this.hitbox.getCollisions().forEach((entity) => { if (entity.collideWithPlayer) entity.collideWithPlayer(); });
 
         // Reset momentum on stop
-        if (this.x == this.lastX){
-            this.momentum = 0;
-        }
+        if (this.x == this.lastX) this.momentum = 0;
 
         // Reset landTimer while in the air
         if (this.isAirborne) this.timers.landTimer = 0;
@@ -217,9 +91,7 @@ class Slime extends AnimatedEntity {
         }
 
         // End of Cycle Update Values
-        this.lastX = this.x;
-        this.lastY = this.y;
-        this.tickTimers();
+        this.endOfCycleUpdates();
 
     }
 
@@ -242,17 +114,16 @@ class Slime extends AnimatedEntity {
             ctx.fillText("Momentum:" + this.momentum, this.x - GAME.camera.x, this.y - GAME.camera.y);
         }
     }
-    
-    tickTimers() {
-        Object.keys(this.timers).forEach(timer => {
-            this.timers[timer] += GAME.clockTick;
-        });
-    }
 
     /////////////////////
     /* State Functions */
     /////////////////////
 
+    /**
+     * Horizontal Movement - calculates Slime's position with speed and momentum.
+     * Depends on speed, momentum, direction and maxMom to calculate new x position.
+     * @author Nathan Brown
+     */
     moveX() {
         if(GAME.left) {
             if (this.momentum > 0) this.momentum /= 2;
@@ -283,6 +154,11 @@ class Slime extends AnimatedEntity {
         }
     }
 
+    /**
+     * Gets the slime into the air when A is pressed. Hold A for a longer jump. Uses a variety of state 
+     * flags to determine when the slime can jump. 
+     * @author Nathan Brown
+     */
     jump() {
         //this.canJump = true; // Allow Midair for Debugging
         if (!GAME.A) this.isJumping = false;
@@ -299,6 +175,14 @@ class Slime extends AnimatedEntity {
         }
     }
 
+    /**
+     * Slime dashes forward rapidly. 
+     * Plans: 
+     *          Kill enemies when colliding with the dashing slime. 
+     *          Set momentum to 0. 
+     *          Implement line-line checking for right side tile collision.
+     * @author Nathan Brown
+     */
     dash(){
         if (!this.canDash){
             if (this.timers.dashTimer > 1) {
@@ -319,6 +203,13 @@ class Slime extends AnimatedEntity {
         }
     }
 
+    /**
+     * Moves the slime along the y axis by subtracting its rise value from its y 
+     * position. Mostly this is caused by gravity and states like jumping that allows 
+     * the player to give the slime a positive rise.
+     * 
+     * @author Nathan Brown
+     */
     moveY(){
         this.y -= this.rise * GAME.tickMod;
         if (this.rise < -1.5 * PARAMS.SCALE){
@@ -327,7 +218,6 @@ class Slime extends AnimatedEntity {
 
         // Gravity
         if (this.rise > this.MINRISE){
-            // In my defense I was snorting lines when I wrote this line - npb
             let hangtime = this.rise > 0 ? 0.7 : 1;
             this.rise -= this.gravity * GAME.tickMod * hangtime;
         }

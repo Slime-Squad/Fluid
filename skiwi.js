@@ -13,7 +13,7 @@ class Skiwi extends AnimatedEntity {
     constructor(tag, x, y, loop = true) {
         super("./assets/graphics/characters/skiwi", tag, x, y, loop);
         Object.assign(this, { tag, x, y, loop });
-        this.hitbox = new HitBox(x, y, 20*PARAMS.SCALE, 20*PARAMS.SCALE);
+        this.hitbox = new HitBox(x, y, 0, 0, 20*PARAMS.SCALE, 20*PARAMS.SCALE);
         this.originalTag = tag;
         this.elapsedTime = 0;
 
@@ -64,6 +64,8 @@ class Skiwi extends AnimatedEntity {
                     break;
             }
         });
+
+        this.endOfCycleUpdates();
     }
 
     draw(ctx) {
