@@ -56,9 +56,6 @@ class Slime extends AnimatedEntity {
         }
     };
 
-    /**
-     * Function called on every clock tick.
-     */
     update() {
         
         this.moveX();
@@ -72,7 +69,7 @@ class Slime extends AnimatedEntity {
         this.hitbox.updatePos(this.x, this.y);
 
         ///////////////
-        /* COLLISION */
+        // COLLISION //
         ///////////////
 
         this.hitbox.getCollisions().forEach((entity) => { if (entity.collideWithPlayer) entity.collideWithPlayer(); });
@@ -90,7 +87,6 @@ class Slime extends AnimatedEntity {
             this.isAirborne = false;
         }
 
-        // End of Cycle Update Values
         this.endOfCycleUpdates();
 
     }

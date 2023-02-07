@@ -38,12 +38,10 @@ class AnimatedEntity {
 
     /**
      * Function called on every clock tick.
+     * @inheritdoc
      */
     update() {
-        // End of Cycle Update Values
-        this.lastX = this.x;
-        this.lastY = this.y;
-        this.tickTimers();
+        
     }
 
     /**
@@ -60,6 +58,7 @@ class AnimatedEntity {
     
     /**
      * Collection of calls and values to assign at the end of an entity's update().
+     * @inheritdoc
      */
     endOfCycleUpdates(){
         this.lastX = this.x;
@@ -69,6 +68,7 @@ class AnimatedEntity {
 
     /**
      * Increment every timer (modified by clockTick)
+     * @private
      */
     tickTimers() {
         if (!this.timers) return;
