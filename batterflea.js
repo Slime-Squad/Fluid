@@ -17,21 +17,26 @@ class Batterflea extends AnimatedEntity {
 
         this.spawnX = x;
         this.spawnY = y;
+
+        //Movement
         this.lastX = x;
         this.lastY = y;
-        this.speed = PARAMS.SCALE;
-        this.isAlive = true;
-        this.isAirborne = false;
-        this.canJump = true;
-        this.jumpTimer = 0;
-        this.currentJumpTime = 0;
+        this.xMove = 0;
         this.direction = 1;
         this.rise = -1;
         this.MINRISE = -6 * PARAMS.SCALE;
-        this.bounce = 3 * PARAMS.SCALE;
+        this.bounce = 3.5 * PARAMS.SCALE;
         this.gravity = 1;
 
+        //Flags
+        this.isAlive = true;
+        this.isAirborne = false;
+        this.canJump = true;
 
+        //Timers
+        this.timers = {
+            jumpTimer: 0
+        }
     }
 
     /**
@@ -39,33 +44,56 @@ class Batterflea extends AnimatedEntity {
      */
     update() {
         this.hop();
-        
+        this.moveY();
+
         this.hitbox.updatePos(this.x, this.y);
         this.hitbox.getCollisions().forEach((entity) => {
             if (entity.collideWithEntity) entity.collideWithEntity(this);
         });
 
+        if (this.y == this.lastY){
+            this.rise = -1;
+            this.isAirborne = false;
+        }
         this.endOfCycleUpdates();
     }
 
+
+    /**
+     * Called when this Batterflea collides with the player. Returns Batterlea
+     * to spawn and {@link GAME.slime.kill} the slime
+     */
+    collideWithPlayer() {
+        this.setToSpawn();
+        GAME.slime.kill();
+    }
+
+    /**
+     * Function called every clock tick that controls how the Batterflea will hop
+     */
     hop() {
-        if(this.jumpTimer > 60) this.canJump = true;
-        
-        if((this.x < GAME.slime.x) && this.isAirborne) {
-            this.x += 1;
-        } 
-        if((this.x > GAME.slime.x) && this.isAirborne) {
-            this.x -= 1;
+        //deterines if Batterflea can jump and which direction
+        if(this.timers.jumpTimer > 3) {
+            this.canJump = true;
+            this.xMove = this.x > GAME.slime.x ? -(PARAMS.SCALE/3): (PARAMS.SCALE/3);
         }
+        
+        //Moves the batterlfea on x axis
+        if(this.isAirborne) this.x += this.xMove;
+
 
         if(this.canJump) {
             this.canJump = false;
-            this.jumpTimer = 0;
+            this.timers.jumpTimer = 0;
             this.rise = this.bounce +  1 * this.direction;
             this.isAirborne = true;
         }
-        this.jumpTimer += GAME.tickMod;
+    }
 
+    /**
+     * Controls Batterleas movement on the y axis.
+     */
+    moveY() {
         // Rise
         this.y -= this.rise * GAME.tickMod;
         if (this.rise < -1.5 * PARAMS.SCALE){
@@ -74,14 +102,17 @@ class Batterflea extends AnimatedEntity {
 
         // Gravity
         if (this.rise > this.MINRISE){
-            let hangtime = this.jumpTimer < 0.52 ? this.jumpTimer > 0.44 ? 0.1 : 1 : 1;
+            let hangtime = this.rise > 0 ? 0.7 : 1;
             this.rise -= this.gravity * GAME.tickMod * hangtime;
         }
+    }
 
-        if (this.y == this.lastY){
-            this.rise = -1;
-        }
-
+    /**
+     * Returns the Batterflea to its spawn position.
+     */
+    setToSpawn() {
+        this.x = this.spawnX;
+        this.y = this.spawnY;
     }
 
     //TODO: UPDATE COLLISION
