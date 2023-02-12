@@ -37,6 +37,7 @@ fetch(ASSET_PATHS)
 			PARAMS.BLOCKSIZE = PARAMS.BITWIDTH*PARAMS.SCALE;
 			PARAMS.WIDTH = canvas.getAttribute("width");
 			PARAMS.HEIGHT = canvas.getAttribute("height");
+			PARAMS.GRAVITY = 1 / PARAMS.SCALE;
 			
 			
 			GAME.init(ctx);

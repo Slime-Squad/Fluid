@@ -1,6 +1,6 @@
 { "frames": [
    {
-    "filename": "0#idle",
+    "filename": "0#Idle",
     "frame": { "x": 0, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -9,7 +9,7 @@
     "duration": 40
    },
    {
-    "filename": "1#idle_left",
+    "filename": "1#IdleLeft",
     "frame": { "x": 16, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -18,7 +18,7 @@
     "duration": 40
    },
    {
-    "filename": "2#move",
+    "filename": "2#Move",
     "frame": { "x": 32, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -27,7 +27,7 @@
     "duration": 120
    },
    {
-    "filename": "3#move",
+    "filename": "3#Move",
     "frame": { "x": 48, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -36,7 +36,7 @@
     "duration": 120
    },
    {
-    "filename": "4#move",
+    "filename": "4#Move",
     "frame": { "x": 64, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -45,7 +45,7 @@
     "duration": 120
    },
    {
-    "filename": "5#move_left",
+    "filename": "5#MoveLeft",
     "frame": { "x": 80, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
