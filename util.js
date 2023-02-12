@@ -47,6 +47,15 @@ const PARAMS = {
     }
 };
 
+const CONTROLLER = {
+    A: false,
+    B: false,
+    UP: false,
+    DOWN: false,
+    LEFT: false,
+    RIGHT: false    
+}
+
 /**
  * @param {Number} n
  * @returns Random Integer Between 0 and n-1
@@ -98,12 +107,22 @@ const getDistance = (p1, p2) => {
     return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 };
 
-// determine x val of intersection with top of entity's hitbox
+/**
+ * Determine if a line intersects a given plane
+ * @param {number} originX
+ * @param {number} originY 
+ * @param {number} endX 
+ * @param {number} endY 
+ * @param {number} planeLeft 
+ * @param {number} planeRight 
+ * @param {number} planeY 
+ * @returns 
+ */
 const linePlaneIntersect = (originX, originY, endX, endY, planeLeft, planeRight, planeY) => {
     let yDistance = planeY - originY;
     let slope = endX - originX == 0 ? 0 : (endY - originY) / (endX - originX);
     let xIntersect = originX + slope * yDistance;
-    let offset = 0 + PARAMS.SCALE;
+    let offset = 0 //+ PARAMS.SCALE;
     // console.log("xSect: " + xIntersect + " planeLeft: " + planeLeft + " planeRight: " + planeRight);
     if (yDistance < 0 || xIntersect < planeLeft + offset || xIntersect > planeRight - offset){ 
         return false;

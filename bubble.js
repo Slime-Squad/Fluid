@@ -13,7 +13,7 @@ class Bubble extends AnimatedEntity {
     constructor(tag, x, y, loop = true) {
         super("./assets/graphics/characters/bubble", tag, x, y, loop);
         Object.assign(this, { tag, x, y, loop });
-        this.hitbox = new HitBox(x, y, 24*PARAMS.SCALE, 24*PARAMS.SCALE);
+        this.hitbox = new HitBox(x, y, 0, 0, 24*PARAMS.SCALE, 24*PARAMS.SCALE);
         this.originalTag = tag;
         this.elapsedTime = 0;
     }
@@ -22,13 +22,32 @@ class Bubble extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
+
+        this.hitbox.updatePos(this.x, this.y);
+        this.hitbox.getCollisions().forEach((entity) => {
+            if (entity.collideWithEntity) entity.collideWithEntity(this);
+        });
+
+        this.endOfCycleUpdates();
+
     }
 
     draw(ctx) {
-        super.draw(ctx)
+        super.draw(ctx);
     }
 
     collideWithPlayer() {
         GAME.camera.slimeHealth.damage();
+        GAME.slime.x = this.x + 4*PARAMS.SCALE;
+        GAME.slime.y = this.y + 2*PARAMS.SCALE;
+        this.y--;
+        GAME.slime.yVelocity = 12;
+        if (CONTROLLER.LEFT) {
+            this.x = lerp(this.x, this.x - 1, GAME.tickMod);
+        }
+        if (CONTROLLER.RIGHT) {
+            this.x = lerp(this.x, this.x + 1, GAME.tickMod);
+        }
+        this.hitbox.updatePos(this.x, this.y);
     }
 }

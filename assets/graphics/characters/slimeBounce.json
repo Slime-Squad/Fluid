@@ -1,6 +1,6 @@
 { "frames": [
    {
-    "filename": "0#idle",
+    "filename": "0#Idle",
     "frame": { "x": 0, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -9,7 +9,7 @@
     "duration": 40
    },
    {
-    "filename": "1#idle_left",
+    "filename": "1#IdleLeft",
     "frame": { "x": 16, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -18,7 +18,7 @@
     "duration": 40
    },
    {
-    "filename": "2#move",
+    "filename": "2#Move",
     "frame": { "x": 32, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -27,7 +27,7 @@
     "duration": 30
    },
    {
-    "filename": "3#move",
+    "filename": "3#Move",
     "frame": { "x": 48, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -36,7 +36,7 @@
     "duration": 40
    },
    {
-    "filename": "4#move",
+    "filename": "4#Move",
     "frame": { "x": 64, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -45,7 +45,7 @@
     "duration": 40
    },
    {
-    "filename": "5#move",
+    "filename": "5#Move",
     "frame": { "x": 80, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -54,7 +54,7 @@
     "duration": 25
    },
    {
-    "filename": "6#move",
+    "filename": "6#Move",
     "frame": { "x": 96, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -63,7 +63,7 @@
     "duration": 25
    },
    {
-    "filename": "7#move",
+    "filename": "7#Move",
     "frame": { "x": 112, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -72,7 +72,7 @@
     "duration": 20
    },
    {
-    "filename": "8#move",
+    "filename": "8#Move",
     "frame": { "x": 128, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -81,7 +81,7 @@
     "duration": 20
    },
    {
-    "filename": "9#move",
+    "filename": "9#Move",
     "frame": { "x": 144, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -90,7 +90,7 @@
     "duration": 20
    },
    {
-    "filename": "10#move",
+    "filename": "10#Move",
     "frame": { "x": 160, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -99,7 +99,7 @@
     "duration": 20
    },
    {
-    "filename": "11#move",
+    "filename": "11#Move",
     "frame": { "x": 176, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -108,7 +108,7 @@
     "duration": 20
    },
    {
-    "filename": "12#move",
+    "filename": "12#Move",
     "frame": { "x": 192, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -117,7 +117,7 @@
     "duration": 20
    },
    {
-    "filename": "13#move",
+    "filename": "13#Move",
     "frame": { "x": 208, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -126,7 +126,7 @@
     "duration": 20
    },
    {
-    "filename": "14#move",
+    "filename": "14#Move",
     "frame": { "x": 224, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -135,7 +135,7 @@
     "duration": 20
    },
    {
-    "filename": "15#move",
+    "filename": "15#Move",
     "frame": { "x": 240, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -144,7 +144,7 @@
     "duration": 20
    },
    {
-    "filename": "16#move",
+    "filename": "16#Move",
     "frame": { "x": 256, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -153,7 +153,7 @@
     "duration": 40
    },
    {
-    "filename": "17#move",
+    "filename": "17#Move",
     "frame": { "x": 272, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -162,7 +162,7 @@
     "duration": 30
    },
    {
-    "filename": "18#move_left",
+    "filename": "18#MoveLeft",
     "frame": { "x": 288, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -171,7 +171,7 @@
     "duration": 30
    },
    {
-    "filename": "19#move_left",
+    "filename": "19#MoveLeft",
     "frame": { "x": 304, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -180,7 +180,7 @@
     "duration": 30
    },
    {
-    "filename": "20#move_left",
+    "filename": "20#MoveLeft",
     "frame": { "x": 320, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -189,7 +189,7 @@
     "duration": 30
    },
    {
-    "filename": "21#move_left",
+    "filename": "21#MoveLeft",
     "frame": { "x": 336, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -198,7 +198,7 @@
     "duration": 30
    },
    {
-    "filename": "22#move_left",
+    "filename": "22#MoveLeft",
     "frame": { "x": 352, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -207,7 +207,7 @@
     "duration": 30
    },
    {
-    "filename": "23#move_left",
+    "filename": "23#MoveLeft",
     "frame": { "x": 368, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -216,7 +216,7 @@
     "duration": 30
    },
    {
-    "filename": "24#move_left",
+    "filename": "24#MoveLeft",
     "frame": { "x": 384, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -225,7 +225,7 @@
     "duration": 30
    },
    {
-    "filename": "25#move_left",
+    "filename": "25#MoveLeft",
     "frame": { "x": 400, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -234,7 +234,7 @@
     "duration": 30
    },
    {
-    "filename": "26#move_left",
+    "filename": "26#MoveLeft",
     "frame": { "x": 416, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -243,7 +243,7 @@
     "duration": 30
    },
    {
-    "filename": "27#move_left",
+    "filename": "27#MoveLeft",
     "frame": { "x": 432, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -252,7 +252,7 @@
     "duration": 30
    },
    {
-    "filename": "28#move_left",
+    "filename": "28#MoveLeft",
     "frame": { "x": 448, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -261,7 +261,7 @@
     "duration": 30
    },
    {
-    "filename": "29#move_left",
+    "filename": "29#MoveLeft",
     "frame": { "x": 464, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -270,7 +270,7 @@
     "duration": 30
    },
    {
-    "filename": "30#move_left",
+    "filename": "30#MoveLeft",
     "frame": { "x": 480, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -279,7 +279,7 @@
     "duration": 30
    },
    {
-    "filename": "31#move_left",
+    "filename": "31#MoveLeft",
     "frame": { "x": 496, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -288,7 +288,7 @@
     "duration": 30
    },
    {
-    "filename": "32#move_left",
+    "filename": "32#MoveLeft",
     "frame": { "x": 512, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -297,7 +297,7 @@
     "duration": 30
    },
    {
-    "filename": "33#move_left",
+    "filename": "33#MoveLeft",
     "frame": { "x": 528, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,

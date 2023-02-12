@@ -12,7 +12,7 @@ class KillBox {
         Object.assign(this, { x, y });
         this.width = 8*PARAMS.SCALE;
         this.height = 8*PARAMS.SCALE;
-        this.hitbox = new HitBox(this.x, this.y, this.width, this.height);
+        this.hitbox = new HitBox(this.x, this.y, 0, 0, this.width, this.height);
     }
     
     /**
