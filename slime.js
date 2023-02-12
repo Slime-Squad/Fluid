@@ -226,6 +226,7 @@ class Slime extends AnimatedEntity {
     kill() {
         this.isAlive = false;
         GAME.camera.deathScreen.swapTag("Died");
+        GAME.entities.forEach((entity) => {if(entity.respawn) entity.respawn(); });
         const targetX = this.spawnX - PARAMS.WIDTH/2  + 8*PARAMS.SCALE;
         const targetY = this.spawnY - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE;
         GAME.camera.freeze(1,

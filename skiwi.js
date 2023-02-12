@@ -13,61 +13,51 @@ class Skiwi extends AnimatedEntity {
     constructor(tag, x, y, loop = true) {
         super("./assets/graphics/characters/skiwi", tag, x, y, loop);
         Object.assign(this, { tag, x, y, loop });
-        this.hitbox = new HitBox(x, y, 0, 0, 20*PARAMS.SCALE, 20*PARAMS.SCALE);
-        this.originalTag = tag;
-        this.elapsedTime = 0;
+        this.hitbox = new HitBox(x, y, 0, 0, 16*PARAMS.SCALE, 24*PARAMS.SCALE);
 
-        this.speed = PARAMS.SCALE;
-        this.directionTimer = 0;
+        //Movement
+        this.direction = 1;
+        this.lastX = x;
+        this.lastY = y;
     }
 
     /**
      * Function called on every clock tick.
      */
     update() {
-        const TICKMOD = GAME.clockTick * 60;
-
-        //Back and forth movement
-        if (this.directionTimer > 60) {
-            this.x += this.speed * TICKMOD;
-            if (this.directionTimer > 120) this.directionTimer =0;
-            this.directionTimer += TICKMOD;
-        } else {
-            this.x -= this.speed * TICKMOD;
-            this.directionTimer += TICKMOD;
-        }
-
-        //Handle collision
-        this.hitbox.updatePos(this.x+(PARAMS.SCALE), this.y+(PARAMS.SCALE));
-        GAME.entities.forEach(entity => {
-            if (!entity.hitbox) return;
-            if (entity instanceof Skiwi) return;
-            let collisions = this.hitbox.collide(entity.hitbox);
-            if (!collisions) return;
-            // console.log(collisions);
-            // console.log(entity.constructor.name);
-            switch (entity.constructor.name){
-                case 'Slime':
-                    entity.kill();
-                    break;
-                case 'Tile':
-                    if (collisions.direction === 'left'){
-                        this.x = this.x + (collisions.leftIntersect);
-                    } else if (collisions.direction === 'right'){
-                        this.x = this.x + (collisions.rightIntersect);
-                    } else if (collisions.direction ==='top'){
-                        this.y = this.y + (collisions.topIntersect);
-                    } else {
-                        this.y = this.y + (collisions.bottomIntersect);
-        }
-                    this.hitbox.updatePos(this.x+(PARAMS.SCALE), this.y+(PARAMS.SCALE));
-                    break;
-            }
+        this.ski();
+        this.hitbox.updatePos(this.x, this.y);
+        this.hitbox.getCollisions().forEach((entity) => {
+            if (entity.collideWithEntity) entity.collideWithEntity(this);
         });
+
+        if(this.x == this.lastX) {
+           this.direction = this.direction * -1;
+        }
 
         this.endOfCycleUpdates();
     }
 
+    /**
+     * Moves the skiwi in the same direction on the X-axis until it hits a wall
+     * then it will change direction.
+     */
+    ski() {
+        this.x += PARAMS.SCALE * this.direction;
+    }
+
+    /**
+     * Called when this Skiwi collides with the player. Returns Batterlea
+     * to spawn and {@link GAME.slime.kill()} the slime
+     */
+    collideWithPlayer() {
+        GAME.slime.kill();
+    }
+
+     /**
+     * Called when this Batterflea collides with the player. Returns Batterlea
+     * to spawn and {@link GAME.slime.kill()} the slime
+     */
     draw(ctx) {
         super.draw(ctx)
     }
