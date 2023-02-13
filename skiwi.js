@@ -17,7 +17,7 @@ class Skiwi extends AnimatedEntity {
 
         //Movement
         this.direction = 1;
-        this.speed = PARAMS.SCALE/2;
+        this.speed = PARAMS.SCALE;
         this.lastX = x;
         this.lastY = y;
     }
@@ -45,7 +45,7 @@ class Skiwi extends AnimatedEntity {
      */
     ski() {
         this.direction > 0 ? this.tag = "WalkR" : this.tag = "WalkL";
-        this.x += this.speed * this.direction;
+        this.x += this.speed * this.direction * GAME.tickMod;
     }
 
     /**

@@ -79,7 +79,7 @@ class Batterflea extends AnimatedEntity {
         //Moves the batterlfea on x axis
         if(this.isAirborne) {
             this.timers.landTimer = 0;
-            this.x += this.xMove;
+            this.x += this.xMove * GAME.tickMod;
         }
 
 

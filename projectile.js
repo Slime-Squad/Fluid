@@ -16,7 +16,7 @@ class Projectile extends AnimatedEntity {
         this.hitbox = new HitBox(x, y, 0, 0, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
 
         //Movement
-        this.speed = PARAMS.SCALE/4;
+        this.speed = PARAMS.SCALE;
         this.direction = 1
 
         //Timers
@@ -48,7 +48,7 @@ class Projectile extends AnimatedEntity {
             this.reset();
         }
         
-        this.x += this.speed * this.direction;
+        this.x += this.speed * this.direction * GAME.tickMod;
     }
 
     /**
