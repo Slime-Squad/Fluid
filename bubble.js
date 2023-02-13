@@ -41,7 +41,7 @@ class Bubble extends AnimatedEntity {
         GAME.slime.x = this.x + 4*PARAMS.SCALE;
         GAME.slime.y = this.y + 2*PARAMS.SCALE;
         this.y--;
-        GAME.slime.yVelocity = 12;
+        GAME.slime.yVelocity = -2 * PARAMS.SCALE;
         if (CONTROLLER.LEFT) {
             this.x = lerp(this.x, this.x - 1, GAME.tickMod);
         }

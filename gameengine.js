@@ -123,7 +123,7 @@ class GameEngine {
         this.gamepad = navigator.getGamepads()[0];
         if (this.gamepad != null) {
             CONTROLLER.A = this.gamepad.buttons[0].pressed || this.keys[" "];
-            CONTROLLER.B = this.gamepad.buttons[1].pressed || this.keys["j"] || this.keys["J"];
+            CONTROLLER.B = this.gamepad.buttons[1].pressed || this.gamepad.buttons[2].pressed || this.keys["j"] || this.keys["J"];
             //checks if d-pad is used or joysticks meet a certain threshold
             CONTROLLER.LEFT = this.gamepad.buttons[14].pressed || this.gamepad.axes[0] < -0.3 || this.keys["a"] || this.keys["A"];
             CONTROLLER.RIGHT = this.gamepad.buttons[15].pressed || this.gamepad.axes[0] > 0.3 || this.keys["d"] || this.keys["D"];

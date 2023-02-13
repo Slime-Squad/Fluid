@@ -10,7 +10,7 @@ class Slime extends AnimatedEntity {
      * @param {number} y The y-coordinate associated with the top-left corner of the slime's sprite on the canvas.
      */
     constructor(tag, x, y) {
-        super("./assets/graphics/characters/slimebounce", tag, x, y);
+        super("./assets/graphics/characters/slimedrop", tag, x, y);
         Object.assign(this, {tag, x, y});
         this.hitbox = new HitBox(x, y, PARAMS.SCALE * 3, PARAMS.SCALE * 5, 10*PARAMS.SCALE, 10*PARAMS.SCALE);
 
@@ -27,7 +27,9 @@ class Slime extends AnimatedEntity {
             this.climbing
         ];
         this.state = this.idle; // active state
-        this.collisions = [];
+        this.changeStateCheck = this.idleStateCheck;
+        this.entityCollisions = [];
+        this.tileCollisions = [];
 
         // Movement
         this.speed = 1.75;
@@ -36,9 +38,11 @@ class Slime extends AnimatedEntity {
         this.maxMom = (this.speed * 0.66).toFixed(2);
         this.acceleration = this.maxMom / 30;
         this.decceleration = this.maxMom / 40;
-        this.direction = 1;
+        this.xDirection = 1;
         this.yVelocity = 1 / PARAMS.SCALE;
         this.maxYVelocity = 6;
+        this.slideSpeed = 0;
+        this.wallJumpTimeout = 0.2;
         this.yFallThreshold = (1 / PARAMS.SCALE) * 10;
         this.jumpVelocity = -3.4;
         this.jumpMomentum = this.momentum / 2;
@@ -61,7 +65,7 @@ class Slime extends AnimatedEntity {
 
         // Timers
         this.timers = {
-            // jumpTimer : 0,
+            jumpTimer : 0,
             // landTimer : 0,
             climbTimer : 0,
             dashTimer : 0
@@ -70,14 +74,24 @@ class Slime extends AnimatedEntity {
 
     update() {
 
+        this.changeStateCheck();
         this.state();
 
         this.hitbox.updatePos(this.x, this.y);
 
-        this.collisions.length = 0;
-        this.hitbox.getCollisions().forEach(entity => { 
-            if (entity.collideWithPlayer) this.collisions.push(entity.collideWithPlayer());
-        });        
+        this.tileCollisions.length = 0;
+        this.entityCollisions = this.hitbox.getCollisions();
+
+        this.entityCollisions.forEach(entity => { 
+            if (entity.collideWithPlayer) this.tileCollisions.push(entity.collideWithPlayer()); 
+        });
+        // Sorted Collision
+        // this.entityCollisions.forEach(entity => { 
+        //     entity.distanceFromPlayer = Math.abs(entity.hitbox.center - this.hitbox.center);
+        // });
+        // this.entityCollisions.sort((a,b) => {return a.distanceFromPlayer - b.distanceFromPlayer}).forEach(entity => { 
+        //     if (entity.collideWithPlayer) this.tileCollisions.push(entity.collideWithPlayer()); 
+        // });
 
         this.endOfCycleUpdates();
 
@@ -144,9 +158,9 @@ class Slime extends AnimatedEntity {
         this.y += moveSpeed * PARAMS.SCALE * GAME.tickMod;
 
         // Gravity
-        if (this.yVelocity <= this.maxYVelocity && this.yVelocity <= moveSpeed){
+        if (this.yVelocity <= this.maxYVelocity){
             let hangtime = this.yVelocity < 0 ? 0.7 : 1;
-            this.yVelocity += PARAMS.GRAVITY * GAME.tickMod * hangtime;
+            this.yVelocity = moveSpeed + PARAMS.GRAVITY * GAME.tickMod * hangtime;
         }
 
     }
@@ -158,17 +172,52 @@ class Slime extends AnimatedEntity {
 
         if(CONTROLLER.LEFT) {
             this.moveX(-this.speed, -this.acceleration);
-            this.direction = -1; // moveX not dependent on this.direction
+            this.xDirection = -1; // moveX not dependent on this.direction
         } else if(CONTROLLER.RIGHT) {
             this.moveX(this.speed, this.acceleration);
-            this.direction = 1; // moveX not dependent on this.direction
+            this.xDirection = 1; // moveX not dependent on this.direction
         } else{
             this.moveX(0);
-            this.momentum = this.direction > 0 ? 
+            this.momentum = this.xDirection > 0 ? 
                 clamp(this.momentum - this.decceleration * GAME.tickMod, 0, this.maxMom) : 
                 clamp(this.momentum + this.decceleration * GAME.tickMod, -this.maxMom, 0);
         }
 
+    }
+
+    idleStateCheck(){
+        // Check dashing
+        if (CONTROLLER.B && this.canDash) {
+            this.canDash = false;
+            this.yVelocity = 0;
+            this.timers.dashTimer = 0;
+            this.state = this.dashing;
+            this.state(true);
+            return;
+        } 
+
+        // Check running
+        if (CONTROLLER.RIGHT || CONTROLLER.LEFT){
+            this.state = this.running;
+            this.state(true);
+            return;
+        }
+        
+        // Check jumping
+        if (CONTROLLER.A && this.canJump){ 
+            this.canJump = false;
+            this.state = this.jumping;
+            this.state(true);
+            return;
+        }
+
+        // Check falling
+        if (this.yVelocity > this.yFallThreshold){
+            // this.canJump = false;
+            this.state = this.falling;
+            this.state(true);
+            return;
+        }
     }
 
     /////////////////////
@@ -179,46 +228,15 @@ class Slime extends AnimatedEntity {
      * Slime makes itself move on the x axis.
      * @author Nathan Brown
      */
-    idle (){
+    idle (changingState = false){
 
-        // Check dashing
-        if (CONTROLLER.B && this.canDash) {
-            this.canDash = false;
-            this.yVelocity = 0;
-            this.timers.dashTimer = 0;
-            this.state = this.dashing;
-            this.state();
-            return;
-        } 
-
-        // Check running
-        if (CONTROLLER.RIGHT || CONTROLLER.LEFT){
-            this.state = this.running;
-            this.state();
-            return;
-        }
-        
-        // Check jumping
-        if (CONTROLLER.A && this.canJump){ 
-            this.canJump = false;
-            this.state = this.jumping;
-            this.state();
-            return;
-        }
-
-        // Check falling
-        if (this.yVelocity > this.yFallThreshold){
-            this.canJump = false;
-            this.state = this.falling;
-            this.state();
-            return;
-        }
+        if (changingState) this.changeStateCheck = this.idleStateCheck;
 
         // Perform 'idle' behavior
-        this.direction > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
+        this.xDirection > 0 ? this.swapTag("Idle", true) : this.swapTag("IdleLeft", true);
         this.controlX();
         this.moveY();
-        if (!CONTROLLER.A && !this.canJump) this.canJump = true;
+        if (!CONTROLLER.A) this.canJump = true;
 
     }
 
@@ -226,46 +244,50 @@ class Slime extends AnimatedEntity {
      * Slime is on the ground, moving and accelerating
      * @author Nathan Brown
      */
-    running (){
+    running (changingState = false){
 
-        // Check dashing
-        if (CONTROLLER.B && this.canDash) {
-            this.canDash = false;
-            this.yVelocity = 0;
-            this.timers.dashTimer = 0;
-            this.state = this.dashing;
-            this.state();
-            return;
-        } 
+        if (changingState) this.changeStateCheck = () => {
 
-        // Check jumping
-        if (CONTROLLER.A && this.canJump){ 
-            this.canJump = false;
-            this.state = this.jumping;
-            this.state();
-            return;
-        }
+            // Check dashing
+            if (CONTROLLER.B && this.canDash) {
+                this.canDash = false;
+                this.yVelocity = 0;
+                this.timers.dashTimer = 0;
+                this.state = this.dashing;
+                this.state(true);
+                return;
+            } 
 
-        // Check falling
-        if (this.yVelocity > this.yFallThreshold){
-            this.canJump = false;
-            this.state = this.falling;
-            this.state();
-            return;
-        }
-        
-        // Check idle
-        if (!(CONTROLLER.RIGHT || CONTROLLER.LEFT)){
-            this.state = this.idle;
-            this.state();
-            return;
-        }
+            // Check jumping
+            if (CONTROLLER.A && this.canJump){ 
+                this.canJump = false;
+                this.state = this.jumping;
+                this.state(true);
+                return;
+            }
+
+            // Check falling
+            if (this.yVelocity > this.yFallThreshold){
+                // this.canJump = false;
+                this.state = this.falling;
+                this.state(true);
+                return;
+            }
+            
+            // Check idle
+            if (!(CONTROLLER.RIGHT || CONTROLLER.LEFT)){
+                this.state = this.idle;
+                this.state(true);
+                return;
+            }
+
+        };
 
         // Perform 'running' behavior
-        this.direction > 0 ? this.tag = "Move" : this.tag = "MoveLeft";
+        this.xDirection > 0 ? this.tag = "Move" : this.tag = "MoveLeft";
         this.controlX();
         this.moveY();
-        if (!CONTROLLER.A && !this.canJump) this.canJump = true;
+        if (!CONTROLLER.A) this.canJump = true;
 
     }
 
@@ -274,44 +296,39 @@ class Slime extends AnimatedEntity {
      * flags to determine when the slime can jump. 
      * @author Nathan Brown
      */
-    jumping (){
+    jumping (changingState = false){
 
-        // Check dashing
-        if (CONTROLLER.B && this.canDash) {
-            this.canDash = false;
-            this.yVelocity = 0;
-            this.timers.dashTimer = 0;
-            this.state = this.dashing;
-            this.state();
-            return;
-        }
-        
-        // Check still jumping
-        if(CONTROLLER.A && !this.isJumping){
-            this.isJumping = true;
-            this.yVelocity = this.jumpVelocity - Math.abs(this.momentum / 2.5);
-        }
+        if (changingState) this.changeStateCheck = () => {
 
-        // Check climbing
-        /*if (this.collisions.includes("right") || this.collisions.includes("left")){
-            this.yVelocity = 0;
-            this.timers.climbTimer = 0;
-            this.state = this.climbing;
-            this.state();
-            return;
-        }*/
-        
-        // Check falling
-        if (!CONTROLLER.A || this.yVelocity > 0){
-            this.isJumping = false;
-            this.yVelocity = Math.max(this.yVelocity, -(PARAMS.SCALE / 5));
-            this.state = this.falling;
-            this.state();
-            return;
-        }
+            // Check dashing
+            if (CONTROLLER.B && this.canDash) {
+                this.canDash = false;
+                this.yVelocity = 0;
+                this.timers.dashTimer = 0;
+                this.state = this.dashing;
+                this.state(true);
+                return;
+            }
+            
+            // Check first jumping
+            if(CONTROLLER.A && !this.isJumping){
+                this.isJumping = true;
+                this.yVelocity = this.jumpVelocity - Math.abs(this.momentum / 2.5);
+            }
+            
+            // Check falling
+            if (!CONTROLLER.A || this.yVelocity > 0){
+                this.isJumping = false;
+                this.yVelocity = Math.max(this.yVelocity, -2 / PARAMS.SCALE);
+                this.state = this.falling;
+                this.state(true);
+                return;
+            }
+
+        };
         
         // Perform 'jumping' behaviors
-        this.direction > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
+        this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
         this.controlX();
         this.moveY();
     
@@ -321,47 +338,52 @@ class Slime extends AnimatedEntity {
      * Slime falls downward until it collides with a tile.
      * @author Nathan Brown
      */
-    falling (){
+    falling (changingState = false){
 
-        // Check dashing
-        if (CONTROLLER.B && this.canDash) {
-            this.canDash = false;
-            this.yVelocity = 0;
-            this.timers.dashTimer = 0;
-            this.state = this.dashing;
-            this.state();
-            return;
-        }
+        if (changingState) this.changeStateCheck = () => {
 
-        let landed = this.collisions.includes("bottom");
+            // Check dashing
+            if (CONTROLLER.B && this.canDash) {
+                this.canDash = false;
+                this.yVelocity = 0;
+                this.timers.dashTimer = 0;
+                this.state = this.dashing;
+                this.state(true);
+                return;
+            }
 
-        // Check running
-        if (landed && (CONTROLLER.RIGHT || CONTROLLER.LEFT)){
-            this.yVelocity = 1 / PARAMS.SCALE;
-            this.state = this.running;
-            this.state();
-            return;
-        }
-        
-        // Check idle
-        if (landed){
-            this.yVelocity = 1 / PARAMS.SCALE;
-            this.state = this.idle;
-            this.state();
-            return;
-        }
+            let landed = this.tileCollisions.includes("bottom");
 
-        // Check climbing
-        /*if (this.collisions.includes("right") || this.collisions.includes("left")){
-            this.yVelocity = 0;
-            this.timers.climbTimer = 0;
-            this.state = this.climbing;
-            this.state();
-            return;
-        }*/
+            // Check running
+            if (landed && (CONTROLLER.RIGHT || CONTROLLER.LEFT)){
+                this.yVelocity = 1 / PARAMS.SCALE;
+                this.state = this.running;
+                this.state(true);
+                return;
+            }
+            
+            // Check idle
+            if (landed){
+                this.yVelocity = 1 / PARAMS.SCALE;
+                this.state = this.idle;
+                this.state(true);
+                return;
+            }
+
+            // Check climbing
+            if (this.tileCollisions.includes("right") || this.tileCollisions.includes("left")){
+                this.yVelocity = 0;
+                this.timers.climbTimer = 0;
+                this.slideSpeed = 0;
+                this.state = this.climbing;
+                this.state(true);
+                return;
+            }
+
+        };
 
         // Perform 'falling' behaviors
-        this.direction > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
+        this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
         this.controlX();
         this.moveY();
 
@@ -375,17 +397,27 @@ class Slime extends AnimatedEntity {
      *          Implement line-line checking for right side tile collision.
      * @author Nathan Brown
      */
-    dashing (){
-        
-        if (this.timers.dashTimer < 0.15) {
-            this.moveX(this.dashSpeed * this.direction);
-            return;
+    dashing (changingState = false){
+
+        if (changingState) this.changeStateCheck = () => {
+
+            if (this.timers.dashTimer > 0.15){
+
+                if (this.tileCollisions.includes("bottom")){
+                    if (CONTROLLER.RIGHT || CONTROLLER.LEFT) this.state = this.running;
+                    else this.state = this.idle;
+                    this.state(true);
+                    return;
+                }
+
+                this.state = this.falling;
+                this.state(true);
+                return;
+
+            }
+
         }
         
-        // Check idle
-        this.state = this.idle;
-        this.state();
-
         /*
         if (linePlaneIntersect(lastHitboxTop, lastHitboxLeft, entity.hitbox.top, entity.hitbox.left, 
                 this.hitbox.top, this.hitbox.bottom, this.hitbox.right) ||
@@ -398,45 +430,91 @@ class Slime extends AnimatedEntity {
                 this.hitbox.top, this.hitbox.bottom, this.hitbox.left)
             ) directionOfEntity = 'right';
         */
+        this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
+        if (this.timers.dashTimer <= 0.15) this.moveX(this.dashSpeed * this.xDirection);
     }
 
     /**
      * Slime sticks and slides on the wall and can jump off of it
      * @author Nathan Brown
      */
-    /*climbing (){
+    climbing (changingState = false){
 
-        let landed = this.collisions.includes("bottom");
+        if (changingState) this.changeStateCheck = () => {
 
-        // Check falling
-        if ((this.direction > 0 && CONTROLLER.LEFT) || (this.direction <= 0 && CONTROLLER.RIGHT) && !(this.collisions.includes("left") || this.collisions.includes("right"))){
-            this.state = this.falling;
-            this.state();
-            return;
-        }
+            let landed = this.tileCollisions.includes("bottom");
 
-        // Check running
-        if (landed && (CONTROLLER.RIGHT || CONTROLLER.LEFT)){
-            this.yVelocity = 1 / PARAMS.SCALE;
-            this.state = this.running;
-            this.state();
-            return;
-        }
-        
-        // Check idle
-        if (landed){
-            this.yVelocity = 1 / PARAMS.SCALE;
-            this.state = this.idle;
-            this.state();
-            return
+            // Check wallJumping
+            if (CONTROLLER.A && this.canJump){
+                this.xDirection = this.xDirection > 0 ? -1 : 1;
+                this.momentum = this.maxMom * this.xDirection;
+                this.timers.jumpTimer = 0;
+                this.canJump = false;
+                this.state = this.wallJumping;
+                this.state(true);
+                return;
+            }
+
+            // Check falling
+            if (!((this.xDirection > 0 && CONTROLLER.RIGHT) || (this.xDirection <= 0 && CONTROLLER.LEFT)) || 
+                    !(this.tileCollisions.includes("left") || this.tileCollisions.includes("right"))){
+                this.state = this.falling;
+                this.state(true);
+                return;
+            }
+
         }
 
         // Perform 'climbing' behaviors
-        this.direction > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
-        this.moveX(this.direction, 0);
-        if (this.timers.climbTimer > 0.2) this.moveY(Math.min(this.yVelocity / 2, 2.5));
+        this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
+        this.moveX(this.xDirection);
+        this.moveY(this.slideSpeed);
+        if (this.timers.climbTimer > 0.1 && this.slideSpeed < this.maxYVelocity) this.slideSpeed = this.slideSpeed + (PARAMS.GRAVITY / 2) * GAME.tickMod;
+        if (!CONTROLLER.A) this.canJump = true;
 
-    }*/
+    }
+
+    /**
+     * Slime jumps off the wall
+     * @author Nathan Brown
+     */
+    wallJumping (changingState = false){
+
+        if (changingState) this.changeStateCheck = () => {
+
+            // Check jumping
+            if (this.timers.jumpTimer > this.wallJumpTimeout * 2 && CONTROLLER.A){
+                this.state = this.jumping;
+                this.state(true);
+                return;
+            }
+
+
+            // Check falling
+            if ((this.timers.jumpTimer > this.wallJumpTimeout && !CONTROLLER.A) || 
+                    (this.direction > 0 && this.tileCollisions.includes("right")) || 
+                    (this.direction <= 0 && this.tileCollisions.includes("left"))){
+                this.isJumping = false;
+                this.yVelocity = Math.max(this.yVelocity, -2 / PARAMS.SCALE);
+                this.state = this.falling;
+                this.state(true);
+                return;
+            }
+            
+            // Check starting of wallJumping
+            if(!this.isJumping){
+                this.isJumping = true;
+                this.yVelocity = this.jumpVelocity * 0.6;
+            }
+
+        };
+
+        // Perform 'wallJumping' behaviors
+        this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
+        this.moveX(this.speed * 0.75 * this.xDirection);
+        this.moveY();
+
+    }
 
     /**
      * Function responsible for killing the current Slime entity and playing a camera animation as the slime is respawned.
