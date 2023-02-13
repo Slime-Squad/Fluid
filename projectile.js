@@ -1,8 +1,8 @@
 /**
- * Class representation of a Skiwi enemy.
+ * Class that will handle projectiles.
  * @author Xavier Hines
  */
-class Skiwi extends AnimatedEntity {
+class Projectile extends AnimatedEntity {
     /**
      * Creates a new instance of a charge item.
      * @param {String} tag The type of charge to be placed. One of "Earth", "Fire", "Ice", "Electric", or "Disabled".
@@ -11,41 +11,54 @@ class Skiwi extends AnimatedEntity {
      * @param {boolean} loop Whether the charge's animation loops over again, after having finished playing once.
      */
     constructor(tag, x, y, loop = true) {
-        super("./assets/graphics/characters/skiwi", tag, x, y, loop);
-        Object.assign(this, { tag, x, y, loop });
-        this.hitbox = new HitBox(x, y, 0, 0, 16*PARAMS.SCALE, 24*PARAMS.SCALE);
+        super("./assets/graphics/characters/projectile", tag, x, y, loop);
+        Object.assign(this, {tag, x, y, loop});
+        this.hitbox = new HitBox(x, y, 0, 0, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
 
         //Movement
-        this.direction = 1;
-        this.speed = PARAMS.SCALE/2;
-        this.lastX = x;
-        this.lastY = y;
+        this.speed = PARAMS.SCALE/4;
+        this.direction = 1
+
+        //Timers
+        this.timers = {
+            duration: 0
+        }
     }
 
     /**
      * Function called on every clock tick.
      */
     update() {
-        this.ski();
         this.hitbox.updatePos(this.x, this.y);
         this.hitbox.getCollisions().forEach((entity) => {
             if (entity.collideWithEntity) entity.collideWithEntity(this);
         });
-
         if(this.x == this.lastX) {
-           this.direction = this.direction * -1;
+            this.reset();
         }
-
         this.endOfCycleUpdates();
     }
 
     /**
-     * Moves the skiwi in the same direction on the X-axis until it hits a wall
-     * then it will change direction.
+     * Changes the animations and is responsible for moving the projectile.
      */
-    ski() {
-        this.direction > 0 ? this.tag = "WalkR" : this.tag = "WalkL";
+    shoot() {
+        this.tag = "Fireball";
+        if(this.timers.duration > 3) {
+            this.reset();
+        }
+        
         this.x += this.speed * this.direction;
+    }
+
+    /**
+     * Resets the the projectiles properties
+     */
+    reset() {
+        this.respawn();
+        this.tag = "Invisible";
+        this.timers.duration = 0;
+        this.direction = this.x > GAME.slime.x ? -1: 1;
     }
 
     /**
@@ -54,9 +67,14 @@ class Skiwi extends AnimatedEntity {
      */
     collideWithPlayer() {
         GAME.slime.kill();
+        this.reset();
     }
 
+    /**
+     * Draws the currenty entity's {@link AnimatedEntity.tag} animation. 
+     * @param {CanvasRenderingContext2D} ctx The canvas which the Batterflea will be drawn on
+     */
     draw(ctx) {
-        super.draw(ctx)
+        super.draw(ctx);
     }
 }

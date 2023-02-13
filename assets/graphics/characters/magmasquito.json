@@ -1,6 +1,6 @@
 { "frames": [
    {
-    "filename": "0#Walk",
+    "filename": "0#WalkL",
     "frame": { "x": 0, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -9,7 +9,7 @@
     "duration": 300
    },
    {
-    "filename": "1#Walk",
+    "filename": "1#WalkL",
     "frame": { "x": 24, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -18,7 +18,7 @@
     "duration": 300
    },
    {
-    "filename": "2#Walk",
+    "filename": "2#WalkL",
     "frame": { "x": 48, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -27,7 +27,7 @@
     "duration": 300
    },
    {
-    "filename": "3#Walk",
+    "filename": "3#WalkL",
     "frame": { "x": 72, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -36,7 +36,7 @@
     "duration": 300
    },
    {
-    "filename": "4#Walk",
+    "filename": "4#WalkL",
     "frame": { "x": 96, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -45,7 +45,7 @@
     "duration": 300
    },
    {
-    "filename": "5#Walk",
+    "filename": "5#WalkL",
     "frame": { "x": 120, "y": 0, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
@@ -54,26 +54,98 @@
     "duration": 300
    },
    {
-    "filename": "0#Suck",
+    "filename": "6#WalkL",
+    "frame": { "x": 144, "y": 0, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 300
+   },
+   {
+    "filename": "7#WalkL",
+    "frame": { "x": 168, "y": 0, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 300
+   },
+   {
+    "filename": "0#WalkR",
     "frame": { "x": 0, "y": 24, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
     "sourceSize": { "w": 16, "h": 16 },
-    "duration": 400
+    "duration": 300
    },
    {
-    "filename": "1#Suck",
+    "filename": "1#WalkR",
     "frame": { "x": 24, "y": 24, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
     "sourceSize": { "w": 16, "h": 16 },
-    "duration": 400
+    "duration": 300
    },
    {
-    "filename": "2#Suck",
+    "filename": "2#WalkR",
     "frame": { "x": 48, "y": 24, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 300
+   },
+   {
+    "filename": "3#WalkR",
+    "frame": { "x": 72, "y": 24, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 300
+   },
+   {
+    "filename": "4#WalkR",
+    "frame": { "x": 96, "y": 24, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 300
+   },
+   {
+    "filename": "5#WalkR",
+    "frame": { "x": 120, "y": 24, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 300
+   },
+   {
+    "filename": "6#WalkR",
+    "frame": { "x": 144, "y": 24, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 300
+   },
+   {
+    "filename": "7#WalkR",
+    "frame": { "x": 168, "y": 24, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 300
+   },
+   {
+    "filename": "0#SuckL",
+    "frame": { "x": 0, "y": 48, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -81,8 +153,71 @@
     "duration": 400
    },
    {
-    "filename": "3#Suck",
-    "frame": { "x": 72, "y": 24, "w": 16, "h": 16 },
+    "filename": "1#SuckL",
+    "frame": { "x": 24, "y": 48, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 400
+   },
+   {
+    "filename": "2#SuckL",
+    "frame": { "x": 48, "y": 48, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 400
+   },
+   {
+    "filename": "3#SuckL",
+    "frame": { "x": 72, "y": 48, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 400
+   },
+   {
+    "filename": "4#SuckL",
+    "frame": { "x": 96, "y": 48, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 400
+   },
+   {
+    "filename": "0#SuckR",
+    "frame": { "x": 0, "y": 72, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 400
+   },
+   {
+    "filename": "1#SuckR",
+    "frame": { "x": 24, "y": 72, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 400
+   },
+   {
+    "filename": "2#SuckR",
+    "frame": { "x": 48, "y": 72, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 400
+   },
+   {
+    "filename": "3#SuckR",
+    "frame": { "x": 72, "y": 72, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -95,7 +230,7 @@
   "version": "1.3-beta21-x64",
   "image": "Magmasquito-2.png",
   "format": "RGBA8888",
-  "size": { "w": 136, "h": 40 },
+  "size": { "w": 184, "h": 88 },
   "scale": "1"
  }
 }

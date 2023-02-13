@@ -15,10 +15,8 @@ class Batterflea extends AnimatedEntity {
         Object.assign(this, { tag, x, y, loop });
         this.hitbox = new HitBox(x, y, 0, 0, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
 
-        this.spawnX = x;
-        this.spawnY = y;
-
         //Movement
+        this.speed = PARAMS.SCALE/3;
         this.lastX = x;
         this.lastY = y;
         this.xMove = 0;
@@ -35,7 +33,7 @@ class Batterflea extends AnimatedEntity {
 
         //Timers
         this.timers = {
-            jumpTimer: 0
+            landTimer: 0
         }
     }
 
@@ -61,10 +59,9 @@ class Batterflea extends AnimatedEntity {
 
     /**
      * Called when this Batterflea collides with the player. Returns Batterlea
-     * to spawn and {@link GAME.slime.kill} the slime
+     * to spawn and {@link GAME.slime.kill()} the slime
      */
-    collideWithPlayer() {
-        this.setToSpawn();
+    collideWithPlayer() {   
         GAME.slime.kill();
     }
 
@@ -73,18 +70,22 @@ class Batterflea extends AnimatedEntity {
      */
     hop() {
         //deterines if Batterflea can jump and which direction
-        if(this.timers.jumpTimer > 3) {
+        if(this.timers.landTimer > .5) {
             this.canJump = true;
-            this.xMove = this.x > GAME.slime.x ? -(PARAMS.SCALE/3): (PARAMS.SCALE/3);
+            this.xMove = this.x > GAME.slime.x ? -this.speed: this.speed;
+            this.x > GAME.slime.x ? this.tag = "JumpL": this.tag = "JumpR";
         }
         
         //Moves the batterlfea on x axis
-        if(this.isAirborne) this.x += this.xMove;
+        if(this.isAirborne) {
+            this.timers.landTimer = 0;
+            this.x += this.xMove;
+        }
 
 
         if(this.canJump) {
             this.canJump = false;
-            this.timers.jumpTimer = 0;
+            this.timers.landTimer = 0;
             this.rise = this.bounce +  1 * this.direction;
             this.isAirborne = true;
         }
@@ -108,81 +109,16 @@ class Batterflea extends AnimatedEntity {
     }
 
     /**
-     * Returns the Batterflea to its spawn position.
+     * Kills this entity
      */
-    setToSpawn() {
-        this.x = this.spawnX;
-        this.y = this.spawnY;
-    }
-
-    //TODO: UPDATE COLLISION
-    // checkCollision() {
-    //     this.hitbox.updatePos(this.x+(PARAMS.SCALE), this.y+(PARAMS.SCALE));
-    //     let totalCollisions = 0;
-    //     GAME.entities.forEach(entity => {
-    //         if (!entity.hitbox) return;
-    //         if (entity instanceof Batterflea) return;
-    //         let collision = this.hitbox.collide2(entity.hitbox);
-    //         if (!collision) return;
-    //         totalCollisions++;
-    //         // console.log(collisions);
-    //         // console.log(entity.constructor.name);
-    //         switch (entity.constructor.name){
-    //             case 'Slime':
-    //                 entity.kill();
-    //                 //TODO set batterfleas actual spawn
-    //                 this.x = this.spawnX;
-    //                 this.y = this.spawnY;
-    //                 break;
-    //             case 'Tile':
-    //                 let lastHitboxLeft = this.lastX;
-    //                 let lastHitboxRight = this.lastX + this.hitbox.width;
-    //                 let lastHitboxBottom = this.lastY + this.topPadding;
-    //                 // let lastHitboxCenter = {x: lastHitboxLeft + this.hitbox.width / 2, y: lastHitboxBottom - this.hitbox.height / 2 };
-    //                 if (collision.direction !== 'bottom'){
-    //                     if ( 
-    //                         linePlaneIntersect(
-    //                             lastHitboxLeft, lastHitboxBottom, this.hitbox.left, this.hitbox.bottom, 
-    //                             entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
-    //                             ) ||
-    //                         linePlaneIntersect(
-    //                             lastHitboxRight, lastHitboxBottom, this.hitbox.right, this.hitbox.bottom, 
-    //                             entity.hitbox.left, entity.hitbox.right, entity.hitbox.top
-    //                             )
-    //                     ) {
-    //                         collision.direction = 'bottom';
-    //                         // console.log("collision reset to bottom");
-    //                     }
-    //                 }
-    //                 if (collision.direction === 'left'){
-    //                     this.x = entity.hitbox.right;
-    //                 } else if (collision.direction === 'right'){
-    //                     this.x = entity.hitbox.left - this.hitbox.width;
-    //                 } else if (collision.direction ==='top'){
-    //                     this.y = entity.hitbox.bottom;
-    //                 } else {
-    //                     this.y = entity.hitbox.top - this.hitbox.height;
-    //                     this.isAirborne = false;
-    //                 }
-    //                 this.hitbox.updatePos(this.x, this.y);
-    //                 break;
-    //             case 'KillBox':
-    //                 if (this.isAlive) this.kill();
-    //                 break;
-    //         }
-    //     });
-
-    //     if (totalCollisions > 5){
-    //         // console.log("collisions: " + totalCollisions);
-    //         this.x = this.lastX;
-    //         this.y = this.lastY;
-    //     }
-    // }
-
     kill() {
         this.isAlive = false;
     }
 
+    /**
+     * Draws the currenty entity's {@link AnimatedEntity.tag} animation. 
+     * @param {CanvasRenderingContext2D} ctx The canvas which the Batterflea will be drawn on
+     */
     draw(ctx) {
         super.draw(ctx)
     }
