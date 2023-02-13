@@ -16,6 +16,7 @@ class Batterflea extends AnimatedEntity {
         this.hitbox = new HitBox(x, y, 0, 0, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
 
         //Movement
+        this.speed = PARAMS.SCALE/3;
         this.lastX = x;
         this.lastY = y;
         this.xMove = 0;
@@ -32,7 +33,7 @@ class Batterflea extends AnimatedEntity {
 
         //Timers
         this.timers = {
-            jumpTimer: 0
+            landTimer: 0
         }
     }
 
@@ -69,18 +70,22 @@ class Batterflea extends AnimatedEntity {
      */
     hop() {
         //deterines if Batterflea can jump and which direction
-        if(this.timers.jumpTimer > 3) {
+        if(this.timers.landTimer > .5) {
             this.canJump = true;
-            this.xMove = this.x > GAME.slime.x ? -(PARAMS.SCALE/3): (PARAMS.SCALE/3);
+            this.xMove = this.x > GAME.slime.x ? -this.speed: this.speed;
+            this.x > GAME.slime.x ? this.tag = "JumpL": this.tag = "JumpR";
         }
         
         //Moves the batterlfea on x axis
-        if(this.isAirborne) this.x += this.xMove;
+        if(this.isAirborne) {
+            this.timers.landTimer = 0;
+            this.x += this.xMove;
+        }
 
 
         if(this.canJump) {
             this.canJump = false;
-            this.timers.jumpTimer = 0;
+            this.timers.landTimer = 0;
             this.rise = this.bounce +  1 * this.direction;
             this.isAirborne = true;
         }

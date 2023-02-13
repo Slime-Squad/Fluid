@@ -22,7 +22,9 @@
             "slimedrop.png",
             "slimedrop.json",
             "slimeslide.png",
-            "slimeslide.json"
+            "slimeslide.json",
+            "projectile.png",
+            "projectile.json"
         ],
 
         "item": [
