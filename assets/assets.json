@@ -33,6 +33,8 @@
             "ice.png",
             "dirt.png",
             "stone.png",
+            "stone_bg_decal.png",
+            "stone_fg_decal.png",
             "fire.png"
         ]
     },
