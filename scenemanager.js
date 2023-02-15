@@ -11,7 +11,7 @@ class SceneManager {
         this.y = 0;
         this.deathScreen = new DeathScreen();
         this.slimeHealth = new Health();
-        this.backDrop = new BackDrop("dirt");
+        this.backDrop = new BackDrop("cave");
         this.start = Date.now();
         this.isFrozen = false;
         this.frames = 0;
