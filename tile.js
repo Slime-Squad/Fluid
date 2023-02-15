@@ -48,7 +48,7 @@ class Tile {
      * Function responsible for handling the collision behavior of the tile (this) and player
      */
     collideWithPlayer(){
-        this.collideWithEntity(GAME.slime);
+        return this.collideWithEntity(GAME.slime);
     }
 
     /**
@@ -56,30 +56,27 @@ class Tile {
      * @param {AnimatedEntity} entity - the entity colliding with the tile (this)
      */
     collideWithEntity(entity){
-        // entity.hitbox.updatePos(entity.x, entity.y); // this didn't work... why?
+        
         let directionOfEntity = entity.hitbox.getCollisionDirection(this.hitbox);
+    
         const lastHitboxLeft = entity.lastX + entity.hitbox.leftPad;
         const lastHitboxRight = entity.lastX + entity.hitbox.leftPad + entity.hitbox.width;
         const lastHitboxBottom = entity.lastY + entity.hitbox.height + entity.hitbox.topPad;
-        if (directionOfEntity !== 'bottom'){
-            if ( 
-                linePlaneIntersect(
-                    lastHitboxLeft, lastHitboxBottom, entity.hitbox.left, entity.hitbox.bottom, 
-                    this.hitbox.left, this.hitbox.right, this.hitbox.top
-                    ) ||
-                linePlaneIntersect(
-                    lastHitboxRight, lastHitboxBottom, entity.hitbox.right, entity.hitbox.bottom, 
-                    this.hitbox.left, this.hitbox.right, this.hitbox.top
-                    )
-            ){
-                directionOfEntity = 'bottom';
-            }
-        }
-        if (directionOfEntity === 'left') entity.x = this.hitbox.right - entity.hitbox.leftPad;
-        else if (directionOfEntity === 'right') entity.x = this.hitbox.left - entity.hitbox.width - entity.hitbox.leftPad;
-        else if (directionOfEntity ==='top') entity.y = this.hitbox.bottom - entity.hitbox.topPad;
+        
+        // Intercede with line - plane collision
+        if (directionOfEntity !== "bottom" && linePlaneIntersect(lastHitboxLeft, lastHitboxBottom, entity.hitbox.left, entity.hitbox.bottom, 
+                this.hitbox.left, this.hitbox.right, this.hitbox.top ) ||
+            linePlaneIntersect(lastHitboxRight, lastHitboxBottom, entity.hitbox.right, entity.hitbox.bottom, 
+                this.hitbox.left, this.hitbox.right, this.hitbox.top )
+            ) directionOfEntity = "bottom";
+
+        // Adjust entity x and y value
+        if (directionOfEntity === "left") entity.x = this.hitbox.right - entity.hitbox.leftPad + 1 / PARAMS.SCALE;
+        else if (directionOfEntity === "right") entity.x = this.hitbox.left - entity.hitbox.width - entity.hitbox.leftPad - 1 / PARAMS.SCALE;
+        else if (directionOfEntity ==="top") entity.y = this.hitbox.bottom - entity.hitbox.topPad;
         else entity.y = this.hitbox.top - entity.hitbox.height - entity.hitbox.topPad;
         entity.hitbox.updatePos(entity.x, entity.y);
+        return directionOfEntity;
     }
 }
 

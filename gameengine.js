@@ -10,12 +10,6 @@ class GameEngine {
         this.entities = [];
 
          //for Gamepad
-        this.left = false;
-        this.right = false;
-        this.up = false;
-        this.down = false;
-        this.A = false;
-        this.B = false;
         this.gamepad = null;
        
         // Information on the input
@@ -128,21 +122,20 @@ class GameEngine {
     gamepadUpdate() {
         this.gamepad = navigator.getGamepads()[0];
         if (this.gamepad != null) {
-            this.A = this.gamepad.buttons[0].pressed || this.keys[" "];
-            this.B = this.gamepad.buttons[1].pressed || this.keys["j"] || this.keys["J"];
+            CONTROLLER.A = this.gamepad.buttons[0].pressed || this.keys[" "];
+            CONTROLLER.B = this.gamepad.buttons[1].pressed || this.gamepad.buttons[2].pressed || this.keys["j"] || this.keys["J"];
             //checks if d-pad is used or joysticks meet a certain threshold
-            this.left = this.gamepad.buttons[14].pressed || this.gamepad.axes[0] < -0.3 || this.keys["a"] || this.keys["A"];
-            this.right = this.gamepad.buttons[15].pressed || this.gamepad.axes[0] > 0.3 || this.keys["d"] || this.keys["D"];
-            this.up = this.gamepad.buttons[12].pressed || this.gamepad.axes[1] < -0.3 || this.keys["w"] || this.keys["W"];
-            this.down = this.gamepad.buttons[13].pressed || this.gamepad.axes [1] > 0.3 || this.keys["s"] || this.keys["S"];
+            CONTROLLER.LEFT = this.gamepad.buttons[14].pressed || this.gamepad.axes[0] < -0.3 || this.keys["a"] || this.keys["A"];
+            CONTROLLER.RIGHT = this.gamepad.buttons[15].pressed || this.gamepad.axes[0] > 0.3 || this.keys["d"] || this.keys["D"];
+            CONTROLLER.UP = this.gamepad.buttons[12].pressed || this.gamepad.axes[1] < -0.3 || this.keys["w"] || this.keys["W"];
+            CONTROLLER.DOWN = this.gamepad.buttons[13].pressed || this.gamepad.axes [1] > 0.3 || this.keys["s"] || this.keys["S"];
         } else {
-            this.A = this.keys[" "];
-            this.B = this.keys["j"] || this.keys["J"];
-            //checks if d-pad is used or joysticks meet a certain threshold
-            this.left = this.keys["a"] || this.keys["A"];
-            this.right = this.keys["d"] || this.keys["D"];
-            this.up = this.keys["w"] || this.keys["W"];
-            this.down = this.keys["s"] || this.keys["S"];
+            CONTROLLER.A = this.keys[" "];
+            CONTROLLER.B = this.keys["j"] || this.keys["J"];
+            CONTROLLER.LEFT = this.keys["a"] || this.keys["A"];
+            CONTROLLER.RIGHT = this.keys["d"] || this.keys["D"];
+            CONTROLLER.UP = this.keys["w"] || this.keys["W"];
+            CONTROLLER.DOWN = this.keys["s"] || this.keys["S"];
         }
     }
 

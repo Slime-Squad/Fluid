@@ -1,6 +1,6 @@
 /**
  * Class to extend for the creation of an Animated Entity.
- * @author Jasper Newkirk, Nathan Brown
+ * @author Jasper Newkirk, Nathan Brown, Xavier Hines
  */
 class AnimatedEntity {
     /**
@@ -10,6 +10,7 @@ class AnimatedEntity {
      * @param {number} x The x-coordinate associated with the top-left corner of the entity's sprite on the canvas.
      * @param {number} y The y-coordinate associated with the top-left corner of the entity's sprite on the canvas.
      * @param {boolean} loop Whether the entity's animation loops over again, after having finished playing once.
+     * @abstract
      */
     constructor(path, tag, x, y, loop) {
         Object.assign(this, { path, tag, x, y, loop });
@@ -18,6 +19,8 @@ class AnimatedEntity {
         this.frameTimer = {frameIndex:0, elapsedTime:0}; // handles frame timing
         this.lastX = x;
         this.lastY = y;
+        this.spawnX = x;
+        this.spawnY = y;
     }
     /**
      * Draws the current entity's {@link AnimatedEntity.tag} animation. Called on every clock tick.
@@ -48,12 +51,21 @@ class AnimatedEntity {
      * Swaps the current entity's animation for another, starting from the first frame.
      * @param {string} tag The name of the new animation of the entity.
      * @param {boolean} loop Whether the entity's new animation loops over again, after having finished playing once.
+     * @inheritdoc
      */
     swapTag(tag, loop = false) {
         this.tag = tag;
         this.loop = loop;
         this.frameTimer.frameIndex = 0;
         this.frameTimer.elapsedTime = 0;
+    }
+
+    /**
+     * Sets given entity to it spawn location.
+     */
+    respawn() {
+        this.x = this.spawnX;
+        this.y = this.spawnY;
     }
     
     /**

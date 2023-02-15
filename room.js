@@ -69,16 +69,26 @@ class Room {
                                     this.tiles[layer].push(new Charge("Ice", x, y));
                                     break;
                                 case 6:
+<<<<<<< HEAD
                                     this.tiles[layer].push(new Batterflea("Jump", x, y));
+=======
+                                    this.tiles[layer].push(new Batterflea("JumpL", x, y));                                   
+>>>>>>> 7dae6297eeca855774170970340c5cc9bf581d4b
                                     break;
                                 case 7:
                                     this.tiles[layer].push(new Bubble("Idle", x, y));
                                     break;
                                 case 8:
-                                    this.tiles[layer].push(new Magmasquito("Walk", x, y));
+                                    let proj = new Projectile("Invisible", x, y);
+                                    this.tiles[layer].push(new Magmasquito("SuckL", x, y, proj));
+                                    this.tiles[layer].push(proj);
                                     break;
                                 case 9:
+<<<<<<< HEAD
                                     this.tiles[layer].push(new Skiwi("Walk", x, y));
+=======
+                                    this.tiles[layer].push(new Skiwi("WalkL", x, y));                                    
+>>>>>>> 7dae6297eeca855774170970340c5cc9bf581d4b
                                     break;
                                 case 18:
                                     this.tiles[layer].push(new KillBox(x, y));

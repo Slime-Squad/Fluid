@@ -17,10 +17,14 @@
             "magmasquito.png",
             "skiwi.json",
             "skiwi.png",
-            "slimeBounce.png",
-            "slimeBounce.json",
-            "SlimeSlide.png",
-            "SlimeSlide.json"
+            "slimebounce.png",
+            "slimebounce.json",
+            "slimedrop.png",
+            "slimedrop.json",
+            "slimeslide.png",
+            "slimeslide.json",
+            "projectile.png",
+            "projectile.json"
         ],
 
         "item": [
