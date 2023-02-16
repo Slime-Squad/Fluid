@@ -3,7 +3,7 @@
 class Timer {
     constructor() {
         this.gameTime = 0;
-        this.maxStep = 0.0167;
+        this.maxStep = 1/30;
         this.lastTimestamp = 0;
     };
 

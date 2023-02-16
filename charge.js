@@ -38,7 +38,7 @@ class Charge extends AnimatedEntity {
      */
     collideWithPlayer(){
         if (this.tag != "Disabled") { // charge collected
-            GAME.slime.charges[this.tag]++;
+            GAME.slime.charges[this.tag] = Math.min(GAME.slime.charges[this.tag] + 1, 1);
             this.tag = "Disabled";
         }
     }

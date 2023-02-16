@@ -41,7 +41,7 @@ class Slime extends AnimatedEntity {
         this.xDirection = 1;
         this.yVelocity = 1 / PARAMS.SCALE;
         this.maxYVelocity = 6;
-        this.dashTimeout = 0.3;
+        this.dashTimeout = 0.21;
         this.slideSpeed = 0;
         this.wallJumpTimeout = 0.2;
         this.yFallThreshold = (1 / PARAMS.SCALE) * 10;
@@ -190,7 +190,8 @@ class Slime extends AnimatedEntity {
 
     idleStateCheck(){
         // Check dashing
-        if (CONTROLLER.B && this.canDash) {
+        if (CONTROLLER.B && this.canDash && this.charges["Electric"] >= 1) {
+            this.charges["Electric"] = 0;
             this.canDash = false;
             this.yVelocity = 0;
             this.timers.dashTimer = 0;
@@ -254,7 +255,8 @@ class Slime extends AnimatedEntity {
         if (changingState) this.changeStateCheck = () => {
 
             // Check dashing
-            if (CONTROLLER.B && this.canDash) {
+            if (CONTROLLER.B && this.canDash && this.charges["Electric"] >= 1) {
+                this.charges["Electric"] = 0;
                 this.canDash = false;
                 this.yVelocity = 0;
                 this.timers.dashTimer = 0;
@@ -308,7 +310,8 @@ class Slime extends AnimatedEntity {
         if (changingState) this.changeStateCheck = () => {
 
             // Check dashing
-            if (CONTROLLER.B && this.canDash) {
+            if (CONTROLLER.B && this.canDash && this.charges["Electric"] >= 1) {
+                this.charges["Electric"] = 0;
                 this.canDash = false;
                 this.yVelocity = 0;
                 this.timers.dashTimer = 0;
@@ -344,7 +347,8 @@ class Slime extends AnimatedEntity {
         if (changingState) this.changeStateCheck = () => {
 
             // Check dashing
-            if (CONTROLLER.B && this.canDash) {
+            if (CONTROLLER.B && this.canDash && this.charges["Electric"] >= 1) {
+                this.charges["Electric"] = 0;
                 this.canDash = false;
                 this.yVelocity = 0;
                 this.timers.dashTimer = 0;
@@ -417,7 +421,14 @@ class Slime extends AnimatedEntity {
 
             }
 
+            if (this.tileCollisions.includes("left") || this.tileCollisions.includes("right")){
+                this.state = this.climbing;
+                this.state(true);
+                return;
+            }
+
         }
+        
         
         /*
         if (linePlaneIntersect(lastHitboxTop, lastHitboxLeft, entity.hitbox.top, entity.hitbox.left, 
@@ -432,7 +443,20 @@ class Slime extends AnimatedEntity {
             ) directionOfEntity = 'right';
         */
         this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
-        if (this.timers.dashTimer <= this.dashTimeout) this.moveX(this.dashSpeed * this.xDirection);
+        if (this.timers.dashTimer <= this.dashTimeout) {
+            // if (this.xDirection > 0){
+            //     let dashRect = new HitBox(this.hitbox.right, this.hitbox.top, 0, 0, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height);
+            //     let dashCollisions = dashRect.getCollisions()
+            //     if (dashCollisions.length > 0) {
+            //         this.x = dashCollisions.reduce((a,b) => {return a.left < b.left ? a : b}).left - this.hitbox.width - this.hitbox.leftPad;
+            //         this.hitbox.updatePos(this.x,this.y);
+            //         return;
+            //     }
+            // } else {
+            // }
+            this.moveX(this.dashSpeed * this.xDirection);
+        }
+
     }
 
     /**
@@ -443,7 +467,7 @@ class Slime extends AnimatedEntity {
 
         if (changingState) this.changeStateCheck = () => {
 
-            let landed = this.tileCollisions.filter(dir => dir === "bottom").length > 1;
+            let landed = this.tileCollisions.includes("bottom");
 
             // Check running
             if (landed && (CONTROLLER.RIGHT || CONTROLLER.LEFT)){
