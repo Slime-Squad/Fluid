@@ -1,4 +1,4 @@
-const DIRECTIONS = {
+const ENTITY_DIRECTIONS = {
     "bottom" : 0,
     "left" : 1,
     "top" : 2,
@@ -19,11 +19,11 @@ class Tile {
      * @param {number} imgY The y-coordinate associated with the top-left corner of the tile's sprite on the given image.
      * @param {number} w The width of the tile's sprite on the given image. (default 8)
      * @param {number} h The height of the tile's sprite on the given image. (default 8)
-     * @param {boolean} directionsAirAdjacent Directions with air adjacent to tile. (default [])
+     * @param {boolean} collidableDirections Directions with air adjacent to tile. (default [])
      */
-    constructor(img, x, y, imgX, imgY, w=8, h=8, directionsAirAdjacent=[]) {
-        Object.assign(this, { img, x, y, imgX, imgY, w, h, directionsAirAdjacent });
-        if (this.directionsAirAdjacent.length > 0) this.hitbox = new HitBox(this.x, this.y, 0, 0, this.w*PARAMS.SCALE, this.h*PARAMS.SCALE);
+    constructor(img, x, y, imgX, imgY, w=8, h=8, collidableDirections=[]) {
+        Object.assign(this, { img, x, y, imgX, imgY, w, h, collidableDirections });
+        if (this.collidableDirections.length > 0) this.hitbox = new HitBox(this.x, this.y, 0, 0, this.w*PARAMS.SCALE, this.h*PARAMS.SCALE);
     }
 
     /**
@@ -35,7 +35,7 @@ class Tile {
         const y = this.y - GAME.camera.y;
         if (x > -this.w*PARAMS.SCALE && x < PARAMS.WIDTH && y > -this.h*PARAMS.SCALE && y < PARAMS.HEIGHT) {
             ctx.drawImage(this.img, this.imgX, this.imgY, this.w, this.h, x, y, this.w*PARAMS.SCALE, this.h*PARAMS.SCALE);
-            if (this.directionsAirAdjacent.length > 0 && PARAMS.DEBUG) {
+            if (this.collidableDirections.length > 0 && PARAMS.DEBUG) {
                 ctx.strokeStyle = "red";
                 ctx.beginPath();
                 ctx.rect(this.hitbox.left - GAME.camera.x, this.hitbox.top - GAME.camera.y, this.hitbox.width, this.hitbox.height);   
@@ -66,7 +66,7 @@ class Tile {
         
         let directionOfEntity = entity.hitbox.getCollisionDirection(this.hitbox);
 
-        // if (entity.constructor.name == "Slime") console.log(this.directionsAirAdjacent + ", direction of entity: " + DIRECTIONS[directionOfEntity]);
+        // if (entity.constructor.name == "Slime") console.log(this.collidableDirections + ", direction of entity: " + DIRECTIONS[directionOfEntity]);
         
         // const lastHitboxLeft = entity.lastX + entity.hitbox.leftPad;
         // const lastHitboxRight = entity.lastX + entity.hitbox.leftPad + entity.hitbox.width;
@@ -79,7 +79,8 @@ class Tile {
         //         this.hitbox.left, this.hitbox.right, this.hitbox.top )
         //     ) directionOfEntity = "bottom";
             
-        if (!this.directionsAirAdjacent.includes(DIRECTIONS[directionOfEntity])) directionOfEntity = DIRECTIONS[this.directionsAirAdjacent[0]];
+        if (!this.collidableDirections.includes(ENTITY_DIRECTIONS[directionOfEntity])) 
+            directionOfEntity = ENTITY_DIRECTIONS[this.collidableDirections[0]];
 
         // Adjust entity x and y value
         if (directionOfEntity === "left") entity.x = this.hitbox.right - entity.hitbox.leftPad + 1 / PARAMS.SCALE;

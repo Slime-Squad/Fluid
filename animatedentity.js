@@ -30,9 +30,7 @@ class AnimatedEntity {
         this.frames.animateTag(ctx, this.x - GAME.camera.x, this.y - GAME.camera.y, this.frameTimer, this.spritesheet, this.tag, this.loop);
         if (this.hitbox && PARAMS.DEBUG) {
             ctx.strokeStyle = "red";
-            ctx.beginPath();
-            ctx.rect(this.hitbox.left - GAME.camera.x, this.hitbox.top - GAME.camera.y, this.hitbox.width, this.hitbox.height);   
-            ctx.stroke();
+            ctx.strokeRect(this.hitbox.left - GAME.camera.x, this.hitbox.top - GAME.camera.y, this.hitbox.width, this.hitbox.height);
             ctx.font = "12px segoe ui";
             ctx.fillStyle = "white";
             ctx.fillText(this.constructor.name.toUpperCase() + ": x=" + this.x + " y=" + this.y, this.hitbox.left - GAME.camera.x, this.hitbox.bottom - GAME.camera.y + 4*PARAMS.SCALE);

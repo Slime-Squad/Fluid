@@ -25,7 +25,7 @@ class GameEngine {
         this.startInput();
         this.timer = new Timer();
         this.camera = new SceneManager();
-        this.entities.push(this.camera);
+        this.addEntity(this.camera);
     };
 
     start() {
@@ -101,8 +101,9 @@ class GameEngine {
         });
     };
 
-    addEntity(entity) {
+    addEntity(entity, alive=true) {
         if (entity instanceof Slime) this.slime = entity;
+        entity.isAlive = alive;
         this.entities.push(entity);
     };
 
@@ -129,6 +130,11 @@ class GameEngine {
             CONTROLLER.RIGHT = this.gamepad.buttons[15].pressed || this.gamepad.axes[0] > 0.3 || this.keys["d"] || this.keys["D"];
             CONTROLLER.UP = this.gamepad.buttons[12].pressed || this.gamepad.axes[1] < -0.3 || this.keys["w"] || this.keys["W"];
             CONTROLLER.DOWN = this.gamepad.buttons[13].pressed || this.gamepad.axes [1] > 0.3 || this.keys["s"] || this.keys["S"];
+            CONTROLLER.BACK = this.gamepad.buttons[8].pressed || this.keys["r"] || this.keys["R"];
+            CONTROLLER.RTRIG = this.gamepad.buttons[7].pressed || this.keys["l"] || this.keys["L"];
+            CONTROLLER.RTRIG = this.gamepad.buttons[7].pressed || this.keys["l"] || this.keys["L"];
+            CONTROLLER.HOME = this.gamepad.buttons[16].pressed || this.keys["\`"] || this.keys["\~"];
+            // if (PARAMS.DEBUG) this.gamepad.buttons.forEach((button, index) => { if (button.pressed) console.log("GamepadButton: " + index)});
         } else {
             CONTROLLER.A = this.keys[" "];
             CONTROLLER.B = this.keys["j"] || this.keys["J"];
@@ -136,6 +142,8 @@ class GameEngine {
             CONTROLLER.RIGHT = this.keys["d"] || this.keys["D"];
             CONTROLLER.UP = this.keys["w"] || this.keys["W"];
             CONTROLLER.DOWN = this.keys["s"] || this.keys["S"];
+            CONTROLLER.BACK = this.keys["r"] || this.keys["R"];
+            CONTROLLER.RTRIG = this.keys["l"] || this.keys["L"];
         }
     }
 

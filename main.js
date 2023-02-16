@@ -41,6 +41,7 @@ fetch(ASSET_PATHS)
 			
 			
 			GAME.init(ctx);
+			GAME.CTX = ctx;
 		
 			GAME.start();
 		
