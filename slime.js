@@ -33,7 +33,6 @@ class Slime extends AnimatedEntity {
 
         // Movement
         this.speed = 1.25;
-        this.dashSpeed = 4.5;
         this.momentum = 0;
         this.maxMom = (this.speed * 0.66).toFixed(2);
         this.acceleration = this.maxMom / 30;
@@ -41,7 +40,8 @@ class Slime extends AnimatedEntity {
         this.xDirection = 1;
         this.yVelocity = 1 / PARAMS.SCALE;
         this.maxYVelocity = 6;
-        this.dashTimeout = 0.21;
+        this.dashSpeed = 8;
+        this.dashTimeout = 0.1;
         this.slideSpeed = 0;
         this.wallJumpTimeout = 0.2;
         this.yFallThreshold = (1 / PARAMS.SCALE) * 10;
@@ -125,6 +125,13 @@ class Slime extends AnimatedEntity {
             GAME.CTX.fillText("Y Velocity:" + this.yVelocity.toFixed(2), this.x - GAME.camera.x + 18 * PARAMS.SCALE, this.y - GAME.camera.y - 9 * PARAMS.SCALE);
             GAME.CTX.fillText("Momentum:" + this.momentum, this.x - GAME.camera.x + 22 * PARAMS.SCALE, this.y - GAME.camera.y - 2 * PARAMS.SCALE);
             GAME.CTX.fillText("State: " + this.state.name, this.x - GAME.camera.x + 24 * PARAMS.SCALE, this.y - GAME.camera.y + 5 * PARAMS.SCALE);
+            if (this.dashHitBox){
+                GAME.CTX.strokeStyle = "green";
+                GAME.CTX.strokeRect(this.dashHitBox.left - GAME.camera.x, this.dashHitBox.top - GAME.camera.y, this.dashHitBox.width, this.dashHitBox.height);
+                GAME.CTX.font = "12px segoe ui";
+                GAME.CTX.fillStyle = "white";
+                GAME.CTX.fillText(this.constructor.name.toUpperCase() + ": x=" + this.x + " y=" + this.y, this.dashHitBox.left - GAME.camera.x, this.dashHitBox.bottom - GAME.camera.y + 4*PARAMS.SCALE);
+            }
         }
     }
 
@@ -441,25 +448,25 @@ class Slime extends AnimatedEntity {
         
         this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
         if (this.timers.dashTimer <= this.dashTimeout) {
-            // if (this.xDirection > 0){
-            //     let dashRect = new HitBox(this.hitbox.right, this.hitbox.top, 0, 0, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height);
-            //     if (PARAMS.DEBUG) {
-            //         GAME.CTX.strokeStyle = "red";
-            //         GAME.CTX.beginPath();
-            //         GAME.CTX.rect(dashRect.left - GAME.camera.x, dashRect.top - GAME.camera.y, dashRect.width, dashRect.height);
-            //         GAME.CTX.stroke();
-            //         GAME.CTX.font = "12px segoe ui";
-            //         GAME.CTX.fillStyle = "white";
-            //         GAME.CTX.fillText(this.constructor.name.toUpperCase() + ": x=" + this.x + " y=" + this.y, dashRect.left - GAME.camera.x, dashRect.bottom - GAME.camera.y + 4*PARAMS.SCALE);
-            //     }
-            //     let dashCollisions = dashRect.getCollisions();
-            //     if (dashCollisions.length > 0) {
-            //         this.x = dashCollisions.reduce((a,b) => {return a.left < b.left ? a : b}).left - this.hitbox.width - this.hitbox.leftPad;
-            //         this.hitbox.updatePos(this.x,this.y);
-            //         return;
-            //     }
-            // } else {
-            // }
+            if (this.xDirection > 0){
+                this.dashHitBox = new HitBox(this.hitbox.right, this.hitbox.top, 0, 0, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height - 1);
+                let dashCollisions = this.dashHitBox.getCollisions();
+                dashCollisions = dashCollisions.filter((entity) => {return entity.constructor.name == "Tile"});
+                if (dashCollisions.length > 0) {
+                    this.x = dashCollisions.reduce((a,b) => {return a.hitbox.left < b.hitbox.left ? a : b}).hitbox.left - this.hitbox.width - this.hitbox.leftPad - 1;
+                    this.hitbox.updatePos(this.x,this.y);
+                    return;
+                }
+            } else {
+                this.dashHitBox = new HitBox(this.hitbox.left - this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.top, 0, 0, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height - 1);
+                let dashCollisions = this.dashHitBox.getCollisions();
+                dashCollisions = dashCollisions.filter((entity) => {return entity.constructor.name == "Tile"});
+                if (dashCollisions.length > 0) {
+                    this.x = dashCollisions.reduce((a,b) => {return a.hitbox.left > b.hitbox.left ? a : b}).hitbox.right - this.hitbox.leftPad + 1;
+                    this.hitbox.updatePos(this.x,this.y);
+                    return;
+                }
+            }
             this.moveX(this.dashSpeed * this.xDirection);
         }
 

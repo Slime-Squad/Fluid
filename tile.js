@@ -83,8 +83,8 @@ class Tile {
             directionOfEntity = ENTITY_DIRECTIONS[this.collidableDirections[0]];
 
         // Adjust entity x and y value
-        if (directionOfEntity === "left") entity.x = this.hitbox.right - entity.hitbox.leftPad + 1 / PARAMS.SCALE;
-        else if (directionOfEntity === "right") entity.x = this.hitbox.left - entity.hitbox.width - entity.hitbox.leftPad - 1 / PARAMS.SCALE;
+        if (directionOfEntity === "left") entity.x = this.hitbox.right - entity.hitbox.leftPad + 1;
+        else if (directionOfEntity === "right") entity.x = this.hitbox.left - entity.hitbox.width - entity.hitbox.leftPad - 1;
         else if (directionOfEntity ==="top") entity.y = this.hitbox.bottom - entity.hitbox.topPad;
         else if (directionOfEntity ==="bottom") entity.y = this.hitbox.top - entity.hitbox.height - entity.hitbox.topPad;
         entity.hitbox.updatePos(entity.x, entity.y);
