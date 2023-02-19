@@ -13,11 +13,21 @@ class BackDrop extends AnimatedEntity {
         this.w = this.frames.animations[tag][0].w;
         this.h = this.frames.animations[tag][0].h;
     }
+
     /**
      * Function called every clock tick.
      */
     update() {
-        this.x = GAME.camera.x - PARAMS.SCALE*this.w/2 - GAME.slime.x/18*PARAMS.SCALE;
-        this.y = GAME.camera.y - PARAMS.SCALE*this.h/2 - GAME.slime.y/32*PARAMS.SCALE;
+
+    }
+
+    /**
+     * Draws the backdrop on the given canvas. Called on every clock tick.
+     * @param {CanvasRenderingContext2D} ctx The canvas to be displayed upon.
+     */
+    draw(ctx) {
+        this.x = GAME.camera.x - PARAMS.SCALE*this.w/2 - GAME.slime.x/(PARAMS.SCALE*2);
+        this.y = GAME.camera.y - PARAMS.SCALE*this.h/2 - GAME.slime.y/(PARAMS.SCALE*2);
+        super.draw(ctx);
     }
 }
