@@ -22,7 +22,7 @@ class SceneManager {
      * Initializes the testing level.
      */
     loadTest() {
-        const world = ASSET_MANAGER.getAsset("./assets/world/world/level.world");
+        const world = ASSET_MANAGER.getAsset("./assets/world/world/world.world");
         // Camera entities (always visible)
         GAME.addEntity(this.deathScreen);
         GAME.addEntity(this.slimeHealth);
@@ -31,9 +31,11 @@ class SceneManager {
         Object.keys(world.rooms).forEach((roomName) => {
             const room = world.rooms[roomName];
             Object.keys(room.tiles).forEach((layer) => {
-                room.tiles[layer].forEach((entity) => {
-                    layerCache[layer].push(entity);
-                });
+                if (layerCache[layer]) {
+                    room.tiles[layer].forEach((entity) => {
+                        layerCache[layer].push(entity);
+                    });
+                }
             });
         });
         // enforce entity loading order (first means will be on top of other entities)

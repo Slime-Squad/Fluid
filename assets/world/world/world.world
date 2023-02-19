@@ -1,0 +1,76 @@
+{
+    "maps": [
+        {
+            "fileName": "../../../mapping_tools/tilemaps/intro3.tmx",
+            "height": 384,
+            "width": 960,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/intro4.tmx",
+            "height": 384,
+            "width": 960,
+            "x": 176,
+            "y": -384
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/intro1.tmx",
+            "height": 384,
+            "width": 1344,
+            "x": -960,
+            "y": 384
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/intro2.tmx",
+            "height": 384,
+            "width": 960,
+            "x": -960,
+            "y": 0
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/intro5.tmx",
+            "height": 384,
+            "width": 960,
+            "x": 1136,
+            "y": -384
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/intro6.tmx",
+            "height": 384,
+            "width": 960,
+            "x": 2096,
+            "y": -384
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/intro5a.tmx",
+            "height": 480,
+            "width": 640,
+            "x": 1472,
+            "y": 0
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/intro6a.tmx",
+            "height": 480,
+            "width": 480,
+            "x": 2536,
+            "y": 0
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/intro1a.tmx",
+            "height": 480,
+            "width": 480,
+            "x": -552,
+            "y": 768
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/intro7.tmx",
+            "height": 960,
+            "width": 960,
+            "x": 3056,
+            "y": -848
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}

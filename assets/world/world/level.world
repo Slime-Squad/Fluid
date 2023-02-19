@@ -55,6 +55,13 @@
             "width": 960,
             "x": 1536,
             "y": 480
+        },
+        {
+            "fileName": "../../../mapping_tools/intro4.tmx",
+            "height": 384,
+            "width": 960,
+            "x": 1712,
+            "y": 96
         }
     ],
     "onlyShowAdjacentMaps": false,
