@@ -3,8 +3,8 @@
  <editorsettings>
   <export target="../assets/world/room/fire1b.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="tools.tsx"/>
- <tileset firstgid="325" source="fire.tsx"/>
+ <tileset firstgid="1" source="../rules/tools/tools.tsx"/>
+ <tileset firstgid="325" source="../tilesets/fire.tsx"/>
  <layer id="4" name="draft" width="120" height="48">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
