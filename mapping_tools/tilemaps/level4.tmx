@@ -3,8 +3,8 @@
  <editorsettings>
   <export target="../assets/world/room/level4.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="tools.tsx"/>
- <tileset firstgid="325" source="ice.tsx"/>
+ <tileset firstgid="1" source="../rules/tools/tools.tsx"/>
+ <tileset firstgid="325" source="../tilesets/ice.tsx"/>
  <layer id="1" name="draft" width="80" height="48">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,

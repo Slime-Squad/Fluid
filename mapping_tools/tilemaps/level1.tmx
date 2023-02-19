@@ -3,9 +3,9 @@
  <editorsettings>
   <export target="../assets/world/room/level1.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="tools.tsx"/>
+ <tileset firstgid="1" source="../rules/tools/tools.tsx"/>
  <tileset firstgid="325" source=":/automap-tiles.tsx"/>
- <tileset firstgid="330" source="dirt.tsx"/>
+ <tileset firstgid="330" source="../tilesets/dirt.tsx"/>
  <layer id="2" name="draft" width="60" height="80">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,

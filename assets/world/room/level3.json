@@ -668,11 +668,11 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/mapping_tools\/stone.tsx"
+         "source":"..\/..\/..\/mapping_tools\/tilesets\/stone.tsx"
         }, 
         {
          "firstgid":79,
-         "source":"..\/..\/..\/mapping_tools\/tools.tsx"
+         "source":"..\/..\/..\/mapping_tools\/rules\/tools\/tools.tsx"
         }],
  "tilewidth":8,
  "type":"map",

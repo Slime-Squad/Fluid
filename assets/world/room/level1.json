@@ -466,7 +466,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/mapping_tools\/tools.tsx"
+         "source":"..\/..\/..\/mapping_tools\/rules\/tools\/tools.tsx"
         }, 
         {
          "firstgid":325,
@@ -474,7 +474,7 @@
         }, 
         {
          "firstgid":330,
-         "source":"..\/..\/..\/mapping_tools\/dirt.tsx"
+         "source":"..\/..\/..\/mapping_tools\/tilesets\/dirt.tsx"
         }],
  "tilewidth":8,
  "type":"map",

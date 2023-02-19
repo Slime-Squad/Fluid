@@ -116,11 +116,11 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/mapping_tools\/tools.tsx"
+         "source":"..\/..\/..\/mapping_tools\/rules\/tools\/tools.tsx"
         }, 
         {
          "firstgid":325,
-         "source":"..\/..\/..\/mapping_tools\/ice.tsx"
+         "source":"..\/..\/..\/mapping_tools\/tilesets\/ice.tsx"
         }],
  "tilewidth":8,
  "type":"map",

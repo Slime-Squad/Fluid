@@ -3,9 +3,9 @@
  <editorsettings>
   <export target="../assets/world/room/level2.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="tools.tsx"/>
- <tileset firstgid="325" source="fire.tsx"/>
- <tileset firstgid="403" source="stone.tsx"/>
+ <tileset firstgid="1" source="../rules/tools/tools.tsx"/>
+ <tileset firstgid="325" source="../tilesets/fire.tsx"/>
+ <tileset firstgid="403" source="../tilesets/stone.tsx"/>
  <layer id="5" name="draft" width="80" height="40">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,

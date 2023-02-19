@@ -1,1 +1,2 @@
 map_rules.tmx
+bg_rules.tmx
