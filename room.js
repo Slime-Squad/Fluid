@@ -24,7 +24,7 @@ class Room {
         json["tilesets"].forEach((tileset) => firstgids[tileset["firstgid"]] = "./assets/graphics/map/" + tileset["source"].split("/").slice(-1).toString().split(".")[0] + ".png");
         
         json["layers"].forEach((layer) => {
-            if (layer["name"] != "draft") {
+            if (!layer["name"].includes("draft")) {
                 let tiles = [...layer["data"]];
                 const maxGid = Math.max(...tiles);
                 let gid = 0;
