@@ -45,15 +45,15 @@
         {
             "fileName": "../../../mapping_tools/tilemaps/intro5a.tmx",
             "height": 480,
-            "width": 640,
-            "x": 1472,
+            "width": 800,
+            "x": 1392,
             "y": 0
         },
         {
             "fileName": "../../../mapping_tools/tilemaps/intro6a.tmx",
             "height": 480,
-            "width": 480,
-            "x": 2536,
+            "width": 640,
+            "x": 2456,
             "y": 0
         },
         {
