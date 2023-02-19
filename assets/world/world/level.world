@@ -57,10 +57,17 @@
             "y": 480
         },
         {
-            "fileName": "../../../mapping_tools/intro4.tmx",
+            "fileName": "../../../mapping_tools/fire1a.tmx",
+            "height": 640,
+            "width": 384,
+            "x": 2496,
+            "y": -320
+        },
+        {
+            "fileName": "../../../mapping_tools/fire1b.tmx",
             "height": 384,
             "width": 960,
-            "x": 1712,
+            "x": 1536,
             "y": 96
         }
     ],

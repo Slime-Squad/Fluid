@@ -90,7 +90,7 @@ class Room {
                                     break;
                             }
                         } else {
-                            const hasHitbox = (layer == "map") ? this.isAirAdjacent(index) : false;
+                            const directionsAirAdjacent = this.isAirAdjacent(index);
                             this.tiles[layer].push(
                                 new Tile(
                                     img,
@@ -100,7 +100,7 @@ class Room {
                                     Math.floor(elem/13)*8,
                                     8,
                                     8,
-                                    hasHitbox
+                                    directionsAirAdjacent
                                 )
                             );
                         }
@@ -111,25 +111,28 @@ class Room {
     }
 
     /**
-     * Returns hether the given {@link Tile} object is adjacent to a null tile. Used to determine whether the tile should recieve a {@link HitBox}.
+     * Returns a list of indexes of the directions where the {@link Tile} object is adjacent to a null tile. 
+     * Used to determine whether the tile should recieve a {@link HitBox} and which directions it should check collision for.
      * @param {number} index The index of the current {@link Tile} object to be placed.
-     * @returns Whether the given {@link Tile} object is adjacent to a null tile.
+     * @returns The indexes of the directions from the {@link Tile} object adjacent to a null tile.
+     * @description [0]: top, [1]: right, [2]: bottom, [3]: left 
      */
     isAirAdjacent(index) {
         const w = this.w/8;
+        const directionsOfSpaces = [];
         if (this.layers["map"][1][index] >= 0) {
-            let dirs = [1,-1,w,w+1,w-1,-w,-w+1,-w-1]
+            let dirs = [-w,1,w,-1,w+1,w-1,-w+1,-w-1];
             if ((index+1)%w == 0) { // on right edge
-                dirs = [-1,w,w-1,-w,-w-1]
+                dirs = [-w,undefined,w,-1,undefined,w-1,undefined,-w-1];
             } else if (index%w == 0) { // on left edge
-                dirs = [1,w,w+1,-w,-w+1]
+                dirs = [-w,1,w,undefined,w+1,undefined,-w+1,undefined];
             }
             for (let i = 0; i < dirs.length; i++) {
                 if (this.layers["map"][1][index+dirs[i]] !== undefined) {
-                    if (this.layers["map"][1][index+dirs[i]] < 0) return true;
+                    if (this.layers["map"][1][index+dirs[i]] < 0) directionsOfSpaces.push(i);
                 }
             }
         }
-        return false;
+        return directionsOfSpaces;
     }
 }

@@ -33,7 +33,6 @@ class Slime extends AnimatedEntity {
 
         // Movement
         this.speed = 1.25;
-        this.dashSpeed = 4.5;
         this.momentum = 0;
         this.maxMom = (this.speed * 0.66).toFixed(2);
         this.acceleration = this.maxMom / 30;
@@ -41,7 +40,8 @@ class Slime extends AnimatedEntity {
         this.xDirection = 1;
         this.yVelocity = 1 / PARAMS.SCALE;
         this.maxYVelocity = 6;
-        this.dashTimeout = 0.3;
+        this.dashSpeed = 8;
+        this.dashTimeout = 0.1;
         this.slideSpeed = 0;
         this.wallJumpTimeout = 0.2;
         this.yFallThreshold = (1 / PARAMS.SCALE) * 10;
@@ -55,6 +55,7 @@ class Slime extends AnimatedEntity {
         this.isJumping = false;
         this.canJump = true;
         this.canDash = true;
+        this.canPressHome = true;
 
         // Charges
         this.charges = {
@@ -75,7 +76,12 @@ class Slime extends AnimatedEntity {
 
     update() {
 
-        if (this.y > 12000) this.kill();
+        if (this.y > 12000 || CONTROLLER.BACK) this.kill();
+        if (PARAMS.DEBUG && CONTROLLER.RTRIG) Object.keys(this.charges).forEach(charge => this.charges[charge] = 1);
+        if (this.canPressHome && CONTROLLER.HOME){
+            this.canPressHome = false;
+            PARAMS.DEBUG = !PARAMS.DEBUG;
+        } else if (!this.canPressHome && !CONTROLLER.HOME) this.canPressHome = true;
 
         this.changeStateCheck();
         this.state();
@@ -107,25 +113,32 @@ class Slime extends AnimatedEntity {
     draw(ctx) {
         super.draw(ctx);
         if (PARAMS.DEBUG) {
-            ctx.font = "30px segoe ui";
-            ctx.fillStyle = "red";
+            GAME.CTX.font = "30px segoe ui";
+            GAME.CTX.fillStyle = "khaki";
             if (this.yVelocity >= this.maxYVelocity){
-                ctx.fillText("!", this.hitbox.center.x - GAME.camera.x, this.hitbox.top - 3 * PARAMS.SCALE - GAME.camera.y);
+                GAME.CTX.fillText("!", this.hitbox.center.x - GAME.camera.x, this.hitbox.top - 3 * PARAMS.SCALE - GAME.camera.y);
             };
-            // ctx.fillText("Jump Timer:" + this.timers.jumpTimer.toFixed(2), this.x - GAME.camera.x, this.y - GAME.camera.y - 150);
-            ctx.fillText("Dash Timer:" + this.timers.dashTimer.toFixed(2), this.x - GAME.camera.x - 45 * PARAMS.SCALE, this.y - GAME.camera.y + 12 * PARAMS.SCALE);
-            ctx.fillText("Climb Timer:" + this.timers.climbTimer.toFixed(2), this.x - GAME.camera.x - 45 * PARAMS.SCALE, this.y - GAME.camera.y + 6 * PARAMS.SCALE);
-            ctx.fillText("Charges: " + Object.values(this.charges), this.x - GAME.camera.x, this.y - GAME.camera.y - 100);
-            ctx.fillText("Y Velocity:" + this.yVelocity.toFixed(2), this.x - GAME.camera.x, this.y - GAME.camera.y - 50);
-            ctx.fillText("Momentum:" + this.momentum, this.x - GAME.camera.x, this.y - GAME.camera.y);
-            ctx.fillText("State: " + this.state.name, this.x - GAME.camera.x, this.y - GAME.camera.y - 200);
+            // GAME.CTX.fillText("Jump Timer:" + this.timers.jumpTimer.toFixed(2), this.x - GAME.camera.x, this.y - GAME.camera.y - 150);
+            // GAME.CTX.fillText("Dash Timer:" + this.timers.dashTimer.toFixed(2), this.x - GAME.camera.x - 45 * PARAMS.SCALE, this.y - GAME.camera.y + 12 * PARAMS.SCALE);
+            // GAME.CTX.fillText("Climb Timer:" + this.timers.climbTimer.toFixed(2), this.x - GAME.camera.x - 45 * PARAMS.SCALE, this.y - GAME.camera.y + 6 * PARAMS.SCALE);
+            GAME.CTX.fillText("Charges: " + Object.values(this.charges), this.x - GAME.camera.x + 14 * PARAMS.SCALE, this.y - GAME.camera.y - 16 * PARAMS.SCALE);
+            GAME.CTX.fillText("Y Velocity:" + this.yVelocity.toFixed(2), this.x - GAME.camera.x + 18 * PARAMS.SCALE, this.y - GAME.camera.y - 9 * PARAMS.SCALE);
+            GAME.CTX.fillText("Momentum:" + this.momentum, this.x - GAME.camera.x + 22 * PARAMS.SCALE, this.y - GAME.camera.y - 2 * PARAMS.SCALE);
+            GAME.CTX.fillText("State: " + this.state.name, this.x - GAME.camera.x + 24 * PARAMS.SCALE, this.y - GAME.camera.y + 5 * PARAMS.SCALE);
+            if (this.dashHitBox){
+                GAME.CTX.strokeStyle = "green";
+                GAME.CTX.strokeRect(this.dashHitBox.left - GAME.camera.x, this.dashHitBox.top - GAME.camera.y, this.dashHitBox.width, this.dashHitBox.height);
+                GAME.CTX.font = "12px segoe ui";
+                GAME.CTX.fillStyle = "white";
+                GAME.CTX.fillText(this.constructor.name.toUpperCase() + ": x=" + this.x + " y=" + this.y, this.dashHitBox.left - GAME.camera.x, this.dashHitBox.bottom - GAME.camera.y + 4*PARAMS.SCALE);
+            }
         }
     }
 
     endOfCycleUpdates(){
         if (this.x == this.lastX) this.momentum = 0; // Reset momentum on stop
         if (this.y == this.lastY) this.yVelocity = 1 / PARAMS.SCALE; // Reset yVelocity on stop
-        if (this.timers.dashTimer > 1) this.canDash = true;
+        // if (this.timers.dashTimer > 1) this.canDash = true;
         super.endOfCycleUpdates();
     }
 
@@ -139,7 +152,7 @@ class Slime extends AnimatedEntity {
      */
     moveX(moveSpeed, moveAcceleration = 0) {
 
-        if (this.momentum * moveSpeed < 0) this.momentum /= 1.1;
+        if (this.momentum * moveSpeed < 0) this.momentum /= 1.05;
         this.x += (moveSpeed + this.momentum) * PARAMS.SCALE * GAME.tickMod;
         this.momentum = clamp(
             this.momentum + moveAcceleration * GAME.tickMod, 
@@ -191,6 +204,7 @@ class Slime extends AnimatedEntity {
     idleStateCheck(){
         // Check dashing
         if (CONTROLLER.B && this.canDash) {
+            this.charges["Electric"] = 0;
             this.canDash = false;
             this.yVelocity = 0;
             this.timers.dashTimer = 0;
@@ -242,6 +256,7 @@ class Slime extends AnimatedEntity {
         this.controlX();
         this.moveY();
         if (!CONTROLLER.A) this.canJump = true;
+        if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
 
     }
 
@@ -255,6 +270,7 @@ class Slime extends AnimatedEntity {
 
             // Check dashing
             if (CONTROLLER.B && this.canDash) {
+                this.charges["Electric"] = 0;
                 this.canDash = false;
                 this.yVelocity = 0;
                 this.timers.dashTimer = 0;
@@ -295,6 +311,7 @@ class Slime extends AnimatedEntity {
         this.controlX();
         this.moveY();
         if (!CONTROLLER.A) this.canJump = true;
+        if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
 
     }
 
@@ -309,6 +326,7 @@ class Slime extends AnimatedEntity {
 
             // Check dashing
             if (CONTROLLER.B && this.canDash) {
+                this.charges["Electric"] = 0;
                 this.canDash = false;
                 this.yVelocity = 0;
                 this.timers.dashTimer = 0;
@@ -332,6 +350,7 @@ class Slime extends AnimatedEntity {
         this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
         this.controlX();
         this.moveY();
+        if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
     
     }
 
@@ -345,6 +364,7 @@ class Slime extends AnimatedEntity {
 
             // Check dashing
             if (CONTROLLER.B && this.canDash) {
+                this.charges["Electric"] = 0;
                 this.canDash = false;
                 this.yVelocity = 0;
                 this.timers.dashTimer = 0;
@@ -387,6 +407,7 @@ class Slime extends AnimatedEntity {
         this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
         this.controlX();
         this.moveY();
+        if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
 
     }
 
@@ -417,22 +438,38 @@ class Slime extends AnimatedEntity {
 
             }
 
+            if (this.tileCollisions.includes("left") || this.tileCollisions.includes("right")){
+                this.state = this.climbing;
+                this.state(true);
+                return;
+            }
+
         }
         
-        /*
-        if (linePlaneIntersect(lastHitboxTop, lastHitboxLeft, entity.hitbox.top, entity.hitbox.left, 
-                this.hitbox.top, this.hitbox.bottom, this.hitbox.right) ||
-            linePlaneIntersect(lastHitboxBottom, lastHitboxLeft, entity.hitbox.bottom, entity.hitbox.left, 
-                this.hitbox.top, this.hitbox.bottom, this.hitbox.right)
-            ) directionOfEntity = 'left';
-        else if (linePlaneIntersect(lastHitboxTop, lastHitboxRight, entity.hitbox.top, entity.hitbox.right, 
-                this.hitbox.top, this.hitbox.bottom, this.hitbox.left) ||
-            linePlaneIntersect(lastHitboxBottom, lastHitboxRight, entity.hitbox.bottom, entity.hitbox.right, 
-                this.hitbox.top, this.hitbox.bottom, this.hitbox.left)
-            ) directionOfEntity = 'right';
-        */
         this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
-        if (this.timers.dashTimer <= this.dashTimeout) this.moveX(this.dashSpeed * this.xDirection);
+        if (this.timers.dashTimer <= this.dashTimeout) {
+            if (this.xDirection > 0){
+                this.dashHitBox = new HitBox(this.hitbox.right, this.hitbox.top, 0, 0, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height - 1);
+                let dashCollisions = this.dashHitBox.getCollisions();
+                dashCollisions = dashCollisions.filter((entity) => {return entity.constructor.name == "Tile"});
+                if (dashCollisions.length > 0) {
+                    this.x = dashCollisions.reduce((a,b) => {return a.hitbox.left < b.hitbox.left ? a : b}).hitbox.left - this.hitbox.width - this.hitbox.leftPad - 1;
+                    this.hitbox.updatePos(this.x,this.y);
+                    return;
+                }
+            } else {
+                this.dashHitBox = new HitBox(this.hitbox.left - this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.top, 0, 0, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height - 1);
+                let dashCollisions = this.dashHitBox.getCollisions();
+                dashCollisions = dashCollisions.filter((entity) => {return entity.constructor.name == "Tile"});
+                if (dashCollisions.length > 0) {
+                    this.x = dashCollisions.reduce((a,b) => {return a.hitbox.left > b.hitbox.left ? a : b}).hitbox.right - this.hitbox.leftPad + 1;
+                    this.hitbox.updatePos(this.x,this.y);
+                    return;
+                }
+            }
+            this.moveX(this.dashSpeed * this.xDirection);
+        }
+
     }
 
     /**
@@ -443,7 +480,7 @@ class Slime extends AnimatedEntity {
 
         if (changingState) this.changeStateCheck = () => {
 
-            let landed = this.tileCollisions.filter(dir => dir === "bottom").length > 1;
+            let landed = this.tileCollisions.includes("bottom");
 
             // Check running
             if (landed && (CONTROLLER.RIGHT || CONTROLLER.LEFT)){
@@ -488,6 +525,7 @@ class Slime extends AnimatedEntity {
         this.moveY(this.slideSpeed);
         if (this.timers.climbTimer > 0.1 && this.slideSpeed < this.maxYVelocity) this.slideSpeed = this.slideSpeed + (PARAMS.GRAVITY / 2) * GAME.tickMod;
         if (!CONTROLLER.A) this.canJump = true;
+        if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
 
     }
 
@@ -530,6 +568,7 @@ class Slime extends AnimatedEntity {
         this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
         this.moveX(this.speed * 0.75 * this.xDirection);
         this.moveY();
+        if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
 
     }
 

@@ -27,7 +27,6 @@ class Batterflea extends AnimatedEntity {
         this.gravity = 1;
 
         //Flags
-        this.isAlive = true;
         this.isAirborne = false;
         this.canJump = true;
 

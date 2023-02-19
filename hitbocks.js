@@ -7,6 +7,8 @@ class HitBox {
      * Constructs a new hitbox to handle entity collision.
      * @param {number} x The x-coordinate associated with the top-left corner of the hitbox on the canvas.
      * @param {number} y The y-coordinate associated with the top-left corner of the hitbox  on the canvas.
+     * @param {number} leftPad The padding between the left of the sprite and the left of its hitbox.
+     * @param {number} topPad The padding between the top of the sprite and the top of its hitbox.
      * @param {number} width The width of the hitbox on the canvas.
      * @param {number} height The height of the hitbox on the canvas.
      */
@@ -26,7 +28,7 @@ class HitBox {
     getCollisions(){
         let collisions = [];
         GAME.entities.forEach(entity => {
-            if (!entity.hitbox) return;// || !super.isAlive) return;
+            if (!entity.hitbox || !entity.isAlive) return;
             // if (entity.hitbox instanceof this.constructor) return;
             if (!this.collide3(entity.hitbox)) return;
             collisions.push(entity);
