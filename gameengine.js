@@ -132,6 +132,17 @@ class GameEngine {
     gamepadUpdate() {
         this.gamepad = navigator.getGamepads()[0];
         if (this.gamepad != null) {
+            if (!this.gamepad.buttons[14]) { // WiiMote
+                CONTROLLER.A = this.gamepad.buttons[0].pressed || this.keys[" "];
+                CONTROLLER.B = this.gamepad.buttons[1].pressed || this.gamepad.buttons[2].pressed || this.keys["j"] || this.keys["J"];
+                CONTROLLER.LEFT = this.gamepad.axes[0] < -0.3 || this.keys["a"] || this.keys["A"];
+                CONTROLLER.RIGHT = this.gamepad.axes[0] > 0.3 || this.keys["d"] || this.keys["D"];
+                CONTROLLER.UP = this.gamepad.axes[1] < -0.3 || this.keys["w"] || this.keys["W"];
+                CONTROLLER.DOWN = this.gamepad.axes [1] > 0.3 || this.keys["s"] || this.keys["S"];
+                CONTROLLER.BACK = this.gamepad.buttons[4].pressed || this.keys["r"] || this.keys["R"];
+                CONTROLLER.RTRIG = this.gamepad.buttons[3].pressed || this.keys["l"] || this.keys["L"];
+                CONTROLLER.HOME = this.gamepad.buttons[2].pressed || this.keys["\`"] || this.keys["\~"];
+            } else {
             CONTROLLER.A = this.gamepad.buttons[0].pressed || this.keys[" "];
             CONTROLLER.B = this.gamepad.buttons[1].pressed || this.gamepad.buttons[2].pressed || this.keys["j"] || this.keys["J"];
             //checks if d-pad is used or joysticks meet a certain threshold
@@ -142,6 +153,7 @@ class GameEngine {
             CONTROLLER.BACK = this.gamepad.buttons[8].pressed || this.keys["r"] || this.keys["R"];
             CONTROLLER.RTRIG = this.gamepad.buttons[7].pressed || this.keys["l"] || this.keys["L"];
             CONTROLLER.HOME = this.gamepad.buttons[16].pressed || this.keys["\`"] || this.keys["\~"];
+            }
             // if (PARAMS.DEBUG) this.gamepad.buttons.forEach((button, index) => { if (button.pressed) console.log("GamepadButton: " + index)});
         } else {
             CONTROLLER.A = this.keys[" "];
