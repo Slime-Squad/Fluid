@@ -18,6 +18,15 @@ class GameEngine {
         this.wheel = null;
         this.keys = {};
 
+        this.UNLOCKED_CHARGES = {
+            "Electric" : false,
+            "Fire" : false,
+            "Ice" : false,
+            "Earth" : false
+        }
+        
+        
+
     };
 
     init(ctx) {

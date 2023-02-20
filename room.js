@@ -82,6 +82,12 @@ class Room {
                                 case 9:
                                     this.tiles[layer].push(new Skiwi("WalkL", x, y));                                    
                                     break;
+                                case 10:
+                                    this.tiles[layer].push(new Tabemasu("IdleLeft", x, y));                                    
+                                    break;
+                                case 11:
+                                    this.tiles[layer].push(new ChargeGenerator("Electric", x, y));
+                                    break;
                                 case 18:
                                     this.tiles[layer].push(new KillBox(x, y));
                                     break;

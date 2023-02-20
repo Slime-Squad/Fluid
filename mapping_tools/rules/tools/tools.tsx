@@ -51,6 +51,16 @@
    <property name="Name" value="Skiwi"/>
   </properties>
  </tile>
+ <tile id="10">
+  <properties>
+   <property name="Name" value="Tabemasu"/>
+  </properties>
+ </tile>
+ <tile id="11">
+  <properties>
+   <property name="Name" value="Electric Generator"/>
+  </properties>
+ </tile>
  <tile id="18">
   <properties>
    <property name="Name" value="KillBox"/>

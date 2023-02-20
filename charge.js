@@ -16,6 +16,7 @@ class Charge extends AnimatedEntity {
         this.hitbox = new HitBox(x, y, 0, 0, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
         this.originalTag = tag;
         this.elapsedTime = 0;
+        this.tag = "Disabled";
     }
 
     /**
@@ -23,6 +24,7 @@ class Charge extends AnimatedEntity {
      */
     update() {
         if (this.originalTag == "Disabled") return;
+        if (!GAME.UNLOCKED_CHARGES[this.tag]) return
         if (this.tag == "Disabled") {
             this.elapsedTime += GAME.clockTick;
         }
