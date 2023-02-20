@@ -78,7 +78,8 @@ class AssetManager {
                                     this.cache[path] = this.world;
                                     return this.world;
                                 } else if (json["layers"] !== undefined) { // is a room
-                                    this.world.rooms[path.split(".")[1].split("/").slice(-1).toString()].init(json);
+                                    if (this.world.rooms[path.split(".")[1].split("/").slice(-1).toString()])
+                                        this.world.rooms[path.split(".")[1].split("/").slice(-1).toString()].init(json);
                                 }
                             }
                         }
