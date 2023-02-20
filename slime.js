@@ -23,7 +23,8 @@ class Slime extends AnimatedEntity {
             this.running, 
             this.jumping, 
             this.falling, 
-            this.dashing, 
+            this.dashing,
+            this.boosting, 
             this.climbing
         ];
         this.state = this.idle; // active state
@@ -40,6 +41,8 @@ class Slime extends AnimatedEntity {
         this.xDirection = 1;
         this.yVelocity = 1 / PARAMS.SCALE;
         this.maxYVelocity = 6;
+        this.boostSpeed = -6;
+        this.boostTimeout = 0.15;
         this.dashSpeed = 8;
         this.dashTimeout = 0.1;
         this.slideSpeed = 0;
@@ -53,8 +56,10 @@ class Slime extends AnimatedEntity {
         // Flags
         this.isAlive = true;
         this.isJumping = false;
+        this.isInvincible = false;
         this.canJump = true;
         this.canDash = false;
+        this.canBoost = false;
         this.canPressHome = true;
 
         // Charges
@@ -68,6 +73,7 @@ class Slime extends AnimatedEntity {
         // Timers
         this.timers = {
             jumpTimer : 0,
+            boostTimer : 0,
             // landTimer : 0,
             climbTimer : 0,
             dashTimer : 0
@@ -208,6 +214,7 @@ class Slime extends AnimatedEntity {
             this.canDash = false;
             this.yVelocity = 0;
             this.timers.dashTimer = 0;
+            this.isInvincible = true;
             this.state = this.dashing;
             this.state(true);
             return;
@@ -274,6 +281,7 @@ class Slime extends AnimatedEntity {
                 this.canDash = false;
                 this.yVelocity = 0;
                 this.timers.dashTimer = 0;
+                this.isInvincible = true;
                 this.state = this.dashing;
                 this.state(true);
                 return;
@@ -330,6 +338,7 @@ class Slime extends AnimatedEntity {
                 this.canDash = false;
                 this.yVelocity = 0;
                 this.timers.dashTimer = 0;
+                this.isInvincible = true;
                 this.state = this.dashing;
                 this.state(true);
                 return;
@@ -368,7 +377,19 @@ class Slime extends AnimatedEntity {
                 this.canDash = false;
                 this.yVelocity = 0;
                 this.timers.dashTimer = 0;
+                this.isInvincible = true;
                 this.state = this.dashing;
+                this.state(true);
+                return;
+            }
+
+            // Check boosting
+            if(CONTROLLER.A && this.canBoost) {
+                this.charges["Fire"] = 0;
+                this.canBoost = false;
+                this.timers.boostTimer = 0;
+                this.isInvincible = true;
+                this.state = this.boosting
                 this.state(true);
                 return;
             }
@@ -408,6 +429,7 @@ class Slime extends AnimatedEntity {
         this.controlX();
         this.moveY();
         if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
+        if (!CONTROLLER.A && this.charges["Fire"] >= 1) this.canBoost = true;
 
     }
 
@@ -424,27 +446,34 @@ class Slime extends AnimatedEntity {
         if (changingState) this.changeStateCheck = () => {
 
             if (this.timers.dashTimer > this.dashTimeout){
-
+                this.isInvincible = false;
                 if (this.tileCollisions.includes("bottom")){
+                    //check running
                     if (CONTROLLER.RIGHT || CONTROLLER.LEFT) this.state = this.running;
+                    //check idle
                     else this.state = this.idle;
                     this.state(true);
                     return;
                 }
-
+                //check falling
                 this.state = this.falling;
                 this.state(true);
                 return;
 
             }
 
+            //check climbing
             if (this.tileCollisions.includes("left") || this.tileCollisions.includes("right")){
+                this.isInvincible = false;
+                this.yVelocity = 0;
+                this.timers.climbTimer = 0;
+                this.slideSpeed = 0;
                 this.state = this.climbing;
                 this.state(true);
                 return;
             }
 
-        }
+        };
         
         this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
         if (this.timers.dashTimer <= this.dashTimeout) {
@@ -470,6 +499,39 @@ class Slime extends AnimatedEntity {
             this.moveX(this.dashSpeed * this.xDirection);
         }
 
+    }
+
+    boosting (changingState = false) {
+        if (changingState) this.changeStateCheck = () => {
+
+            // Check falling
+            if (this.yVelocity > 0){
+                this.isJumping = false;
+                this.isInvincible = false;
+                this.yVelocity = Math.max(this.yVelocity, -2 / PARAMS.SCALE);
+                this.state = this.falling;
+                this.state(true);
+                return;
+            }
+
+            //check climbing
+            if (this.tileCollisions.includes("left") || this.tileCollisions.includes("right")){
+                this.isInvincible = false;
+                this.yVelocity = 0;
+                this.timers.climbTimer = 0;
+                this.slideSpeed = 0;
+                this.state = this.climbing;
+                this.state(true);
+                return;
+            }
+        };
+
+        this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
+        this.controlX();
+        if (this.timers.boostTimer <= this.boostTimeout) {
+            this.moveY(this.boostSpeed);    
+        }
+        
     }
 
     /**
@@ -517,7 +579,7 @@ class Slime extends AnimatedEntity {
                 return;
             }
 
-        }
+        };
 
         // Perform 'climbing' behaviors
         this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
@@ -577,6 +639,7 @@ class Slime extends AnimatedEntity {
      * @author Jasper Newkirk
      */
     kill() {
+        if (this.isInvincible) return;
         this.isAlive = false;
         GAME.camera.deathScreen.swapTag("Died");
         GAME.entities.forEach((entity) => {if(entity.respawn) entity.respawn(); });

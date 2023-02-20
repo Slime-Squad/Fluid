@@ -34,6 +34,14 @@ class Magmasquito extends AnimatedEntity {
     }
 
     /**
+     * Called when this Skiwi collides with the player. Returns Batterlea
+     * to spawn and {@link GAME.slime.kill()} the slime
+     */
+    collideWithPlayer() {
+        GAME.slime.kill();  
+    }
+
+    /**
      * This makes a call to the shoot function.
      */
     shoot() {
