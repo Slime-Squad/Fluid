@@ -590,6 +590,7 @@ class Slime extends AnimatedEntity {
             () => {
                 GAME.camera.deathScreen.swapTag("Respawn");
                 this.momentum = 0;
+                this.yVelocity = 0;
                 this.x = this.spawnX;
                 this.y = this.spawnY;
                 this.isAlive = true;
