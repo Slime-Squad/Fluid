@@ -389,7 +389,8 @@ class Slime extends AnimatedEntity {
                 this.canBoost = false;
                 this.timers.boostTimer = 0;
                 this.isInvincible = true;
-                this.state = this.boosting
+                this.yVelocity = this.jumpVelocity - Math.abs(this.momentum / this.jumpMomentumMod);
+                this.state = this.boosting;
                 this.state(true);
                 return;
             }
@@ -502,6 +503,7 @@ class Slime extends AnimatedEntity {
     }
 
     boosting (changingState = false) {
+        
         if (changingState) this.changeStateCheck = () => {
 
             // Check falling
@@ -528,9 +530,7 @@ class Slime extends AnimatedEntity {
 
         this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
         this.controlX();
-        if (this.timers.boostTimer <= this.boostTimeout) {
-            this.moveY(this.boostSpeed);    
-        }
+        this.moveY(this.yVelocity);
         
     }
 
