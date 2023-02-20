@@ -132,7 +132,6 @@ class GameEngine {
             CONTROLLER.DOWN = this.gamepad.buttons[13].pressed || this.gamepad.axes [1] > 0.3 || this.keys["s"] || this.keys["S"];
             CONTROLLER.BACK = this.gamepad.buttons[8].pressed || this.keys["r"] || this.keys["R"];
             CONTROLLER.RTRIG = this.gamepad.buttons[7].pressed || this.keys["l"] || this.keys["L"];
-            CONTROLLER.RTRIG = this.gamepad.buttons[7].pressed || this.keys["l"] || this.keys["L"];
             CONTROLLER.HOME = this.gamepad.buttons[16].pressed || this.keys["\`"] || this.keys["\~"];
             // if (PARAMS.DEBUG) this.gamepad.buttons.forEach((button, index) => { if (button.pressed) console.log("GamepadButton: " + index)});
         } else {
@@ -144,6 +143,7 @@ class GameEngine {
             CONTROLLER.DOWN = this.keys["s"] || this.keys["S"];
             CONTROLLER.BACK = this.keys["r"] || this.keys["R"];
             CONTROLLER.RTRIG = this.keys["l"] || this.keys["L"];
+            CONTROLLER.HOME = this.keys["\`"] || this.keys["\~"];
         }
     }
 

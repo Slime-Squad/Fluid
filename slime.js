@@ -54,7 +54,7 @@ class Slime extends AnimatedEntity {
         this.isAlive = true;
         this.isJumping = false;
         this.canJump = true;
-        this.canDash = true;
+        this.canDash = false;
         this.canPressHome = true;
 
         // Charges
@@ -449,7 +449,7 @@ class Slime extends AnimatedEntity {
         this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
         if (this.timers.dashTimer <= this.dashTimeout) {
             if (this.xDirection > 0){
-                this.dashHitBox = new HitBox(this.hitbox.right, this.hitbox.top, 0, 0, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height - 1);
+                this.dashHitBox = new HitBox(this.hitbox.right, this.hitbox.top, 0, 1 * PARAMS.SCALE, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height - 2 * PARAMS.SCALE);
                 let dashCollisions = this.dashHitBox.getCollisions();
                 dashCollisions = dashCollisions.filter((entity) => {return entity.constructor.name == "Tile"});
                 if (dashCollisions.length > 0) {
@@ -458,7 +458,7 @@ class Slime extends AnimatedEntity {
                     return;
                 }
             } else {
-                this.dashHitBox = new HitBox(this.hitbox.left - this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.top, 0, 0, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height - 1);
+                this.dashHitBox = new HitBox(this.hitbox.left - this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.top, 0, 1 * PARAMS.SCALE, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height - 2 * PARAMS.SCALE);
                 let dashCollisions = this.dashHitBox.getCollisions();
                 dashCollisions = dashCollisions.filter((entity) => {return entity.constructor.name == "Tile"});
                 if (dashCollisions.length > 0) {

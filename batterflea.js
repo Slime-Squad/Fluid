@@ -16,7 +16,7 @@ class Batterflea extends AnimatedEntity {
         this.hitbox = new HitBox(x, y, 0, 0, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
 
         //Movement
-        this.speed = PARAMS.SCALE/3;
+        this.speed = PARAMS.SCALE/1.9;
         this.lastX = x;
         this.lastY = y;
         this.xMove = 0;
@@ -81,13 +81,16 @@ class Batterflea extends AnimatedEntity {
             this.x += this.xMove * GAME.tickMod;
         }
 
-
-        if(this.canJump) {
+        const x = this.x - GAME.camera.x;
+        const y = this.y - GAME.camera.y;
+        //THIS CHECKS IF SOMETHING IS IN THE VIEW OF THE CAMERA
+        if ((x > -8*PARAMS.SCALE && x < PARAMS.WIDTH && y > -8*PARAMS.SCALE && y < PARAMS.HEIGHT)&& this.canJump) {
             this.canJump = false;
             this.timers.landTimer = 0;
             this.rise = this.bounce +  1 * this.direction;
             this.isAirborne = true;
         }
+
     }
 
     /**
