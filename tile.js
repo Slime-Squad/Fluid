@@ -65,19 +65,6 @@ class Tile {
     collideWithEntity(entity){
         
         let directionOfEntity = entity.hitbox.getCollisionDirection(this.hitbox);
-
-        // if (entity.constructor.name == "Slime") console.log(this.collidableDirections + ", direction of entity: " + DIRECTIONS[directionOfEntity]);
-        
-        // const lastHitboxLeft = entity.lastX + entity.hitbox.leftPad;
-        // const lastHitboxRight = entity.lastX + entity.hitbox.leftPad + entity.hitbox.width;
-        // const lastHitboxBottom = entity.lastY + entity.hitbox.height + entity.hitbox.topPad;
-        
-        // // Intercede with line - plane collision
-        // if (directionOfEntity !== "bottom" && linePlaneIntersect(lastHitboxLeft, lastHitboxBottom, entity.hitbox.left, entity.hitbox.bottom, 
-        //         this.hitbox.left, this.hitbox.right, this.hitbox.top ) ||
-        //     linePlaneIntersect(lastHitboxRight, lastHitboxBottom, entity.hitbox.right, entity.hitbox.bottom, 
-        //         this.hitbox.left, this.hitbox.right, this.hitbox.top )
-        //     ) directionOfEntity = "bottom";
             
         if (!this.collidableDirections.includes(ENTITY_DIRECTIONS[directionOfEntity])) 
             directionOfEntity = ENTITY_DIRECTIONS[this.collidableDirections[0]];
