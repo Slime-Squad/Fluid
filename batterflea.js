@@ -61,7 +61,7 @@ class Batterflea extends AnimatedEntity {
      * to spawn and {@link GAME.slime.kill()} the slime
      */
     collideWithPlayer() {   
-        GAME.slime.kill();
+        if (GAME.slime.isAlive) GAME.slime.kill();
     }
 
     /**

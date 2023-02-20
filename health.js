@@ -30,7 +30,7 @@ class Health extends AnimatedEntity {
         this.health = Math.min(8, this.health + GAME.tickMod/120)
         if (this.tag != Math.floor(this.health) + this.delta) this.swapTag(Math.max(0, Math.floor(this.health)) + this.delta);
         if (this.health <= 0) {
-            GAME.slime.kill();
+            if (GAME.slime.isAlive) GAME.slime.kill();
             this.health = this.MAX_HEALTH;
         }
         this.x = lerp(this.x, GAME.slime.x + 8*PARAMS.SCALE, GAME.tickMod/2);
