@@ -89,17 +89,27 @@ class Slime extends AnimatedEntity {
             PARAMS.DEBUG = !PARAMS.DEBUG;
         } else if (!this.canPressHome && !CONTROLLER.HOME) this.canPressHome = true;
 
+        let oldX = this.hitbox.left;
+        let oldY = this.hitbox.top;
         this.changeStateCheck();
         this.state();
-
+        
+        this.posHitBox = this.drawPositioningHitBox(
+            oldX, oldY, this.x + this.hitbox.leftPad, this.y + this.hitbox.topPad, this.hitbox.width, this.hitbox.height
+            );
         this.hitbox.updatePos(this.x, this.y);
-
-        this.tileCollisions.length = 0;
-        this.entityCollisions = this.hitbox.getCollisions();
+        this.tileCollisions.length = 0; // empty array
+        this.entityCollisions = this.posHitBox.getCollisions();
 
         this.entityCollisions.forEach(entity => { 
-            if (entity.collideWithPlayer) this.tileCollisions.push(entity.collideWithPlayer()); 
+            if (entity.collideWithPlayer) {
+                let direction = entity.collideWithPlayer();
+                if (!direction) return;
+                this.tileCollisions.push(direction)
+            }
         });
+        // this.tileCollisions = this.tileCollisions.filter(entity => {return entity instanceof Tile})
+        // this.hitbox.updatePos(this.x, this.y);
         // Sorted Collision
         // this.entityCollisions.forEach(entity => { 
         //     entity.distanceFromPlayer = Math.abs(entity.hitbox.center - this.hitbox.center);
@@ -131,12 +141,22 @@ class Slime extends AnimatedEntity {
             GAME.CTX.fillText("Y Velocity:" + this.yVelocity.toFixed(2), this.x - GAME.camera.x + 18 * PARAMS.SCALE, this.y - GAME.camera.y - 9 * PARAMS.SCALE);
             GAME.CTX.fillText("Momentum:" + this.momentum, this.x - GAME.camera.x + 22 * PARAMS.SCALE, this.y - GAME.camera.y - 2 * PARAMS.SCALE);
             GAME.CTX.fillText("State: " + this.state.name, this.x - GAME.camera.x + 24 * PARAMS.SCALE, this.y - GAME.camera.y + 5 * PARAMS.SCALE);
+            
+            GAME.CTX.fillStyle = "aqua";
+            GAME.CTX.fillText("Tile Collisions: " + this.tileCollisions, this.x - GAME.camera.x - 24 * PARAMS.SCALE, this.y - GAME.camera.y + -24 * PARAMS.SCALE);
             if (this.dashHitBox){
                 GAME.CTX.strokeStyle = "green";
                 GAME.CTX.strokeRect(this.dashHitBox.left - GAME.camera.x, this.dashHitBox.top - GAME.camera.y, this.dashHitBox.width, this.dashHitBox.height);
                 GAME.CTX.font = "12px segoe ui";
                 GAME.CTX.fillStyle = "white";
                 GAME.CTX.fillText(this.constructor.name.toUpperCase() + ": x=" + this.x + " y=" + this.y, this.dashHitBox.left - GAME.camera.x, this.dashHitBox.bottom - GAME.camera.y + 4*PARAMS.SCALE);
+            }
+            if (this.posHitBox){
+                GAME.CTX.strokeStyle = "blue";
+                GAME.CTX.strokeRect(this.posHitBox.left - GAME.camera.x, this.posHitBox.top - GAME.camera.y, this.posHitBox.width, this.posHitBox.height);
+                GAME.CTX.font = "12px segoe ui";
+                GAME.CTX.fillStyle = "white";
+                GAME.CTX.fillText(this.constructor.name.toUpperCase() + ": x=" + this.x + " y=" + this.y, this.posHitBox.left - GAME.camera.x, this.posHitBox.bottom - GAME.camera.y + 4*PARAMS.SCALE);
             }
         }
     }
@@ -205,6 +225,21 @@ class Slime extends AnimatedEntity {
                 clamp(this.momentum + this.decceleration * GAME.tickMod, -this.maxMom, 0);
         }
 
+    }
+
+    /**
+     * Used to draw a hitbox containing all the space between the entity's old position and new one.
+     * Help flag collision when moving at higher speeds so clipping doesn't occur.
+     * @param {number} oldX - entity hitbox's old x position
+     * @param {number} oldY - entity hitbox's old y position
+     * @param {number} newX - entity hitbox's new x position
+     * @param {number} newY - entity hitbox's new y position
+     */
+    drawPositioningHitBox(oldX, oldY, newX, newY, width, height){
+        return new HitBox(
+                Math.min(oldX, newX), Math.min(oldY, newY), 0, 0, 
+                width + Math.abs(newX - oldX), height + Math.abs(newY - oldY)
+            );
     }
 
     idleStateCheck(){

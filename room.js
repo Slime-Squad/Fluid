@@ -127,11 +127,11 @@ class Room {
         const w = this.w/8;
         const directionsOfSpaces = [];
         if (this.layers["map"][1][index] >= 0) {
-            let dirs = [-w,1,w,-1,w+1,w-1,-w+1,-w-1];
+            let dirs = [-w,1,w,-1];
             if ((index+1)%w == 0) { // on right edge
-                dirs = [-w,undefined,w,-1,undefined,w-1,undefined,-w-1];
+                dirs = [-w,undefined,w,-1];
             } else if (index%w == 0) { // on left edge
-                dirs = [-w,1,w,undefined,w+1,undefined,-w+1,undefined];
+                dirs = [-w,1,w,undefined];
             }
             for (let i = 0; i < dirs.length; i++) {
                 if (this.layers["map"][1][index+dirs[i]] !== undefined) {
@@ -139,6 +139,19 @@ class Room {
                 }
             }
         }
+        // if (this.layers["map"][1][index] >= 0) {
+        //     let dirs = [-w,1,w,-1,w+1,w-1,-w+1,-w-1];
+        //     if ((index+1)%w == 0) { // on right edge
+        //         dirs = [-w,undefined,w,-1,undefined,w-1,undefined,-w-1];
+        //     } else if (index%w == 0) { // on left edge
+        //         dirs = [-w,1,w,undefined,w+1,undefined,-w+1,undefined];
+        //     }
+        //     for (let i = 0; i < dirs.length; i++) {
+        //         if (this.layers["map"][1][index+dirs[i]] !== undefined) {
+        //             if (this.layers["map"][1][index+dirs[i]] < 0) directionsOfSpaces.push(i);
+        //         }
+        //     }
+        // }
         return directionsOfSpaces;
     }
 }

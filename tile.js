@@ -1,4 +1,10 @@
-const ENTITY_DIRECTIONS = {
+const ENTITY_DIRECTIONS_STRINGS = {
+    0 : "bottom",
+    1 : "left",
+    2 : "top",
+    3 : "right"
+}
+const ENTITY_DIRECTIONS_IDS = {
     "bottom" : 0,
     "left" : 1,
     "top" : 2,
@@ -53,6 +59,7 @@ class Tile {
 
     /**
      * Function responsible for handling the collision behavior of the tile (this) and player
+     * @returns Entity
      */
     collideWithPlayer(){
         return this.collideWithEntity(GAME.slime);
@@ -64,16 +71,22 @@ class Tile {
      */
     collideWithEntity(entity){
         
-        let directionOfEntity = entity.hitbox.getCollisionDirection(this.hitbox);
+        let directionOfEntity = this.collidableDirections.length == 1 ? 
+            ENTITY_DIRECTIONS_STRINGS[this.collidableDirections[0]] :
+            entity.hitbox.getCollisionDirection(this.hitbox);
+
+        // let directionOfEntity = entity.hitbox.getCollisionDirection(this.hitbox);
             
-        if (!this.collidableDirections.includes(ENTITY_DIRECTIONS[directionOfEntity])) 
-            directionOfEntity = ENTITY_DIRECTIONS[this.collidableDirections[0]];
+        // if (!directionOfEntity || !this.collidableDirections.includes(ENTITY_DIRECTIONS_IDS[directionOfEntity])){
+        //     directionOfEntity = ENTITY_DIRECTIONS_STRINGS[this.collidableDirections[0]];
+        // }
+        
 
         // Adjust entity x and y value
-        if (directionOfEntity === "left") entity.x = this.hitbox.right - entity.hitbox.leftPad + 1;
-        else if (directionOfEntity === "right") entity.x = this.hitbox.left - entity.hitbox.width - entity.hitbox.leftPad - 1;
-        else if (directionOfEntity ==="top") entity.y = this.hitbox.bottom - entity.hitbox.topPad;
-        else if (directionOfEntity ==="bottom") entity.y = this.hitbox.top - entity.hitbox.height - entity.hitbox.topPad;
+        if (directionOfEntity === "left") entity.x = Math.max(this.hitbox.right - entity.hitbox.leftPad + 1, entity.x);
+        else if (directionOfEntity === "right") entity.x = Math.min(this.hitbox.left - entity.hitbox.width - entity.hitbox.leftPad - 1, entity.x);
+        else if (directionOfEntity ==="top") entity.y = Math.max(this.hitbox.bottom - entity.hitbox.topPad + 1, entity.y);
+        else if (directionOfEntity ==="bottom") entity.y = Math.min(this.hitbox.top - entity.hitbox.height - entity.hitbox.topPad, entity.y);
         entity.hitbox.updatePos(entity.x, entity.y);
         return directionOfEntity;
     }
