@@ -94,29 +94,7 @@ class Slime extends AnimatedEntity {
         this.changeStateCheck();
         this.state();
         
-        this.posHitBox = this.drawPositioningHitBox(
-            oldX, oldY, this.x + this.hitbox.leftPad, this.y + this.hitbox.topPad, this.hitbox.width, this.hitbox.height
-            );
-        this.hitbox.updatePos(this.x, this.y);
-        this.tileCollisions.length = 0; // empty array
-        this.entityCollisions = this.posHitBox.getCollisions();
-
-        this.entityCollisions.forEach(entity => { 
-            if (entity.collideWithPlayer) {
-                let direction = entity.collideWithPlayer();
-                if (!direction) return;
-                this.tileCollisions.push(direction)
-            }
-        });
-        // this.tileCollisions = this.tileCollisions.filter(entity => {return entity instanceof Tile})
-        // this.hitbox.updatePos(this.x, this.y);
-        // Sorted Collision
-        // this.entityCollisions.forEach(entity => { 
-        //     entity.distanceFromPlayer = Math.abs(entity.hitbox.center - this.hitbox.center);
-        // });
-        // this.entityCollisions.sort((a,b) => {return a.distanceFromPlayer - b.distanceFromPlayer}).forEach(entity => { 
-        //     if (entity.collideWithPlayer) this.tileCollisions.push(entity.collideWithPlayer()); 
-        // });
+        this.collision(oldX, oldY);
 
         this.endOfCycleUpdates();
 
@@ -166,6 +144,33 @@ class Slime extends AnimatedEntity {
         if (this.y == this.lastY) this.yVelocity = 1 / PARAMS.SCALE; // Reset yVelocity on stop
         // if (this.timers.dashTimer > 1) this.canDash = true;
         super.endOfCycleUpdates();
+    }
+
+    collision(oldX, oldY){
+        this.posHitBox = this.drawPositioningHitBox(
+            oldX, oldY, this.x + this.hitbox.leftPad, this.y + this.hitbox.topPad, this.hitbox.width, this.hitbox.height
+            );
+        this.hitbox.updatePos(this.x, this.y);
+        this.tileCollisions.length = 0; // empty array
+        this.entityCollisions = this.posHitBox.getCollisions();
+
+        this.entityCollisions.forEach(entity => { 
+            if (entity.collideWithPlayer) {
+                let direction = entity.collideWithPlayer();
+                if (!direction) return;
+                this.tileCollisions.push(direction)
+            }
+        });
+
+        // this.tileCollisions = this.tileCollisions.filter(entity => {return entity instanceof Tile})
+        // this.hitbox.updatePos(this.x, this.y);
+        // Sorted Collision
+        // this.entityCollisions.forEach(entity => { 
+        //     entity.distanceFromPlayer = Math.abs(entity.hitbox.center - this.hitbox.center);
+        // });
+        // this.entityCollisions.sort((a,b) => {return a.distanceFromPlayer - b.distanceFromPlayer}).forEach(entity => { 
+        //     if (entity.collideWithPlayer) this.tileCollisions.push(entity.collideWithPlayer()); 
+        // });
     }
 
     ////////////////////////
@@ -674,7 +679,7 @@ class Slime extends AnimatedEntity {
      * @author Jasper Newkirk
      */
     kill() {
-        if (this.isInvincible) return;
+        if (this.isInvincible || !this.isAlive) return;
         this.isAlive = false;
         GAME.camera.deathScreen.swapTag("Died");
         GAME.entities.forEach((entity) => {if(entity.respawn) entity.respawn(); });
@@ -691,6 +696,7 @@ class Slime extends AnimatedEntity {
                 this.yVelocity = 0;
                 this.x = this.spawnX;
                 this.y = this.spawnY;
+                this.hitbox.updatePos(this.x, this.y);
                 this.isAlive = true;
             }
         );
