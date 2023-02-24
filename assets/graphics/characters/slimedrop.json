@@ -160,6 +160,78 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
     "sourceSize": { "w": 16, "h": 16 },
     "duration": 45
+   },
+   {
+    "filename": "0#JumpingGround",
+    "frame": { "x": 0, "y": 96, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 60
+   },
+   {
+    "filename": "1#JumpingGround",
+    "frame": { "x": 24, "y": 96, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 60
+   },
+   {
+    "filename": "2#JumpingGround",
+    "frame": { "x": 48, "y": 96, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 60
+   },
+   {
+    "filename": "3#JumpingGround",
+    "frame": { "x": 72, "y": 96, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 60
+   },
+   {
+    "filename": "0#JumpingAir",
+    "frame": { "x": 0, "y": 120, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 60
+   },
+   {
+    "filename": "0#JumpingAirLeft",
+    "frame": { "x": 0, "y": 144, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 60
+   },
+   {
+    "filename": "0#Climbing",
+    "frame": { "x": 0, "y": 168, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 40
+   },
+   {
+    "filename": "0#ClimbingLeft",
+    "frame": { "x": 0, "y": 192, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 40
    }
  ],
  "meta": {
@@ -167,11 +239,7 @@
   "version": "1.3-beta21-x64",
   "image": "slimedrop.png",
   "format": "RGBA8888",
-  "size": { "w": 184, "h": 88 },
-  "scale": "1",
-  "layers": [
-   { "name": "Lime", "opacity": 255, "blendMode": "normal" },
-   { "name": "Eye", "opacity": 255, "blendMode": "normal" }
-  ]
+  "size": { "w": 184, "h": 208 },
+  "scale": "1"
  }
 }

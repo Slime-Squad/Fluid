@@ -396,7 +396,7 @@ class Slime extends AnimatedEntity {
         };
         
         // Perform 'jumping' behaviors
-        this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
+        this.xDirection > 0 ? this.tag = "JumpingAir" : this.tag = "JumpingAirLeft";
         this.controlX();
         this.moveY();
         if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
@@ -489,21 +489,21 @@ class Slime extends AnimatedEntity {
             if (this.timers.dashTimer > this.dashTimeout){
                 this.isInvincible = false;
                 if (this.tileCollisions.includes("bottom")){
-                    //check running
+                    // Check running
                     if (CONTROLLER.RIGHT || CONTROLLER.LEFT) this.state = this.running;
-                    //check idle
+                    // Check idle
                     else this.state = this.idle;
                     this.state(true);
                     return;
                 }
-                //check falling
+                // Check falling
                 this.state = this.falling;
                 this.state(true);
                 return;
 
             }
 
-            //check climbing
+            // Check climbing
             if (this.tileCollisions.includes("left") || this.tileCollisions.includes("right")){
                 this.isInvincible = false;
                 this.yVelocity = 0;
@@ -516,6 +516,7 @@ class Slime extends AnimatedEntity {
 
         };
         
+        // Perform behavior for dashing
         this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
         if (this.timers.dashTimer <= this.dashTimeout) {
             if (this.xDirection > 0){
@@ -568,7 +569,8 @@ class Slime extends AnimatedEntity {
             }
         };
 
-        this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
+        // Perform behavior for boosting
+        this.xDirection > 0 ? this.tag = "JumpingAir" : this.tag = "JumpingAirLeft";
         this.controlX();
         this.moveY(this.yVelocity);
         
@@ -622,7 +624,7 @@ class Slime extends AnimatedEntity {
         };
 
         // Perform 'climbing' behaviors
-        this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
+        this.xDirection > 0 ? this.tag = "Climbing" : this.tag = "ClimbingLeft";
         this.moveX(this.xDirection);
         this.moveY(this.slideSpeed);
         if (this.timers.climbTimer > 0.1 && this.slideSpeed < this.maxYVelocity) this.slideSpeed = this.slideSpeed + (PARAMS.GRAVITY / 2) * GAME.tickMod;
@@ -667,7 +669,7 @@ class Slime extends AnimatedEntity {
         };
 
         // Perform 'wallJumping' behaviors
-        this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
+        this.xDirection > 0 ? this.tag = "JumpingAir" : this.tag = "JumpingAirLeft";
         this.moveX(this.speed * 0.75 * this.xDirection);
         this.moveY();
         if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
