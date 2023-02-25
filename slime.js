@@ -18,12 +18,13 @@ class Slime extends AnimatedEntity {
         this.spawnY = this.y;
 
         // States
-        // this.states = {
-        //     idle : new State()
-        // };
-        // this.states.idle.startFunction = () => {
-        //     this.yVelocity = 1 / PARAMS.SCALE;
-        // }
+        this.states = {
+            idle : new State()
+        };
+        this.states.idle.start = () => {
+            console.log(this.constructor.name + " starting state: Idle");
+            // this.yVelocity = 1 / PARAMS.SCALE;
+        };
         this.state = this.idle; // active state
         this.changeStateCheck = this.idleStateCheck;
         this.entityCollisions = [];
@@ -60,7 +61,7 @@ class Slime extends AnimatedEntity {
         this.canPressHome = true;
 
         // Powers
-        // this.dashbeam = new AnimatedEntity("./assets/graphics/characters/dashbeam", "Default", 0, 0, false);
+        this.dashbeam = new AnimatedEntity("./assets/graphics/characters/dashbeam", "Default", 0, 0, false);
         // this.dashbeam.draw(ctx) = super.draw(ctx);
         
         // Charges
@@ -302,6 +303,11 @@ class Slime extends AnimatedEntity {
 
     }
 
+    startIdle(){
+        this.yVelocity = 1 / PARAMS.SCALE;
+        this.states.idle.start();
+    }
+
     /**
      * Slime is on the ground, moving and accelerating
      * @author Nathan Brown
@@ -336,6 +342,7 @@ class Slime extends AnimatedEntity {
             
             // Check idle
             if (!(CONTROLLER.RIGHT || CONTROLLER.LEFT)){
+                this.startIdle();
                 this.state = this.idle;
                 this.state(true);
                 return;
@@ -424,7 +431,7 @@ class Slime extends AnimatedEntity {
             
             // Check idle
             if (landed){
-                this.yVelocity = 1 / PARAMS.SCALE;
+                this.startIdle();
                 this.state = this.idle;
                 this.state(true);
                 return;
@@ -470,6 +477,7 @@ class Slime extends AnimatedEntity {
                     if (CONTROLLER.RIGHT || CONTROLLER.LEFT) this.state = this.running;
                     // Check idle
                     else this.state = this.idle;
+                    this.startIdle();
                     this.state(true);
                     return;
                 }
@@ -589,7 +597,7 @@ class Slime extends AnimatedEntity {
             
             // Check idle
             if (landed){
-                this.yVelocity = 1 / PARAMS.SCALE;
+                this.startIdle();
                 this.state = this.idle;
                 this.state(true);
                 return;

@@ -6,8 +6,6 @@ class State {
 
     constructor(){
         this.stateChecks = [];
-        this.startFunction = ()=>{console.log("empty start function")};
-        this.behaviorFunction = ()=>{console.log("empty behavior function")};
     }
 
     checkState(){
@@ -16,10 +14,10 @@ class State {
         });
     }
     start(){
-        return this.startFunction;
+        console.log("empty start function");
     }
     behavior(){
-        return this.behaviorFunction;
+        console.log("empty behavior function");
     }
     setCheckState(predicateStatePairs){
         predicateStatePairs.forEach(pair=> this.addCheckState(pair.predicate, pair.state))
