@@ -24,24 +24,23 @@ class Charge extends AnimatedEntity {
      */
     update() {
         if (this.originalTag == "Disabled") return;
-        if (!GAME.UNLOCKED_CHARGES[this.tag]) return
-        if (this.tag == "Disabled") {
-            this.elapsedTime += GAME.clockTick;
-        }
-
+        if (!GAME.UNLOCKED_CHARGES[this.originalTag]) return;
+        if (this.tag == "Disabled" || this.tag == "Collected") this.elapsedTime += GAME.clockTick;
+        if (this.tag == "Collected" && this.frames.isFrozen) this.swapTag("Disabled", true);
         if (this.elapsedTime >= 5) {
             this.tag = this.originalTag;
             this.elapsedTime = 0;
         }
+        this.lastFrameIndex = this.frameTimer.frameIndex;
     }
 
     /**
      * Response to colliding with player.
      */
     collideWithPlayer(){
-        if (this.tag != "Disabled") { // charge collected
+        if (this.tag != "Disabled" && this.tag != "Collected") { // charge collected
             GAME.slime.charges[this.tag] = Math.min(GAME.slime.charges[this.tag] + 1, 1);
-            this.tag = "Disabled";
+            this.swapTag("Collected", false);
         }
     }
 }

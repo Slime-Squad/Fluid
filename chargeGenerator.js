@@ -18,8 +18,8 @@ class ChargeGenerator extends Charge {
      */
     collideWithPlayer(){
         super.collideWithPlayer();
-
-        GAME.UNLOCKED_CHARGES[this.tag] = true;
+        console.log("Slime collided with ChargeGenerator")
+        GAME.UNLOCKED_CHARGES[this.originalTag] = true;
     }
 
 }
