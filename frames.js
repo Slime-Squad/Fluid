@@ -9,6 +9,7 @@ class Frames {
      */
     constructor(src) {
         this.src = src;
+        this.isFrozen = false;
     }
 
     /**
@@ -64,9 +65,11 @@ class Frames {
         frameTimer.elapsedTime += GAME.clockTick;
         if (this.animations[tag].length <= frameTimer.frameIndex) {
             if (!loop) {
-                this.isDone(ctx, spritesheet, tag, x, y);
+                this.drawLastFrame(ctx, spritesheet, tag, x, y);
+                this.isFrozen = true;
                 return;
             }
+            this.isFrozen = false;
             frameTimer.frameIndex = 0;
         }
 
@@ -89,13 +92,13 @@ class Frames {
      * @param {number} x The x-coordinate associated with the top-left corner of the frame's sprite on the canvas.
      * @param {number} y The y-coordinate associated with the top-left corner of the frame's sprite on the canvas.
      */
-    isDone(ctx, spritesheet, tag, x, y) {
-            ctx.drawImage(spritesheet, this.animations[tag].slice(-1)[0].x, 
-                this.animations[tag].slice(-1)[0].y, 
-                this.animations[tag].slice(-1)[0].w, 
-                this.animations[tag].slice(-1)[0].h, 
-                x, y, 
-                this.animations[tag].slice(-1)[0].w*PARAMS.SCALE, 
-                this.animations[tag].slice(-1)[0].h*PARAMS.SCALE);
+    drawLastFrame(ctx, spritesheet, tag, x, y) {
+        ctx.drawImage(spritesheet, this.animations[tag].slice(-1)[0].x, 
+            this.animations[tag].slice(-1)[0].y, 
+            this.animations[tag].slice(-1)[0].w, 
+            this.animations[tag].slice(-1)[0].h, 
+            x, y, 
+            this.animations[tag].slice(-1)[0].w*PARAMS.SCALE, 
+            this.animations[tag].slice(-1)[0].h*PARAMS.SCALE);
     }
 }
