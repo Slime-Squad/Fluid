@@ -216,8 +216,170 @@
     "duration": 60
    },
    {
-    "filename": "0#Climbing",
+    "filename": "0#Dashing",
     "frame": { "x": 0, "y": 168, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "1#Dashing",
+    "frame": { "x": 24, "y": 168, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "2#Dashing",
+    "frame": { "x": 48, "y": 168, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "3#Dashing",
+    "frame": { "x": 72, "y": 168, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "4#Dashing",
+    "frame": { "x": 96, "y": 168, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "5#Dashing",
+    "frame": { "x": 120, "y": 168, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "6#Dashing",
+    "frame": { "x": 144, "y": 168, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "7#Dashing",
+    "frame": { "x": 168, "y": 168, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "8#Dashing",
+    "frame": { "x": 192, "y": 168, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "0#DashingLeft",
+    "frame": { "x": 0, "y": 192, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "1#DashingLeft",
+    "frame": { "x": 24, "y": 192, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "2#DashingLeft",
+    "frame": { "x": 48, "y": 192, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "3#DashingLeft",
+    "frame": { "x": 72, "y": 192, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "4#DashingLeft",
+    "frame": { "x": 96, "y": 192, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "5#DashingLeft",
+    "frame": { "x": 120, "y": 192, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "6#DashingLeft",
+    "frame": { "x": 144, "y": 192, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "7#DashingLeft",
+    "frame": { "x": 168, "y": 192, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "8#DashingLeft",
+    "frame": { "x": 192, "y": 192, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 20
+   },
+   {
+    "filename": "0#Climbing",
+    "frame": { "x": 0, "y": 216, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -226,7 +388,7 @@
    },
    {
     "filename": "0#ClimbingLeft",
-    "frame": { "x": 0, "y": 192, "w": 16, "h": 16 },
+    "frame": { "x": 0, "y": 240, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -239,7 +401,7 @@
   "version": "1.3-beta21-x64",
   "image": "slimedrop.png",
   "format": "RGBA8888",
-  "size": { "w": 184, "h": 208 },
+  "size": { "w": 208, "h": 256 },
   "scale": "1"
  }
 }

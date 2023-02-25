@@ -18,15 +18,12 @@ class Slime extends AnimatedEntity {
         this.spawnY = this.y;
 
         // States
-        this.states = [
-            this.idle, 
-            this.running, 
-            this.jumping, 
-            this.falling, 
-            this.dashing,
-            this.boosting, 
-            this.climbing
-        ];
+        // this.states = {
+        //     idle : new State()
+        // };
+        // this.states.idle.startFunction = () => {
+        //     this.yVelocity = 1 / PARAMS.SCALE;
+        // }
         this.state = this.idle; // active state
         this.changeStateCheck = this.idleStateCheck;
         this.entityCollisions = [];
@@ -43,10 +40,10 @@ class Slime extends AnimatedEntity {
         this.maxYVelocity = 6;
         this.boostSpeed = -6;
         this.boostTimeout = 0.15;
-        this.dashSpeed = 8;
-        this.dashTimeout = 0.1;
+        this.dashSpeed = 5;
+        this.dashTimeout = 0.2;
         this.slideSpeed = 0;
-        this.wallJumpTimeout = 0.2;
+        this.wallJumpTimeout = 0.15;
         this.yFallThreshold = (1 / PARAMS.SCALE) * 10;
         this.jumpVelocity = -3.4;
         this.jumpMomentumMod = 1.8;
@@ -62,6 +59,10 @@ class Slime extends AnimatedEntity {
         this.canBoost = false;
         this.canPressHome = true;
 
+        // Powers
+        // this.dashbeam = new AnimatedEntity("./assets/graphics/characters/dashbeam", "Default", 0, 0, false);
+        // this.dashbeam.draw(ctx) = super.draw(ctx);
+        
         // Charges
         this.charges = {
             "Electric" : 0,
@@ -250,13 +251,7 @@ class Slime extends AnimatedEntity {
     idleStateCheck(){
         // Check dashing
         if (CONTROLLER.B && this.canDash) {
-            this.charges["Electric"] = 0;
-            this.canDash = false;
-            this.yVelocity = 0;
-            this.timers.dashTimer = 0;
-            this.isInvincible = true;
-            this.state = this.dashing;
-            this.state(true);
+            this.startDashing();
             return;
         } 
 
@@ -317,13 +312,7 @@ class Slime extends AnimatedEntity {
 
             // Check dashing
             if (CONTROLLER.B && this.canDash) {
-                this.charges["Electric"] = 0;
-                this.canDash = false;
-                this.yVelocity = 0;
-                this.timers.dashTimer = 0;
-                this.isInvincible = true;
-                this.state = this.dashing;
-                this.state(true);
+                this.startDashing();
                 return;
             } 
 
@@ -374,13 +363,7 @@ class Slime extends AnimatedEntity {
 
             // Check dashing
             if (CONTROLLER.B && this.canDash) {
-                this.charges["Electric"] = 0;
-                this.canDash = false;
-                this.yVelocity = 0;
-                this.timers.dashTimer = 0;
-                this.isInvincible = true;
-                this.state = this.dashing;
-                this.state(true);
+                this.startDashing();
                 return;
             }
             
@@ -413,13 +396,7 @@ class Slime extends AnimatedEntity {
 
             // Check dashing
             if (CONTROLLER.B && this.canDash) {
-                this.charges["Electric"] = 0;
-                this.canDash = false;
-                this.yVelocity = 0;
-                this.timers.dashTimer = 0;
-                this.isInvincible = true;
-                this.state = this.dashing;
-                this.state(true);
+                this.startDashing();
                 return;
             }
 
@@ -514,10 +491,10 @@ class Slime extends AnimatedEntity {
                 return;
             }
 
-        };
+        }
         
         // Perform behavior for dashing
-        this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
+        this.xDirection > 0 ? this.tag = "Dashing" : this.tag = "DashingLeft";
         if (this.timers.dashTimer <= this.dashTimeout) {
             if (this.xDirection > 0){
                 this.dashHitBox = new HitBox(this.hitbox.right, this.hitbox.top, 0, 1 * PARAMS.SCALE, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height - 2 * PARAMS.SCALE);
@@ -541,6 +518,22 @@ class Slime extends AnimatedEntity {
             this.moveX(this.dashSpeed * this.xDirection);
         }
 
+    }
+
+    /**
+     * Call once at the start of a state
+     */
+    startDashing(){
+        this.charges["Electric"] = 0;
+        this.canDash = false;
+        this.yVelocity = 0;
+        this.timers.dashTimer = 0;
+        this.isInvincible = true;
+        this.state = this.dashing;
+        this.dashbeam.x = this.x;
+        this.dashbeam.y = this.y;
+        this.dashbeam.swapTag("Default", false);
+        this.state(true);
     }
 
     boosting (changingState = false) {
