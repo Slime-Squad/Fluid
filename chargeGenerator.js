@@ -18,8 +18,7 @@ class ChargeGenerator extends Charge {
      */
     collideWithPlayer(){
         super.collideWithPlayer();
-
-        GAME.UNLOCKED_CHARGES[this.tag] = true;
+        GAME.UNLOCKED_CHARGES[this.originalTag] = true;
     }
 
 }
