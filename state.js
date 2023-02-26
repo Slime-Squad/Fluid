@@ -1,5 +1,5 @@
 /**
- * Object for discreet states in a state machine.
+ * Object for discrete states in a state machine.
  * @author Nathan Brown
  */
 class State {
