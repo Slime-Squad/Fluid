@@ -4,7 +4,7 @@
  */
 class Tabemasu extends AnimatedEntity {
     /**
-     * Creates a new instance of a tabemasu..
+     * Creates a new instance of a tabemasu.
      * @param {number} x The x-coordinate associated with the top-left corner of the sprite on the canvas.
      * @param {number} y The y-coordinate associated with the top-left corner of the sprite on the canvas.
      * @param {boolean} loop Whether the sprite's animation loops over again, after having finished playing once.
@@ -48,7 +48,7 @@ class Tabemasu extends AnimatedEntity {
     }
 
     /**
-     * Draws the currenty entity's {@link AnimatedEntity.tag} animation. 
+     * Draws the currenty entity's {@link AnimatedEntity.tag} animation.
      * @param {CanvasRenderingContext2D} ctx The canvas which the Batterflea will be drawn on
      */
     draw(ctx) {
@@ -77,17 +77,16 @@ class Tabemasu extends AnimatedEntity {
 
         this.x += (moveSpeed + this.momentum) * PARAMS.SCALE * GAME.tickMod;
         if (moveSpeed == 0){
-            this.momentum = this.xDirection > 0 ? 
-                clamp(this.momentum - this.decceleration * GAME.tickMod, 0, this.maxMom) : 
+            this.momentum = this.xDirection > 0 ?
+                clamp(this.momentum - this.decceleration * GAME.tickMod, 0, this.maxMom) :
                 clamp(this.momentum + this.decceleration * GAME.tickMod, -this.maxMom, 0);
             return;
         }
         this.momentum = clamp(
-            this.momentum + moveAcceleration * GAME.tickMod, 
-            this.maxMom * -1, 
+            this.momentum + moveAcceleration * GAME.tickMod,
+            this.maxMom * -1,
             this.maxMom
         );
-        
 
     }
 
@@ -95,7 +94,6 @@ class Tabemasu extends AnimatedEntity {
      * Moves the slime along the y axis by adding its yVelocity value to its y 
      * position. Mostly this is caused by gravity and states like jumping that allow 
      * the player to change yVelocity.
-     * 
      * @author Nathan Brown
      */
     moveY(moveSpeed = this.yVelocity){
@@ -114,7 +112,7 @@ class Tabemasu extends AnimatedEntity {
      * Called when this Batterflea collides with the player. Returns Batterlea
      * to spawn and {@link GAME.slime.kill()} the slime
      */
-    collideWithPlayer() {   
+    collideWithPlayer() {
         if (GAME.slime.isAlive) GAME.slime.kill();
     }
 
