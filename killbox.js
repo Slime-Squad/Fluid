@@ -27,7 +27,9 @@ class KillBox {
      * @param {CanvasRenderingContext2D} ctx The canvas to which the information will be displayed upon.
      */
     draw(ctx) {
-        if (PARAMS.DEBUG) {
+        const x = this.x - GAME.camera.x;
+        const y = this.y - GAME.camera.y;
+        if (x > -this.width*PARAMS.SCALE && x < PARAMS.WIDTH && y > -this.height*PARAMS.SCALE && y < PARAMS.HEIGHT && PARAMS.DEBUG) {
             ctx.fillText("KILL", this.x - GAME.camera.x, this.y - GAME.camera.y);
         }
     }

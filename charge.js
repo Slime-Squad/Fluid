@@ -23,6 +23,8 @@ class Charge extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
+        if (this.tag != "Collected" && this.tag != "Disabled" && !this.isInFrame()) return;
+        //console.log("update", this.originalTag, "charge at", this.x, ",", this.y)
         if (this.originalTag == "Disabled") return;
         if (!GAME.UNLOCKED_CHARGES[this.originalTag]) return;
         if (this.tag == "Disabled" || this.tag == "Collected") this.elapsedTime += GAME.clockTick;

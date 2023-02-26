@@ -40,6 +40,7 @@ class Batterflea extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
+        if (!this.isInFrame()) return;
         this.hop();
         this.moveY();
 
@@ -60,7 +61,7 @@ class Batterflea extends AnimatedEntity {
      * Called when this Batterflea collides with the player. Returns Batterlea
      * to spawn and {@link GAME.slime.kill()} the slime
      */
-    collideWithPlayer() {   
+    collideWithPlayer() {
         if (GAME.slime.isAlive) GAME.slime.kill();
     }
 
@@ -74,8 +75,8 @@ class Batterflea extends AnimatedEntity {
             this.xMove = this.x > GAME.slime.x ? -this.speed: this.speed;
             this.x > GAME.slime.x ? this.tag = "JumpL": this.tag = "JumpR";
         }
-        
-        //Moves the batterlfea on x axis
+
+        //Moves the batterflea on x-axis
         if(this.isAirborne) {
             this.timers.landTimer = 0;
             this.x += this.xMove * GAME.tickMod;
@@ -94,7 +95,7 @@ class Batterflea extends AnimatedEntity {
     }
 
     /**
-     * Controls Batterleas movement on the y axis.
+     * Controls the Batterflea's movement on the y-axis.
      */
     moveY() {
         // Rise

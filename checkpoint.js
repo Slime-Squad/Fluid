@@ -38,4 +38,8 @@ class Checkpoint extends AnimatedEntity {
         });
     }
 
+    draw(ctx) {
+        if (this.isInFrame()) super.draw(ctx);
+    }
+
 }

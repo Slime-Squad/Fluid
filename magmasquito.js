@@ -24,6 +24,7 @@ class Magmasquito extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
+        if (!this.isInFrame(16*PARAMS.SCALE, 16*PARAMS.SCALE)) return;
         this.shoot();
         this.hitbox.updatePos(this.x, this.y);
         this.hitbox.getCollisions().forEach((entity) => {
@@ -38,7 +39,7 @@ class Magmasquito extends AnimatedEntity {
      * to spawn and {@link GAME.slime.kill()} the slime
      */
     collideWithPlayer() {
-        GAME.slime.kill();  
+        if (GAME.slime.isAlive) GAME.slime.kill();
     }
 
     /**
@@ -53,6 +54,6 @@ class Magmasquito extends AnimatedEntity {
      * @param {CanvasRenderingContext2D} ctx The canvas which the Batterflea will be drawn on
      */
     draw(ctx) {
-        super.draw(ctx)
+        if (this.isInFrame(16*PARAMS.SCALE, 16*PARAMS.SCALE)) super.draw(ctx);
     }
 }

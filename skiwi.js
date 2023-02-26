@@ -26,6 +26,7 @@ class Skiwi extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
+        if (!this.isInFrame()) return;
         this.ski();
         this.hitbox.updatePos(this.x, this.y);
         this.hitbox.getCollisions().forEach((entity) => {

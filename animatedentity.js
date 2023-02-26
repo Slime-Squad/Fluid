@@ -64,7 +64,7 @@ class AnimatedEntity {
         this.x = this.spawnX;
         this.y = this.spawnY;
     }
-    
+
     /**
      * Collection of calls and values to assign at the end of an entity's update().
      * @inheritdoc
@@ -84,5 +84,20 @@ class AnimatedEntity {
         Object.keys(this.timers).forEach(timer => {
             this.timers[timer] += GAME.clockTick;
         });
+    }
+
+    /**
+     * Returns whether the entity is in the frame of the camera.
+     * @param {number} width Scaled width of entity. Leave blank to default to hitbox width or 8*PARAMS.SCALE if no hitbox present.
+     * @param {number} height Scaled height of entity. Leave blank to default to hitbox height or 8*PARAMS.SCALE if no hitbox present.
+     * @returns Whether the entity is in the frame of the camera.
+     */
+    isInFrame(width=undefined, height=undefined) {
+        const x = this.x - GAME.camera.x;
+        const y = this.y - GAME.camera.y;
+        const w = width ? width : this.hitbox ? this.hitbox.width : 8*PARAMS.SCALE;
+        const h = height ? height : this.hitbox ? this.hitbox.height : 8*PARAMS.SCALE;
+        //if ((x > -w && x < PARAMS.WIDTH && y > -h && y < PARAMS.HEIGHT)) console.log(this.constructor.name, "is in frame.");
+        return (x > -w && x < PARAMS.WIDTH && y > -h && y < PARAMS.HEIGHT);
     }
 }

@@ -1,6 +1,6 @@
 /**
  * Class representation of a charge item.
- * @author Xavier Hines
+ * @author Xavier Hines, Jasper Newkirk
  */
 class Bubble extends AnimatedEntity {
     /**
@@ -22,7 +22,7 @@ class Bubble extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-
+        if (!this.isInFrame()) return;
         this.hitbox.updatePos(this.x, this.y);
         this.hitbox.getCollisions().forEach((entity) => {
             if (entity.collideWithEntity) entity.collideWithEntity(this);

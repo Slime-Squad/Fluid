@@ -30,11 +30,7 @@ class Tabemasu extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-
-        const x = this.x - GAME.camera.x;
-        const y = this.y - GAME.camera.y;
-        if ((x > -36*PARAMS.SCALE && x < PARAMS.WIDTH && y > -36*PARAMS.SCALE && y < PARAMS.HEIGHT)) this.isSpotted = true;
-        if (!this.isSpotted) return;
+        if (!this.isInFrame(36*PARAMS.SCALE, 36*PARAMS.SCALE)) return;
 
         if (Math.abs(this.hitbox.center.x - GAME.slime.hitbox.center.x) < 32 * PARAMS.SCALE && Math.abs(this.hitbox.center.y - GAME.slime.hitbox.center.y) > 32 * PARAMS.SCALE) {
             this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
