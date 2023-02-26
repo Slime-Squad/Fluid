@@ -8,8 +8,8 @@ class Health extends AnimatedEntity {
      */
     constructor() {
         super("./assets/graphics/camera/health", "8", 0, 0, false);
-        this.width = 4*PARAMS.SCALE;
-        this.height = 4*PARAMS.SCALE;
+        this.width = 6*PARAMS.SCALE;
+        this.height = 6*PARAMS.SCALE;
         this.MAX_HEALTH = 8;
         this.health = 8;
         this.delta = '';
@@ -27,6 +27,7 @@ class Health extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
+        if (this.health == 8) return;
         this.health = Math.min(8, this.health + GAME.tickMod/120)
         if (this.tag != Math.floor(this.health) + this.delta) this.swapTag(Math.max(0, Math.floor(this.health)) + this.delta);
         if (this.health <= 0) {
