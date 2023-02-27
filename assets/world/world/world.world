@@ -69,6 +69,34 @@
             "width": 960,
             "x": 3056,
             "y": -848
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/fire1a.tmx",
+            "height": 576,
+            "width": 576,
+            "x": 4016,
+            "y": -648
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/fire1b.tmx",
+            "height": 384,
+            "width": 960,
+            "x": 4592,
+            "y": -1032
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/fire1.tmx",
+            "height": 384,
+            "width": 576,
+            "x": 4016,
+            "y": -1032
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/fire2.tmx",
+            "height": 576,
+            "width": 960,
+            "x": 4592,
+            "y": -648
         }
     ],
     "onlyShowAdjacentMaps": false,
