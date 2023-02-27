@@ -97,6 +97,9 @@ class Room {
                                 case 14:
                                     this.tiles[layer].push(new ChargeGenerator("Ice", x, y));
                                     break;
+                                case 16:
+                                    entity = new Tabemasu("Idle", x, y);
+                                    break;
                                 case 18:
                                     entity = new KillBox(x, y);
                                     break;

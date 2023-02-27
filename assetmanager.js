@@ -138,7 +138,8 @@ class AssetManager {
      */
     playAudio(path) {
         const aud = this.cache[path];
-        aud.volume = PARAMS.MAX_VOLUME;
+        aud.volume = path.split("/")[3] == "music" ? PARAMS.MAX_VOLUME : PARAMS.MAX_VOLUME / 2;
+        // aud.volume = PARAMS.MAX_VOLUME;
         aud.currentTime = 0;
         aud.play();
     }

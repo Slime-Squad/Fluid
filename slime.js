@@ -20,8 +20,6 @@ class Slime extends AnimatedEntity {
         this.initializeStates();
         
         this.currentState = this.states.idle;
-        this.behavior = this.states.idle.behavior; // active state
-        this.changeStateCheck = this.idleStateCheck;
         this.entityCollisions = [];
         this.tileCollisions = [];
 
@@ -89,8 +87,6 @@ class Slime extends AnimatedEntity {
         let oldY = this.hitbox.top;
         this.changeState();
         this.currentState.behavior();
-        // this.changeStateCheck();
-        // this.behavior();
         
         this.collision(oldX, oldY);
 
@@ -196,7 +192,7 @@ class Slime extends AnimatedEntity {
                 this.isAlive = true;
             }
         );
-        GAME.entities.forEach((entity) => {if(entity.respawn && !entity.isInFrame()) entity.respawn(); });
+        GAME.entities.forEach((entity) => {if(entity.respawn) entity.respawn(); });
 
     }
 
