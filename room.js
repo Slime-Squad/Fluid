@@ -88,6 +88,15 @@ class Room {
                                 case 11:
                                     entity = new ChargeGenerator("Electric", x, y);
                                     break;
+                                case 12:
+                                    this.tiles[layer].push(new ChargeGenerator("Fire", x, y));
+                                    break;
+                                case 13:
+                                    this.tiles[layer].push(new ChargeGenerator("Earth", x, y));
+                                    break;
+                                case 14:
+                                    this.tiles[layer].push(new ChargeGenerator("Ice", x, y));
+                                    break;
                                 case 18:
                                     entity = new KillBox(x, y);
                                     break;

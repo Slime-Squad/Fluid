@@ -23,6 +23,7 @@ class Magmasquito extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
+        GAME.slime.x > this.x ? this.tag = "SuckR" : this.tag = "SuckL";
         if (!this.isInFrame(16*PARAMS.SCALE, 16*PARAMS.SCALE)) return;
         this.shoot();
         this.hitbox.updatePos(this.x, this.y);
