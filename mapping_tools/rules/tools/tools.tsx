@@ -71,4 +71,29 @@
    <property name="Name" value="Checkpoint"/>
   </properties>
  </tile>
+ <tile id="36">
+  <properties>
+   <property name="Name" value="Blank Juke"/>
+  </properties>
+ </tile>
+ <tile id="37">
+  <properties>
+   <property name="Name" value="Stone Juke"/>
+  </properties>
+ </tile>
+ <tile id="38">
+  <properties>
+   <property name="Name" value="Dirt Juke"/>
+  </properties>
+ </tile>
+ <tile id="39">
+  <properties>
+   <property name="Name" value="Fire Juke"/>
+  </properties>
+ </tile>
+ <tile id="40">
+  <properties>
+   <property name="Name" value="Ice Juke"/>
+  </properties>
+ </tile>
 </tileset>

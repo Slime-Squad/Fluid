@@ -12,7 +12,7 @@ class Slime extends AnimatedEntity {
     constructor(tag, x, y) {
         super("./assets/graphics/characters/slimedrop", tag, x, y);
         Object.assign(this, {tag, x, y});
-        this.hitbox = new HitBox(x, y, PARAMS.SCALE * 3, PARAMS.SCALE * 5, 10*PARAMS.SCALE, 10*PARAMS.SCALE);
+        this.hitbox = new HitBox(x, y, 3*PARAMS.SCALE, 5*PARAMS.SCALE, 10*PARAMS.SCALE, 10*PARAMS.SCALE);
 
         this.spawnX = this.x;
         this.spawnY = this.y;
@@ -374,6 +374,7 @@ class Slime extends AnimatedEntity {
         
         // DASHING //
         this.states.dashing.start = () => {
+            ASSET_MANAGER.playAudio("./assets/audio/effect/dash" + Math.floor(Math.random()*4) + ".wav");
             this.charges["Electric"] = 0;
             this.canDash = false;
             this.yVelocity = 0;
@@ -443,6 +444,7 @@ class Slime extends AnimatedEntity {
 
         // BOOSTING //
         this.states.boosting.start = () =>{
+            ASSET_MANAGER.playAudio("./assets/audio/effect/boost" + Math.floor(Math.random()*4) + ".wav");
             this.charges["Fire"] = 0;
             this.yVelocity = this.jumpVelocity - Math.abs(this.momentum / this.jumpMomentumMod);
             this.canBoost = false;

@@ -27,7 +27,7 @@ class Health extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        if (this.health == 8) return;
+        //if (this.health == 8) return;
         this.health = Math.min(8, this.health + GAME.tickMod/120)
         if (this.tag != Math.floor(this.health) + this.delta) this.swapTag(Math.max(0, Math.floor(this.health)) + this.delta);
         if (this.health <= 0) {

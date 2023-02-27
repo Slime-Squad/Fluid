@@ -10,7 +10,9 @@ const rgb = (r, g, b) => `rgba(${r}, ${g}, ${b})`;
 const PARAMS = { 
     BITWIDTH: 8,
     SCALE: 6,
-    DEBUG: true,
+    DEBUG: false,
+    MUTE: false,
+    MAX_VOLUME: 0.25,
     COLORS: {
         DARKGREEN: rgb(91, 166, 117),
         GREEN: rgb(107, 201, 108),
