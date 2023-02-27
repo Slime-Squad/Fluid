@@ -26,6 +26,8 @@ fetch(ASSET_PATHS)
 	.then(() => 
 		ASSET_MANAGER.downloadAll(() => {
 		
+			ASSET_MANAGER.muteAudio(PARAMS.MUTE);
+
 			GAME = new GameEngine();
 			const canvas = document.getElementById("gameWorld");
 
@@ -42,7 +44,6 @@ fetch(ASSET_PATHS)
 			
 			GAME.init(ctx);
 			GAME.CTX = ctx;
-		
 			GAME.start();
 		
 		})

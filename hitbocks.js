@@ -26,7 +26,21 @@ class HitBox {
      * @returns list of entities collided.
      */
     getCollisions(){
-        let collisions = [];
+        const collisions = [];
+        // collisions.push(GAME.slime);
+        // const world = ASSET_MANAGER.getAsset("./assets/world/world/world.world");
+        // Object.values(world.rooms).forEach((room) => {
+        //     //console.log(room.x, room.y);
+            
+        //     if (GAME.camera.x - 10*PARAMS.WIDTH < room.x && GAME.camera.x + 10*PARAMS.WIDTH > room.x && GAME.camera.y - 10*PARAMS.HEIGHT < room.y && GAME.camera.y + 10*PARAMS.HEIGHT > room.y) {
+        //         room.entities.forEach(entity => {
+        //             if (!entity.hitbox || !entity.isAlive) return;
+        //             // if (entity.hitbox instanceof this.constructor) return;
+        //             if (!this.collide3(entity.hitbox)) return;
+        //             collisions.push(entity);
+        //         });
+        //     }
+        // });
         GAME.entities.forEach(entity => {
             if (!entity.hitbox || !entity.isAlive) return;
             // if (entity.hitbox instanceof this.constructor) return;

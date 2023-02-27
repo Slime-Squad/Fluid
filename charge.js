@@ -24,7 +24,6 @@ class Charge extends AnimatedEntity {
      */
     update() {
         if (this.tag != "Collected" && this.tag != "Disabled" && !this.isInFrame()) return;
-        //console.log("update", this.originalTag, "charge at", this.x, ",", this.y)
         if (this.originalTag == "Disabled") return;
         if (!GAME.UNLOCKED_CHARGES[this.originalTag]) return;
         if (this.tag == "Disabled" || this.tag == "Collected") this.elapsedTime += GAME.clockTick;
@@ -42,6 +41,7 @@ class Charge extends AnimatedEntity {
     collideWithPlayer(){
         if (this.tag != "Disabled" && this.tag != "Collected") { // charge collected
             GAME.slime.charges[this.tag] = Math.min(GAME.slime.charges[this.tag] + 1, 1);
+            ASSET_MANAGER.playAudio("./assets/audio/effect/charge" + Math.floor(Math.random()*4) + ".wav");
             this.swapTag("Collected", false);
         }
     }

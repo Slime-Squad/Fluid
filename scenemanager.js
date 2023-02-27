@@ -11,10 +11,11 @@ class SceneManager {
         this.y = 0;
         this.deathScreen = new DeathScreen();
         this.slimeHealth = new Health();
-        this.backDrop = new BackDrop("cave");
+        this.backdrop = new Backdrop();
         this.start = Date.now();
         this.isFrozen = false;
         this.frames = 0;
+        this.fps = 0;
         this.loadTest();
     }
 
@@ -50,7 +51,7 @@ class SceneManager {
             layerCache[layer].forEach((entity) => GAME.addEntity(entity))
         });
 
-        GAME.addEntity(this.backDrop);
+        GAME.addEntity(this.backdrop);
 
         this.x = GAME.slime.x - PARAMS.WIDTH/2 + 8*PARAMS.SCALE;
         this.y = GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE;
@@ -86,12 +87,12 @@ class SceneManager {
     draw(ctx) {
         // DEBUG INFO
         if (this.isFrozen) this.freezeAnimation(ctx, this);
+        ctx.font = "30px segoe ui";
+        ctx.fillStyle = "white";
+        ctx.fillText("FPS:" + this.fps, PARAMS.WIDTH-120, 30);
         if (PARAMS.DEBUG) {
             ctx.strokeRect(0,0,PARAMS.WIDTH/2,PARAMS.HEIGHT/2)
-            ctx.font = "30px segoe ui";
-            ctx.fillStyle = "white";
             ctx.fillText("CAM: x=" + this.x + " y=" + this.y, 10, 30);
-            ctx.fillText("FPS:" + this.fps, PARAMS.WIDTH-120, 30);
         }
     }
 

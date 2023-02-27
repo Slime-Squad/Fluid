@@ -52,6 +52,29 @@
         ]
     },
     "audio": {
-        
+        "effect": [
+            "charge0.wav",
+            "charge1.wav",
+            "charge2.wav",
+            "charge3.wav",
+            "checkpoint0.wav",
+            "checkpoint1.wav",
+            "checkpoint2.wav",
+            "checkpoint3.wav",
+            "dash0.wav",
+            "dash1.wav",
+            "dash2.wav",
+            "dash3.wav",
+            "boost0.wav",
+            "boost1.wav",
+            "boost2.wav",
+            "boost3.wav"
+        ],
+        "music": [
+            "aerial.mp3",
+            "metrodrome.mp3",
+            "meeting.mp3",
+            "pacifica.mp3"
+        ]
     }
 }
