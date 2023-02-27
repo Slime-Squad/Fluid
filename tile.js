@@ -54,7 +54,14 @@ class Tile {
      * Function called on every clock tick.
      */
     update() {
-        
+    }
+
+    isInFrame(){
+        const x = this.x - GAME.camera.x;
+        const y = this.y - GAME.camera.y;
+        const w = width ? width : this.hitbox ? this.hitbox.width : 8*PARAMS.SCALE;
+        const h = height ? height : this.hitbox ? this.hitbox.height : 8*PARAMS.SCALE;
+        return (x > -w && x < PARAMS.WIDTH && y > -h && y < PARAMS.HEIGHT);
     }
 
     /**
