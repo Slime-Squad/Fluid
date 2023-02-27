@@ -32,7 +32,7 @@ class Tabemasu extends AnimatedEntity {
     update() {
         if (!this.isInFrame(36*PARAMS.SCALE, 36*PARAMS.SCALE)) return;
 
-        if (Math.abs(this.hitbox.center.x - GAME.slime.hitbox.center.x) < 32 * PARAMS.SCALE && Math.abs(this.hitbox.center.y - GAME.slime.hitbox.center.y) > 32 * PARAMS.SCALE) {
+        if (Math.abs(this.hitbox.center.x - GAME.slime.hitbox.center.x) < 32 * PARAMS.SCALE && Math.abs(this.hitbox.center.y - GAME.slime.hitbox.center.y) > 64 * PARAMS.SCALE) {
             this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
             this.moveX(0);
         } else {

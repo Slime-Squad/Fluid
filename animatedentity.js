@@ -63,6 +63,7 @@ class AnimatedEntity {
     respawn() {
         this.x = this.spawnX;
         this.y = this.spawnY;
+        if (this.hitbox) this.hitbox.updatePos(this.x, this.y);
     }
 
     /**

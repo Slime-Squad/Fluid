@@ -179,7 +179,6 @@ class Slime extends AnimatedEntity {
         if (this.isInvincible || !this.isAlive) return;
         this.isAlive = false;
         GAME.camera.deathScreen.swapTag("Died");
-        GAME.entities.forEach((entity) => {if(entity.respawn) entity.respawn(); });
         const targetX = this.spawnX - PARAMS.WIDTH/2  + 8*PARAMS.SCALE;
         const targetY = this.spawnY - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE;
         GAME.camera.freeze(1,
@@ -197,6 +196,7 @@ class Slime extends AnimatedEntity {
                 this.isAlive = true;
             }
         );
+        GAME.entities.forEach((entity) => {if(entity.respawn && !entity.isInFrame()) entity.respawn(); });
 
     }
 
@@ -446,6 +446,7 @@ class Slime extends AnimatedEntity {
             this.charges["Fire"] = 0;
             this.yVelocity = this.jumpVelocity - Math.abs(this.momentum / this.jumpMomentumMod);
             this.canBoost = false;
+            this.canJump = false;
             // this.isInvincible = true;
         };
         this.states.boosting.behavior = () =>{
@@ -487,14 +488,15 @@ class Slime extends AnimatedEntity {
         ]);
 
         // WALL JUMPING //
-        this.states.wallJumping.start = () =>{
+        this.states.wallJumping.start = () => {
             this.xDirection = this.xDirection > 0 ? -1 : 1;
             this.momentum = this.maxMom * this.xDirection;
             this.timers.wallJumpTimer = 0;
             this.canJump = false;
+            this.canBoost = false;
             this.yVelocity = this.jumpVelocity * 0.6;
         };
-        this.states.wallJumping.behavior = () =>{
+        this.states.wallJumping.behavior = () => {
             this.xDirection > 0 ? this.tag = "JumpingAir" : this.tag = "JumpingAirLeft";
             this.moveX(this.speed * 0.75 * this.xDirection);
             this.moveY();
