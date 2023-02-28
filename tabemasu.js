@@ -156,27 +156,12 @@ class Tabemasu extends AnimatedEntity {
     // STATE MACHINE //
     ///////////////////
 
-    changeState(){
-        let checkState = this.currentState.checkState();
-        if (checkState) {
-            this.currentState.end();
-            this.currentState = checkState;
-            this.currentState.start();
-        }
-    }
-
-    changeToState(state){
-        this.currentState.end();
-        this.currentState = state;
-        this.currentState.start();
-    }
-
     initializeStates(){
         this.states = {
-            idle : new State("Idle"),
-            stunned : new State("Stunned"),
-            alert : new State("Alert"),
-            falling : new State("Falling"),
+            idle: new State("Idle"),
+            stunned: new State("Stunned"),
+            alert: new State("Alert"),
+            falling: new State("Falling"),
             running: new State("Running"),
             hunting: new State("Hunting"),
         };
