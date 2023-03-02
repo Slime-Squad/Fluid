@@ -52,9 +52,10 @@ class Slime extends AnimatedEntity {
         this.canDash = false;
         this.canBoost = false;
         this.canPressHome = true;
+        this.canPressLTrig = true;
 
         // Powers
-        this.dashbeam = new AnimatedEntity("./assets/graphics/characters/dashbeam", "Default", 0, 0, false);
+        // this.dashbeam = new AnimatedEntity("./assets/graphics/characters/dashbeam", "Default", 0, 0, false);
         // this.dashbeam.draw(ctx) = super.draw(ctx);
         
         // Charges
@@ -76,12 +77,7 @@ class Slime extends AnimatedEntity {
 
     update() {
 
-        if (this.y > 12000 || CONTROLLER.BACK) this.kill();
-        if (PARAMS.DEBUG && CONTROLLER.RTRIG) Object.keys(this.charges).forEach(charge => this.charges[charge] = 1);
-        if (this.canPressHome && CONTROLLER.HOME){
-            this.canPressHome = false;
-            PARAMS.DEBUG = !PARAMS.DEBUG;
-        } else if (!this.canPressHome && !CONTROLLER.HOME) this.canPressHome = true;
+        this.startOfCycleUpdates();
 
         let oldX = this.hitbox.left;
         let oldY = this.hitbox.top;
@@ -133,6 +129,25 @@ class Slime extends AnimatedEntity {
         }
     }
 
+    startOfCycleUpdates(){
+        if (this.y > 12000 || CONTROLLER.BACK) this.kill();
+        
+        // Set BGM
+        if (this.canPressLTrig && CONTROLLER.LTRIG){
+            this.canPressLTrig = false;
+            ASSET_MANAGER.toggleBackgroundMusic();
+        } else if (!this.canPressLTrig && !CONTROLLER.LTRIG) this.canPressLTrig = true;
+
+        // Refresh Charges (debug)
+        if (PARAMS.DEBUG && CONTROLLER.RTRIG) Object.keys(this.charges).forEach(charge => this.charges[charge] = 1);
+
+        // Set Debug
+        if (this.canPressHome && CONTROLLER.HOME){
+            this.canPressHome = false;
+            PARAMS.DEBUG = !PARAMS.DEBUG;
+        } else if (!this.canPressHome && !CONTROLLER.HOME) this.canPressHome = true;
+    }
+    
     endOfCycleUpdates(){
         if (this.x == this.lastX) this.momentum = 0; // Reset momentum on stop
         if (this.y == this.lastY) this.yVelocity = 1 / PARAMS.SCALE; // Reset yVelocity on stop
@@ -275,7 +290,7 @@ class Slime extends AnimatedEntity {
     ///////////////////
 
     changeState(){
-        let checkState = this.currentState.checkState();
+        let checkState = this.currentState.checkStateTransitions();
         if (checkState) {
             this.currentState.end();
             this.currentState = checkState;
@@ -307,7 +322,7 @@ class Slime extends AnimatedEntity {
             if (!CONTROLLER.A) this.canJump = true;
             if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
         };
-        this.states.idle.setCheckState([
+        this.states.idle.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.B && this.canDash }},
             {state: this.states.jumping, predicate: () => { return CONTROLLER.A && this.canJump }},
             {state: this.states.running, predicate: () => { return CONTROLLER.RIGHT || CONTROLLER.LEFT }},
@@ -325,7 +340,7 @@ class Slime extends AnimatedEntity {
             if (!CONTROLLER.A) this.canJump = true;
             if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
         };
-        this.states.running.setCheckState([
+        this.states.running.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.B && this.canDash }},
             {state: this.states.jumping, predicate: () => { return CONTROLLER.A && this.canJump }},
             {state: this.states.idle, predicate: () => { return !(CONTROLLER.RIGHT || CONTROLLER.LEFT) }},
@@ -347,7 +362,7 @@ class Slime extends AnimatedEntity {
         this.states.jumping.end = () => {
             this.yVelocity = 0;
         }
-        this.states.jumping.setCheckState([
+        this.states.jumping.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.B && this.canDash }},
             {state: this.states.falling, predicate: () => { return !CONTROLLER.A || this.yVelocity >= 0 }},
         ]);
@@ -360,7 +375,7 @@ class Slime extends AnimatedEntity {
             if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
             if (!CONTROLLER.A && this.charges["Fire"] >= 1) this.canBoost = true;
         };
-        this.states.falling.setCheckState([
+        this.states.falling.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.B && this.canDash }},
             {state: this.states.boosting, predicate: () => { return CONTROLLER.A && this.canBoost }},
             {state: this.states.running, predicate: () => { return this.tileCollisions.includes("bottom") && (CONTROLLER.RIGHT || CONTROLLER.LEFT) }},
@@ -376,14 +391,14 @@ class Slime extends AnimatedEntity {
             this.yVelocity = 0;
             this.timers.dashTimer = 0;
             this.isInvincible = true;
-            this.dashbeam.x = this.x;
-            this.dashbeam.y = this.y;
-            this.dashbeam.swapTag("Default", false);
+            // this.dashbeam.x = this.x;
+            // this.dashbeam.y = this.y;
+            // this.dashbeam.swapTag("Default", false);
         };
         this.states.dashing.behavior = () => {
             this.xDirection > 0 ? this.tag = "Dashing" : this.tag = "DashingLeft";
             if (this.timers.dashTimer <= this.dashTimeout) {
-                if (this.xDirection > 0){
+                if (this.xDirection > 0) {
                     this.dashHitBox = new HitBox(this.hitbox.right, this.hitbox.top, 0, 1 * PARAMS.SCALE, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height - 2 * PARAMS.SCALE);
                     let dashCollisions = this.dashHitBox.getCollisions();
                     dashCollisions = dashCollisions.filter((entity) => {return entity.constructor.name == "Tile"});
@@ -408,7 +423,7 @@ class Slime extends AnimatedEntity {
         this.states.dashing.end = () =>{
             this.isInvincible = false;
         };
-        this.states.dashing.setCheckState([
+        this.states.dashing.setTransitions([
             {state: this.states.running, predicate: () => { 
                 return this.timers.dashTimer > this.dashTimeout && this.tileCollisions.includes("bottom") && (CONTROLLER.RIGHT || CONTROLLER.LEFT)
             }},
@@ -429,7 +444,7 @@ class Slime extends AnimatedEntity {
             if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
             if (!CONTROLLER.A && this.charges["Fire"] >= 1) this.canBoost = true;
         };
-        this.states.floating.setCheckState([
+        this.states.floating.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.B && this.canDash }},
             {state: this.states.boosting, predicate: () => { return CONTROLLER.A && this.canBoost }},
             {state: this.states.running, predicate: () => { return this.tileCollisions.includes("bottom") && (CONTROLLER.RIGHT || CONTROLLER.LEFT) }},
@@ -456,7 +471,7 @@ class Slime extends AnimatedEntity {
         this.states.boosting.end = () =>{
             this.yVelocity = 0;
         };
-        this.states.boosting.setCheckState([
+        this.states.boosting.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.B && this.canDash }},
             {state: this.states.falling, predicate: () => { return !CONTROLLER.A || this.yVelocity > 0 }},
         ]);
@@ -475,7 +490,7 @@ class Slime extends AnimatedEntity {
             if (!CONTROLLER.A) this.canJump = true;
             if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
         };
-        this.states.climbing.setCheckState([
+        this.states.climbing.setTransitions([
             {state: this.states.running, predicate: () => { return this.tileCollisions.includes("bottom") && (CONTROLLER.RIGHT || CONTROLLER.LEFT) }},
             {state: this.states.idle, predicate: () => { return this.tileCollisions.includes("bottom") }},
             {state: this.states.wallJumping, predicate: () => { return CONTROLLER.A && this.canJump }},
@@ -500,384 +515,11 @@ class Slime extends AnimatedEntity {
             this.moveY();
             if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
         };
-        this.states.wallJumping.setCheckState([
+        this.states.wallJumping.setTransitions([
             // {state: this.states.jumping, predicate: () => { return this.timers.jumpTimer > this.wallJumpTimeout * 2 && CONTROLLER.A }},
             {state: this.states.falling, predicate: () => { return (!CONTROLLER.A && this.timers.wallJumpTimer > this.wallJumpTimeout) || this.timers.wallJumpTimer > this.wallJumpTimeout * 1.5}},
             {state: this.states.climbing, predicate: () => { return (this.direction <= 0 && this.tileCollisions.includes("left")) || (this.direction > 0 && this.tileCollisions.includes("right")) }},
         ]);
     }
-
-    // idleStateCheck(){
-    //     let checkState = this.currentState.checkState();
-    //     if (checkState) {
-    //         this.currentState = checkState;
-    //         this.behavior = this.currentState.behavior;
-    //         this.currentState.start();
-    //         this.behavior(true);
-    //     }
-    //     // console.log(this.state);
-    // }
-
-    /////////////////////
-    // State Behaviors //
-    /////////////////////
-
-    // /**
-    //  * Slime makes itself move on the x axis.
-    //  * @author Nathan Brown
-    //  */
-    // idleBehavior (changingState = false){
-
-    //     if (changingState) this.changeStateCheck = this.idleStateCheck;
-
-    //     // Perform 'idle' behavior
-    //     this.states.idle.behavior();
-
-    // }
-
-    // startIdle(){
-    //     // this.yVelocity = 1 / PARAMS.SCALE;
-    //     this.states.idle.start();
-    // }
-
-    // /**
-    //  * Slime is on the ground, moving and accelerating
-    //  * @author Nathan Brown
-    //  */
-    // runningBehavior (changingState = false){
-
-    //     if (changingState) this.changeStateCheck = () => {
-
-    //         let checkState = this.currentState.checkState();
-    //         if (checkState) {
-    //             this.currentState = checkState;
-    //             this.behavior = this.currentState.behavior;
-    //             this.currentState.start();
-    //             this.behavior(true);
-    //         }
-    //         // console.log(this.state);
-
-    //     };
-
-    //     // Perform 'running' behavior
-    //     this.xDirection > 0 ? this.tag = "Move" : this.tag = "MoveLeft";
-    //     this.controlX();
-    //     this.moveY();
-    //     if (!CONTROLLER.A) this.canJump = true;
-    //     if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
-
-    // }
-
-    // /**
-    //  * Gets the slime into the air when A is pressed. Hold A for a longer jump. Uses a variety of state 
-    //  * flags to determine when the slime can jump. 
-    //  * @author Nathan Brown
-    //  */
-    // jumpingBehavior (changingState = false){
-
-    //     if (changingState) this.changeStateCheck = () => {
-
-    //         let checkState = this.currentState.checkState();
-    //         if (checkState) {
-    //             this.currentState = checkState;
-    //             this.behavior = this.currentState.behavior;
-    //             this.currentState.start();
-    //             this.behavior(true);
-    //         }
-    //         // console.log(this.state);
-
-    //     };
-        
-    //     // Perform 'jumping' behaviors
-    //     this.xDirection > 0 ? this.tag = "JumpingAir" : this.tag = "JumpingAirLeft";
-    //     this.controlX();
-    //     this.moveY();
-    //     if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
-    
-    // }
-
-    // /**
-    //  * Slime falls downward until it collides with a tile.
-    //  * @author Nathan Brown
-    //  */
-    // fallingBehavior (changingState = false){
-
-    //     if (changingState) this.changeStateCheck = () => {
-
-    //         // Check dashing
-    //         if (CONTROLLER.B && this.canDash) {
-    //             this.startDashing();
-    //             this.behavior(true);
-    //             return;
-    //         }
-
-    //         // Check boosting
-    //         if(CONTROLLER.A && this.canBoost) {
-    //             this.charges["Fire"] = 0;
-    //             this.canBoost = false;
-    //             this.timers.boostTimer = 0;
-    //             this.isInvincible = true;
-    //             this.yVelocity = this.jumpVelocity - Math.abs(this.momentum / this.jumpMomentumMod);
-    //             this.behavior = this.boostingBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-
-    //         let landed = this.tileCollisions.includes("bottom");
-
-    //         // Check running
-    //         if (landed && (CONTROLLER.RIGHT || CONTROLLER.LEFT)){
-    //             this.yVelocity = 1 / PARAMS.SCALE;
-    //             this.behavior = this.runningBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-            
-    //         // Check idle
-    //         if (landed){
-    //             this.startIdle();
-    //             this.behavior = this.idleBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-
-    //         // Check climbing
-    //         if (this.tileCollisions.includes("right") || this.tileCollisions.includes("left")){
-    //             this.yVelocity = 0;
-    //             this.timers.climbTimer = 0;
-    //             this.slideSpeed = 0;
-    //             this.behavior = this.climbingBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-
-    //     };
-
-    //     // Perform 'falling' behaviors
-    //     this.xDirection > 0 ? this.tag = "Idle" : this.tag = "IdleLeft";
-    //     this.controlX();
-    //     this.moveY();
-    //     if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
-    //     if (!CONTROLLER.A && this.charges["Fire"] >= 1) this.canBoost = true;
-
-    // }
-
-    // /**
-    //  * Slime dashes forward rapidly. 
-    //  * Plans: 
-    //  *          Kill enemies when colliding with the dashing slime. 
-    //  *          Set momentum to 0. 
-    //  *          Implement line-line checking for right side tile collision.
-    //  * @author Nathan Brown
-    //  */
-    // dashingBehavior (changingState = false){
-
-    //     if (changingState) this.changeStateCheck = () => {
-
-    //         if (this.timers.dashTimer > this.dashTimeout){
-    //             this.isInvincible = false;
-    //             if (this.tileCollisions.includes("bottom")){
-    //                 // Check running
-    //                 if (CONTROLLER.RIGHT || CONTROLLER.LEFT) this.behavior = this.runningBehavior;
-    //                 // Check idle
-    //                 else this.behavior = this.idleBehavior;
-    //                 this.startIdle();
-    //                 this.behavior(true);
-    //                 return;
-    //             }
-    //             // Check falling
-    //             this.behavior = this.fallingBehavior;
-    //             this.behavior(true);
-    //             return;
-
-    //         }
-
-    //         // Check climbing
-    //         if (this.tileCollisions.includes("left") || this.tileCollisions.includes("right")){
-    //             this.isInvincible = false;
-    //             this.yVelocity = 0;
-    //             this.timers.climbTimer = 0;
-    //             this.slideSpeed = 0;
-    //             this.behavior = this.climbingBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-
-    //     }
-        
-    //     // Perform behavior for dashing
-    //     this.xDirection > 0 ? this.tag = "Dashing" : this.tag = "DashingLeft";
-    //     if (this.timers.dashTimer <= this.dashTimeout) {
-    //         if (this.xDirection > 0){
-    //             this.dashHitBox = new HitBox(this.hitbox.right, this.hitbox.top, 0, 1 * PARAMS.SCALE, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height - 2 * PARAMS.SCALE);
-    //             let dashCollisions = this.dashHitBox.getCollisions();
-    //             dashCollisions = dashCollisions.filter((entity) => {return entity.constructor.name == "Tile"});
-    //             if (dashCollisions.length > 0) {
-    //                 this.x = dashCollisions.reduce((a,b) => {return a.hitbox.left < b.hitbox.left ? a : b}).hitbox.left - this.hitbox.width - this.hitbox.leftPad - 1;
-    //                 this.hitbox.updatePos(this.x,this.y);
-    //                 return;
-    //             }
-    //         } else {
-    //             this.dashHitBox = new HitBox(this.hitbox.left - this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.top, 0, 1 * PARAMS.SCALE, this.dashSpeed * PARAMS.SCALE * GAME.tickMod, this.hitbox.height - 2 * PARAMS.SCALE);
-    //             let dashCollisions = this.dashHitBox.getCollisions();
-    //             dashCollisions = dashCollisions.filter((entity) => {return entity.constructor.name == "Tile"});
-    //             if (dashCollisions.length > 0) {
-    //                 this.x = dashCollisions.reduce((a,b) => {return a.hitbox.left > b.hitbox.left ? a : b}).hitbox.right - this.hitbox.leftPad + 1;
-    //                 this.hitbox.updatePos(this.x,this.y);
-    //                 return;
-    //             }
-    //         }
-    //         this.moveX(this.dashSpeed * this.xDirection);
-    //     }
-
-    // }
-
-    // /**
-    //  * Call once at the start of a state
-    //  */
-    // startDashing(){
-    //     this.charges["Electric"] = 0;
-    //     this.canDash = false;
-    //     this.yVelocity = 0;
-    //     this.timers.dashTimer = 0;
-    //     this.isInvincible = true;
-    //     this.behavior = this.dashingBehavior;
-    //     this.dashbeam.x = this.x;
-    //     this.dashbeam.y = this.y;
-    //     this.dashbeam.swapTag("Default", false);
-    // }
-
-    // boostingBehavior (changingState = false) {
-        
-    //     if (changingState) this.changeStateCheck = () => {
-
-    //         // Check falling
-    //         if (this.yVelocity > 0){
-    //             this.isJumping = false;
-    //             this.isInvincible = false;
-    //             this.yVelocity = Math.max(this.yVelocity, -2 / PARAMS.SCALE);
-    //             this.behavior = this.fallingBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-
-    //         //check climbing
-    //         if (this.tileCollisions.includes("left") || this.tileCollisions.includes("right")){
-    //             this.isInvincible = false;
-    //             this.yVelocity = 0;
-    //             this.timers.climbTimer = 0;
-    //             this.slideSpeed = 0;
-    //             this.behavior = this.climbingBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-    //     };
-
-    //     // Perform behavior for boosting
-    //     this.xDirection > 0 ? this.tag = "JumpingAir" : this.tag = "JumpingAirLeft";
-    //     this.controlX();
-    //     this.moveY(this.yVelocity);
-        
-    // }
-
-    // /**
-    //  * Slime sticks and slides on the wall and can jump off of it
-    //  * @author Nathan Brown
-    //  */
-    // climbingBehavior (changingState = false){
-
-    //     if (changingState) this.changeStateCheck = () => {
-
-    //         let landed = this.tileCollisions.includes("bottom");
-
-    //         // Check running
-    //         if (landed && (CONTROLLER.RIGHT || CONTROLLER.LEFT)){
-    //             this.yVelocity = 1 / PARAMS.SCALE;
-    //             this.behavior = this.runningBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-            
-    //         // Check idle
-    //         if (landed){
-    //             this.startIdle();
-    //             this.behavior = this.idleBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-            
-    //         // Check wallJumping
-    //         if (CONTROLLER.A && this.canJump){
-    //             this.xDirection = this.xDirection > 0 ? -1 : 1;
-    //             this.momentum = this.maxMom * this.xDirection;
-    //             this.timers.jumpTimer = 0;
-    //             this.canJump = false;
-    //             this.behavior = this.wallJumpingBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-            
-    //         // Check falling
-    //         if (!((this.xDirection > 0 && CONTROLLER.RIGHT) || (this.xDirection <= 0 && CONTROLLER.LEFT)) || 
-    //                 !(this.tileCollisions.includes("left") || this.tileCollisions.includes("right"))){
-    //             this.behavior = this.fallingBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-
-    //     };
-
-    //     // Perform 'climbing' behaviors
-    //     this.xDirection > 0 ? this.tag = "Climbing" : this.tag = "ClimbingLeft";
-    //     this.moveX(this.xDirection);
-    //     this.moveY(this.slideSpeed);
-    //     if (this.timers.climbTimer > 0.1 && this.slideSpeed < this.maxYVelocity) this.slideSpeed = this.slideSpeed + (PARAMS.GRAVITY / 2) * GAME.tickMod;
-    //     if (!CONTROLLER.A) this.canJump = true;
-    //     if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
-
-    // }
-
-    // /**
-    //  * Slime jumps off the wall
-    //  * @author Nathan Brown
-    //  */
-    // wallJumpingBehavior (changingState = false){
-
-    //     if (changingState) this.changeStateCheck = () => {
-
-    //         // Check jumping
-    //         if (this.timers.jumpTimer > this.wallJumpTimeout * 2 && CONTROLLER.A){
-    //             this.behavior = this.jumpingBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-
-
-    //         // Check falling
-    //         if ((this.timers.jumpTimer > this.wallJumpTimeout && !CONTROLLER.A) || 
-    //                 (this.direction > 0 && this.tileCollisions.includes("right")) || 
-    //                 (this.direction <= 0 && this.tileCollisions.includes("left"))){
-    //             this.isJumping = false;
-    //             this.yVelocity = Math.max(this.yVelocity, -2 / PARAMS.SCALE);
-    //             this.behavior = this.fallingBehavior;
-    //             this.behavior(true);
-    //             return;
-    //         }
-            
-    //         // Check starting of wallJumping
-    //         if(!this.isJumping){
-    //             this.isJumping = true;
-    //             this.yVelocity = this.jumpVelocity * 0.6;
-    //         }
-
-    //     };
-
-    //     // Perform 'wallJumping' behaviors
-    //     this.xDirection > 0 ? this.tag = "JumpingAir" : this.tag = "JumpingAirLeft";
-    //     this.moveX(this.speed * 0.75 * this.xDirection);
-    //     this.moveY();
-    //     if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
-
-    // }
 
 }

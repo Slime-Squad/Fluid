@@ -12,6 +12,7 @@ const PARAMS = {
     SCALE: 6,
     DEBUG: false,
     MUTE: false,
+    BGM_MUTE: false,
     MAX_VOLUME: 0.25,
     COLORS: {
         DARKGREEN: rgb(91, 166, 117),

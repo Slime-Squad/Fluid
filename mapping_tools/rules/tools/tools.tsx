@@ -61,6 +61,11 @@
    <property name="Name" value="Electric Generator"/>
   </properties>
  </tile>
+ <tile id="15">
+  <properties>
+   <property name="Name" value="Tabemasu (sentry)"/>
+  </properties>
+ </tile>
  <tile id="16">
   <properties>
    <property name="Name" value="Tabemasu (right)"/>

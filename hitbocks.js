@@ -44,7 +44,7 @@ class HitBox {
         GAME.entities.forEach(entity => {
             if (!entity.hitbox || !entity.isAlive) return;
             // if (entity.hitbox instanceof this.constructor) return;
-            if (!this.collide3(entity.hitbox)) return;
+            if (!this.collide(entity.hitbox)) return;
             collisions.push(entity);
         });
         return collisions;
@@ -55,63 +55,11 @@ class HitBox {
      * @param {HitBox} o The other hitbox.
      * @returns Whether the current hitbox and the given hitbox exist within the same space as one another.
      */
-    collide3(o) {
+    collide(o) {
         if (o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height){
             return false;
         } else {
             return true;
-        }
-    }
-    collide2(o) {
-        if (o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height){
-            return false;
-        } else {
-            this.direction;
-            this.vector = {x : this.center.x - o.center.x, y : this.center.y - o.center.y};
-            if (Math.abs(this.vector.x) > Math.abs(this.vector.y)){
-                if (this.vector.x > 0){
-                    this.direction = 'left';
-                }
-                if (this.vector.x <= 0){
-                    this.direction = 'right';
-                }
-            } else {
-                if (this.vector.y > 0){
-                    this.direction = 'top';
-                }
-                if (this.vector.y <= 0){
-                    this.direction = 'bottom';
-                }
-            }
-            if (this.direction) return this;
-        } return false;
-    }
-    collide(o) {
-        // if (this.right > o.left && this.left < o.right && this.top < o.bottom && this.bottom > o.top){
-        if (o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height){
-            return false;
-        } else{
-            this.direction = 'bottom';
-            this.leftIntersect = o.right - this.left;
-            this.rightIntersect = o.left - this.right;
-            this.topIntersect = o.bottom - this.top;
-            this.bottomIntersect = o.top - this.bottom;
-            if (this.left < o.left){
-                if (Math.abs(this.rightIntersect) < Math.abs(this.topIntersect) && Math.abs(this.rightIntersect) < Math.abs(this.bottomIntersect)){
-                    this.direction = 'right';
-                } else if (this.bottom > o.bottom){
-                    this.direction = 'top';
-                }
-            } else if (this.right > o.right){
-                if (Math.abs(this.leftIntersect) < Math.abs(this.topIntersect) && Math.abs(this.leftIntersect) < Math.abs(this.bottomIntersect)){
-                    this.direction = 'left';
-                } else if (this.bottom > o.bottom){
-                    this.direction = 'top';
-                }
-            } else if (this.bottom > o.bottom){
-                this.direction = 'top';
-            }
-            return this;
         }
     }
 

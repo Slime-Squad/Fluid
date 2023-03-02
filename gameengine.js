@@ -46,22 +46,6 @@ class GameEngine {
         gameLoop();
     };
 
-    /*start() {
-        this.running = true;
-        const fpsInterval = 1000 / 2;
-        let then = Date.now();
-        const gameLoop = () => {
-            requestAnimFrame(gameLoop, this.ctx.canvas);
-            const now = Date.now();
-            const elapsed = now - then;
-            if (elapsed > fpsInterval) {
-                then = now - (elapsed % fpsInterval);
-                this.loop();
-            }
-        };
-        gameLoop();
-    };*/
-
     startInput() {
         const getXandY = e => ({
             x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
@@ -151,10 +135,11 @@ class GameEngine {
             CONTROLLER.UP = this.gamepad.buttons[12].pressed || this.gamepad.axes[1] < -0.3 || this.keys["w"] || this.keys["W"];
             CONTROLLER.DOWN = this.gamepad.buttons[13].pressed || this.gamepad.axes [1] > 0.3 || this.keys["s"] || this.keys["S"];
             CONTROLLER.BACK = this.gamepad.buttons[8].pressed || this.keys["r"] || this.keys["R"];
+            CONTROLLER.LTRIG = this.gamepad.buttons[6].pressed || this.keys["m"] || this.keys["M"];
             CONTROLLER.RTRIG = this.gamepad.buttons[7].pressed || this.keys["l"] || this.keys["L"];
             CONTROLLER.HOME = this.gamepad.buttons[16].pressed || this.keys["\`"] || this.keys["\~"];
             }
-            // if (PARAMS.DEBUG) this.gamepad.buttons.forEach((button, index) => { if (button.pressed) console.log("GamepadButton: " + index)});
+            if (PARAMS.DEBUG) this.gamepad.buttons.forEach((button, index) => { if (button.pressed) console.log("GamepadButton: " + index)});
         } else {
             CONTROLLER.A = this.keys[" "];
             CONTROLLER.B = this.keys["j"] || this.keys["J"];
@@ -163,6 +148,7 @@ class GameEngine {
             CONTROLLER.UP = this.keys["w"] || this.keys["W"];
             CONTROLLER.DOWN = this.keys["s"] || this.keys["S"];
             CONTROLLER.BACK = this.keys["r"] || this.keys["R"];
+            CONTROLLER.LTRIG = this.keys["m"] || this.keys["M"];
             CONTROLLER.RTRIG = this.keys["l"] || this.keys["L"];
             CONTROLLER.HOME = this.keys["\`"] || this.keys["\~"];
         }

@@ -9,7 +9,7 @@ class State {
         this.name = name;
     }
 
-    checkState(){
+    checkStateTransitions(){
         for(let check of this.stateChecks){
             if(check[0]()) return check[1];
         }
@@ -24,7 +24,7 @@ class State {
     end(){
         // console.log("empty end function");
     }
-    setCheckState(predicateStatePairs){
+    setTransitions(predicateStatePairs){
         this.stateChecks.length = 0;
         predicateStatePairs.forEach(pair=> this.addCheckState(pair.predicate, pair.state))
     }

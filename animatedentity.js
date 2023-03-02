@@ -66,6 +66,12 @@ class AnimatedEntity {
         if (this.hitbox) this.hitbox.updatePos(this.x, this.y);
     }
 
+    deccelerate(){
+        this.momentum = this.xDirection > 0 ? 
+                clamp(this.momentum - this.decceleration * GAME.tickMod, 0, this.maxMom) : 
+                clamp(this.momentum + this.decceleration * GAME.tickMod, -this.maxMom, 0);
+    }
+
     /**
      * Collection of calls and values to assign at the end of an entity's update().
      * @inheritdoc
@@ -75,25 +81,25 @@ class AnimatedEntity {
         this.lastY = this.y;
         this.tickTimers();
     }
-
-    changeState(){
+    
+    /**
+     * Changes to the specified state. If no state passed, check the state
+     * object's transition conditions.
+     * @param {State} state
+     * @inheritdoc
+     */
+    changeState(state = undefined){
+        if (state){
+            this.currentState.end();
+            this.currentState = state;
+            this.currentState.start();
+        }
         let checkState = this.currentState.checkState();
         if (checkState) {
             this.currentState.end();
             this.currentState = checkState;
             this.currentState.start();
         }
-    }
-    
-    /**
-     * Changes to the specified state
-     * @param {State} state
-     * @inheritdoc
-     */
-    changeToState(state){
-        this.currentState.end();
-        this.currentState = state;
-        this.currentState.start();
     }
 
     /**

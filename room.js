@@ -97,6 +97,9 @@ class Room {
                                 case 14:
                                     this.tiles[layer].push(new ChargeGenerator("Ice", x, y));
                                     break;
+                                case 15:
+                                    entity = new Sentry(x, y, "Tabemasu", "Alert", 64 * PARAMS.SCALE, 64 * PARAMS.SCALE);
+                                    break;
                                 case 16:
                                     entity = new Tabemasu("Idle", x, y);
                                     break;

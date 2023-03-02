@@ -168,6 +168,15 @@ class AssetManager {
         });
     }
 
+    toggleBackgroundMusic(){
+        PARAMS.BGM_MUTE = !PARAMS.BGM_MUTE;
+        if (PARAMS.BGM_MUTE == true){
+            this.setBackgroundMusicVolume(0.001);
+        } else {
+            this.setBackgroundMusicVolume(PARAMS.MAX_VOLUME);
+        }
+    }
+
     /**
      * Mutes or unmutes all audio assets that currently exist in the {@link AssetManager.cache}.
      * @param {boolean} mute Whether to mute or unmute all audio assets.

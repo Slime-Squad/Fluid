@@ -25,12 +25,20 @@ class Charge extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        if (!this.isInFrame()) return;
+        if (!this.isInFrame() && this.currentState == this.states.active) return;
         
         this.changeState();
         this.currentState.behavior();
     }
 
+    respawn() {
+        if (GAME.UNLOCKED_CHARGES[this.originalTag]) this.changeToState(this.states.active);
+    }
+
+    /**
+     * Employs states to help control when the charges are generated, 
+     * and switch into other animations when they're collected
+     */
     initializeStates(){
 
         this.states = {
@@ -44,7 +52,7 @@ class Charge extends AnimatedEntity {
         this.states.invisible.start = () => {
             this.swapTag("Invisible", true);
         }
-        this.states.invisible.setCheckState([
+        this.states.invisible.setTransitions([
             {state: this.states.active, predicate: () => { return GAME.UNLOCKED_CHARGES[this.originalTag] }}
         ]);
 
@@ -55,7 +63,7 @@ class Charge extends AnimatedEntity {
         this.states.collected.behavior = () => {
             this.elapsedTime += GAME.clockTick;
         }
-        this.states.collected.setCheckState([
+        this.states.collected.setTransitions([
             {state: this.states.disabled, predicate: () => { return this.frames.isFrozen }}
         ]);
 
@@ -69,7 +77,7 @@ class Charge extends AnimatedEntity {
         this.states.disabled.end = () => {
             this.elapsedTime = 0;            
         }
-        this.states.disabled.setCheckState([
+        this.states.disabled.setTransitions([
             {state: this.states.active, predicate: () => { return this.elapsedTime >= 5 }}
         ]);
 
@@ -88,6 +96,6 @@ class Charge extends AnimatedEntity {
             ASSET_MANAGER.playAudio("./assets/audio/effect/charge" + Math.floor(Math.random()*4) + ".wav");
             this.changeToState(this.states.collected);
         }
-        console.log(this.currentState.name);
+        // console.log(this.currentState.name);
     }
 }
