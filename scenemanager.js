@@ -34,6 +34,12 @@ class SceneManager {
             Object.keys(room.tiles).forEach((layer) => {
                 if (layerCache[layer]) {
                     room.tiles[layer].forEach((entity) => {
+                        Object.values(entity).forEach(field => {
+                            if (field instanceof AnimatedEntity){
+                                console.log(field.constructor.name, "is an animated entity");
+                                layerCache[layer].push(field);
+                            }
+                        });
                         layerCache[layer].push(entity);
                     });
                 }

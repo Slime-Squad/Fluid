@@ -72,31 +72,143 @@
         },
         {
             "fileName": "../../../mapping_tools/tilemaps/fire1a.tmx",
-            "height": 576,
+            "height": 960,
             "width": 576,
             "x": 4016,
-            "y": -648
+            "y": -576
         },
         {
             "fileName": "../../../mapping_tools/tilemaps/fire1b.tmx",
             "height": 384,
             "width": 960,
             "x": 4592,
-            "y": -1032
-        },
-        {
-            "fileName": "../../../mapping_tools/tilemaps/fire1.tmx",
-            "height": 384,
-            "width": 576,
-            "x": 4016,
-            "y": -1032
+            "y": -576
         },
         {
             "fileName": "../../../mapping_tools/tilemaps/fire2.tmx",
             "height": 576,
             "width": 960,
             "x": 4592,
-            "y": -648
+            "y": -192
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/intro8.tmx",
+            "height": 384,
+            "width": 1024,
+            "x": 4016,
+            "y": -960
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/intro9.tmx",
+            "height": 768,
+            "width": 1024,
+            "x": 4016,
+            "y": -1728
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/dirt1.tmx",
+            "height": 1024,
+            "width": 768,
+            "x": 5040,
+            "y": -1728
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/dirt2.tmx",
+            "height": 1024,
+            "width": 768,
+            "x": 5808,
+            "y": -1728
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/dirt3.tmx",
+            "height": 384,
+            "width": 1024,
+            "x": 6576,
+            "y": -1088
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/dirt4.tmx",
+            "height": 1024,
+            "width": 768,
+            "x": 7600,
+            "y": -1728
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/dirt5.tmx",
+            "height": 384,
+            "width": 1024,
+            "x": 6576,
+            "y": -1728
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/fire4.tmx",
+            "height": 1024,
+            "width": 768,
+            "x": 5552,
+            "y": -640
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/fire5.tmx",
+            "height": 1024,
+            "width": 768,
+            "x": 6320,
+            "y": -640
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/fire6.tmx",
+            "height": 1024,
+            "width": 768,
+            "x": 7088,
+            "y": -640
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/fire7.tmx",
+            "height": 768,
+            "width": 1024,
+            "x": 7856,
+            "y": -704
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/dirt6.tmx",
+            "height": 1024,
+            "width": 768,
+            "x": 8368,
+            "y": -1728
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/ice1.tmx",
+            "height": 768,
+            "width": 1024,
+            "x": 8112,
+            "y": -2496
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/ice2.tmx",
+            "height": 1024,
+            "width": 768,
+            "x": 7344,
+            "y": -2752
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/ice3.tmx",
+            "height": 768,
+            "width": 1024,
+            "x": 6320,
+            "y": -2496
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/ice4.tmx",
+            "height": 384,
+            "width": 1024,
+            "x": 5296,
+            "y": -2112
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/ice5.tmx",
+            "height": 384,
+            "width": 1024,
+            "x": 5296,
+            "y": -2496
         }
     ],
     "onlyShowAdjacentMaps": false,
