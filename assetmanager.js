@@ -51,9 +51,18 @@ class AssetManager {
                 case 'mp3':
                     const aud = new Audio();
                     this.handleEventListeners(aud, callback, () => {
-                        aud.addEventListener("ended", function () {
-                            aud.pause();
-                            aud.currentTime = 0;
+                        aud.addEventListener("loadeddata", () => {
+                            console.log("Loaded " + aud.src);
+                            this.successCount++;
+                            if (this.isDone()) callback(this.requests);
+                        });
+                        aud.addEventListener("ended", () => {
+                            if (path.split("/").slice(-2)[0] == "music") {
+                                aud.play();
+                            } else {
+                                aud.pause();
+                                aud.currentTime = 0;
+                            }
                         });
                     });
                     aud.src = path;
@@ -113,6 +122,7 @@ class AssetManager {
 
         optionalListeners();
     }
+
     /**
      * Returns the asset retrieved from the given path as it exists in the {@link AssetManager.cache}.
      * @param {String} path The path of an asset previously downloaded and cached to this {@link AssetManager}.
@@ -120,6 +130,53 @@ class AssetManager {
      */
     getAsset(path) {
         return this.cache[path];
+    }
+
+    /**
+     * Plays the audio asset retrieved from the given path as it exists in the {@link AssetManager.cache}.
+     * @param {String} path The path of an audio asset previously downloaded and cached to this {@link AssetManager}.
+     */
+    playAudio(path) {
+        const aud = this.cache[path];
+        aud.volume = path.split("/")[3] == "music" ? PARAMS.MAX_VOLUME : PARAMS.MAX_VOLUME / 2;
+        // aud.volume = PARAMS.MAX_VOLUME;
+        aud.currentTime = 0;
+        aud.play();
+    }
+
+    /**
+     * Stops the playing of all current background music.
+     */
+    killBackgroundMusic() {
+        Object.keys(this.cache).forEach(path => {
+            if (this.cache[path] instanceof Audio && path.split("/").slice(-2)[0] == "music") {
+                this.cache[path].pause();
+                this.cache[path].currentTime = 0;
+            }
+        });
+    }
+
+    setBackgroundMusicVolume(volume) {
+        if (volume == 0) {
+            this.killBackgroundMusic();
+            return;
+        }
+        Object.keys(this.cache).forEach(path => {
+            if (this.cache[path] instanceof Audio && path.split("/").slice(-2)[0] == "music") {
+                this.cache[path].volume = volume;
+            }
+        });
+    }
+
+    /**
+     * Mutes or unmutes all audio assets that currently exist in the {@link AssetManager.cache}.
+     * @param {boolean} mute Whether to mute or unmute all audio assets.
+     */
+    muteAudio(mute) {
+        Object.keys(this.cache).forEach(path => {
+            if (this.cache[path] instanceof Audio)
+            this.cache[path].muted = mute;
+        });
     }
 };
 

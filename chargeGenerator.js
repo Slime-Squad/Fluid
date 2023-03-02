@@ -6,7 +6,7 @@ class ChargeGenerator extends Charge {
     
     constructor(tag, x, y, loop = true) {
         super(tag, x, y, loop);
-        this.tag = this.originalTag;
+        this.changeToState(this.states.active);
     }
 
     update(){

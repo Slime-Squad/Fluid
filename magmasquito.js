@@ -8,14 +8,13 @@ class Magmasquito extends AnimatedEntity {
      * @param {String} tag The type of charge to be placed. One of "Earth", "Fire", "Ice", "Electric", or "Disabled".
      * @param {number} x The x-coordinate associated with the top-left corner of the charge's sprite on the canvas.
      * @param {number} y The y-coordinate associated with the top-left corner of the charge's sprite on the canvas.
-     * @param {Projectile} proj The projectile that this Magmasquito owns.
      * @param {boolean} loop Whether the charge's animation loops over again, after having finished playing once.
      */
-    constructor(tag, x, y, proj, loop = true) {
+    constructor(tag, x, y, loop = true) {
         super("./assets/graphics/characters/magmasquito", tag, x, y, loop);
-        Object.assign(this, { tag, x, y, proj, loop });
+        Object.assign(this, { tag, x, y, loop });
         this.hitbox = new HitBox(x, y, 0, 0, 20*PARAMS.SCALE, 20*PARAMS.SCALE);
-
+        this.projectile = new Projectile("Invisible", x, y);
         this.speed = PARAMS.SCALE;
         this.directionTimer = 0;
     }
@@ -47,7 +46,7 @@ class Magmasquito extends AnimatedEntity {
      * This makes a call to the shoot function.
      */
     shoot() {
-        this.proj.shoot();
+        this.projectile.shoot();
     }
 
     /**

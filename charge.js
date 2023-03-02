@@ -16,33 +16,78 @@ class Charge extends AnimatedEntity {
         this.hitbox = new HitBox(x, y, 0, 0, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
         this.originalTag = tag;
         this.elapsedTime = 0;
-        this.tag = "Disabled";
+        this.initializeStates();
+        this.currentState = this.states.invisible;
+        this.currentState.start();
     }
 
     /**
      * Function called on every clock tick.
      */
     update() {
-        if (this.tag != "Collected" && this.tag != "Disabled" && !this.isInFrame()) return;
-        //console.log("update", this.originalTag, "charge at", this.x, ",", this.y)
-        if (this.originalTag == "Disabled") return;
-        if (!GAME.UNLOCKED_CHARGES[this.originalTag]) return;
-        if (this.tag == "Disabled" || this.tag == "Collected") this.elapsedTime += GAME.clockTick;
-        if (this.tag == "Collected" && this.frames.isFrozen) this.swapTag("Disabled", true);
-        if (this.elapsedTime >= 5) {
-            this.tag = this.originalTag;
-            this.elapsedTime = 0;
+        if (!this.isInFrame()) return;
+        
+        this.changeState();
+        this.currentState.behavior();
+    }
+
+    initializeStates(){
+
+        this.states = {
+            invisible: new State("Invisible"),
+            collected: new State("Collected"),
+            disabled: new State("Disabled"),
+            active: new State("Active"),
+        };
+        
+        // INVISIBLE //
+        this.states.invisible.start = () => {
+            this.swapTag("Invisible", true);
         }
-        this.lastFrameIndex = this.frameTimer.frameIndex;
+        this.states.invisible.setCheckState([
+            {state: this.states.active, predicate: () => { return GAME.UNLOCKED_CHARGES[this.originalTag] }}
+        ]);
+
+        // COLLECTED //
+        this.states.collected.start = () => {
+            this.swapTag("Collected", false);
+        }
+        this.states.collected.behavior = () => {
+            this.elapsedTime += GAME.clockTick;
+        }
+        this.states.collected.setCheckState([
+            {state: this.states.disabled, predicate: () => { return this.frames.isFrozen }}
+        ]);
+
+        // DISABLED //
+        this.states.disabled.start = () => {
+            this.swapTag("Disabled", true);
+        }
+        this.states.disabled.behavior = () => {
+            this.elapsedTime += GAME.clockTick;
+        }
+        this.states.disabled.end = () => {
+            this.elapsedTime = 0;            
+        }
+        this.states.disabled.setCheckState([
+            {state: this.states.active, predicate: () => { return this.elapsedTime >= 5 }}
+        ]);
+
+        // ACTIVE //
+        this.states.active.start = () => {
+            this.swapTag(this.originalTag, true);
+        }
     }
 
     /**
      * Response to colliding with player.
      */
     collideWithPlayer(){
-        if (this.tag != "Disabled" && this.tag != "Collected") { // charge collected
+        if (this.currentState == this.states.active) {
             GAME.slime.charges[this.tag] = Math.min(GAME.slime.charges[this.tag] + 1, 1);
-            this.swapTag("Collected", false);
+            ASSET_MANAGER.playAudio("./assets/audio/effect/charge" + Math.floor(Math.random()*4) + ".wav");
+            this.changeToState(this.states.collected);
         }
+        console.log(this.currentState.name);
     }
 }

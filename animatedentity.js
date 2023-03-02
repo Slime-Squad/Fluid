@@ -63,6 +63,7 @@ class AnimatedEntity {
     respawn() {
         this.x = this.spawnX;
         this.y = this.spawnY;
+        if (this.hitbox) this.hitbox.updatePos(this.x, this.y);
     }
 
     /**
@@ -73,6 +74,26 @@ class AnimatedEntity {
         this.lastX = this.x;
         this.lastY = this.y;
         this.tickTimers();
+    }
+
+    changeState(){
+        let checkState = this.currentState.checkState();
+        if (checkState) {
+            this.currentState.end();
+            this.currentState = checkState;
+            this.currentState.start();
+        }
+    }
+    
+    /**
+     * Changes to the specified state
+     * @param {State} state
+     * @inheritdoc
+     */
+    changeToState(state){
+        this.currentState.end();
+        this.currentState = state;
+        this.currentState.start();
     }
 
     /**

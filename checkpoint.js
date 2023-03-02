@@ -23,6 +23,7 @@ class Checkpoint extends AnimatedEntity {
      */
     collideWithPlayer(){
         if (this.tag == "Idle") {
+            ASSET_MANAGER.playAudio("./assets/audio/effect/checkpoint" + Math.floor(Math.random()*4) + ".wav");
             this.swapTag("Collected");
             this.hitbox = null;
             GAME.slime.spawnX = this.x;
