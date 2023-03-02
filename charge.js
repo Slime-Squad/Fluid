@@ -32,7 +32,7 @@ class Charge extends AnimatedEntity {
     }
 
     respawn() {
-        if (GAME.UNLOCKED_CHARGES[this.originalTag]) this.changeToState(this.states.active);
+        if (GAME.UNLOCKED_CHARGES[this.originalTag]) this.changeState(this.states.active);
     }
 
     /**
@@ -94,7 +94,7 @@ class Charge extends AnimatedEntity {
         if (this.currentState == this.states.active) {
             GAME.slime.charges[this.tag] = Math.min(GAME.slime.charges[this.tag] + 1, 1);
             ASSET_MANAGER.playAudio("./assets/audio/effect/charge" + Math.floor(Math.random()*4) + ".wav");
-            this.changeToState(this.states.collected);
+            this.changeState(this.states.collected);
         }
         // console.log(this.currentState.name);
     }

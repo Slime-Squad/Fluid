@@ -232,6 +232,15 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
     "sourceSize": { "w": 64, "h": 16 },
     "duration": 40
+   },
+   {
+    "filename": "0#Invisible",
+    "frame": { "x": 0, "y": 24, "w": 64, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
+    "sourceSize": { "w": 64, "h": 16 },
+    "duration": 40
    }
  ],
  "meta": {
@@ -239,7 +248,7 @@
   "version": "1.3-beta21-x64",
   "image": "dashbeam.png",
   "format": "RGBA8888",
-  "size": { "w": 1864, "h": 16 },
+  "size": { "w": 1864, "h": 40 },
   "scale": "1"
  }
 }

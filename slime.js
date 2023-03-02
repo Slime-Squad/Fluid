@@ -55,8 +55,7 @@ class Slime extends AnimatedEntity {
         this.canPressLTrig = true;
 
         // Powers
-        // this.dashbeam = new AnimatedEntity("./assets/graphics/characters/dashbeam", "Default", 0, 0, false);
-        // this.dashbeam.draw(ctx) = super.draw(ctx);
+        // this.dashbeam = new AnimatedEntity("./assets/graphics/characters/dashbeam", "Invisible", this.x, this.y, false);
         
         // Charges
         this.charges = {
@@ -320,10 +319,10 @@ class Slime extends AnimatedEntity {
             this.controlX();
             this.moveY();
             if (!CONTROLLER.A) this.canJump = true;
-            if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
         };
         this.states.idle.setTransitions([
-            {state: this.states.dashing, predicate: () => { return CONTROLLER.B && this.canDash }},
+            {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
             {state: this.states.jumping, predicate: () => { return CONTROLLER.A && this.canJump }},
             {state: this.states.running, predicate: () => { return CONTROLLER.RIGHT || CONTROLLER.LEFT }},
             {state: this.states.falling, predicate: () => { return this.yVelocity > this.yFallThreshold }},
@@ -338,10 +337,10 @@ class Slime extends AnimatedEntity {
             this.controlX();
             this.moveY();
             if (!CONTROLLER.A) this.canJump = true;
-            if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
         };
         this.states.running.setTransitions([
-            {state: this.states.dashing, predicate: () => { return CONTROLLER.B && this.canDash }},
+            {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
             {state: this.states.jumping, predicate: () => { return CONTROLLER.A && this.canJump }},
             {state: this.states.idle, predicate: () => { return !(CONTROLLER.RIGHT || CONTROLLER.LEFT) }},
             {state: this.states.falling, predicate: () => { return this.yVelocity > this.yFallThreshold }},
@@ -357,13 +356,13 @@ class Slime extends AnimatedEntity {
             this.xDirection > 0 ? this.tag = "JumpingAir" : this.tag = "JumpingAirLeft";
             this.controlX();
             this.moveY();
-            if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
         };
         this.states.jumping.end = () => {
             this.yVelocity = 0;
         }
         this.states.jumping.setTransitions([
-            {state: this.states.dashing, predicate: () => { return CONTROLLER.B && this.canDash }},
+            {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
             {state: this.states.falling, predicate: () => { return !CONTROLLER.A || this.yVelocity >= 0 }},
         ]);
         
@@ -372,11 +371,11 @@ class Slime extends AnimatedEntity {
             this.xDirection > 0 ? this.tag = "Falling" : this.tag = "FallingLeft";
             this.controlX();
             this.moveY();
-            if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
             if (!CONTROLLER.A && this.charges["Fire"] >= 1) this.canBoost = true;
         };
         this.states.falling.setTransitions([
-            {state: this.states.dashing, predicate: () => { return CONTROLLER.B && this.canDash }},
+            {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
             {state: this.states.boosting, predicate: () => { return CONTROLLER.A && this.canBoost }},
             {state: this.states.running, predicate: () => { return this.tileCollisions.includes("bottom") && (CONTROLLER.RIGHT || CONTROLLER.LEFT) }},
             {state: this.states.idle, predicate: () => { return this.tileCollisions.includes("bottom") }},
@@ -441,11 +440,11 @@ class Slime extends AnimatedEntity {
             this.xDirection > 0 ? this.tag = "Floating" : this.tag = "FloatingLeft";
             this.controlX();
             this.moveY(0, 0);
-            if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
             if (!CONTROLLER.A && this.charges["Fire"] >= 1) this.canBoost = true;
         };
         this.states.floating.setTransitions([
-            {state: this.states.dashing, predicate: () => { return CONTROLLER.B && this.canDash }},
+            {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
             {state: this.states.boosting, predicate: () => { return CONTROLLER.A && this.canBoost }},
             {state: this.states.running, predicate: () => { return this.tileCollisions.includes("bottom") && (CONTROLLER.RIGHT || CONTROLLER.LEFT) }},
             {state: this.states.idle, predicate: () => { return this.tileCollisions.includes("bottom") }},
@@ -466,13 +465,13 @@ class Slime extends AnimatedEntity {
             this.xDirection > 0 ? this.tag = "JumpingAir" : this.tag = "JumpingAirLeft";
             this.controlX();
             this.moveY();
-            if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
         };
         this.states.boosting.end = () =>{
             this.yVelocity = 0;
         };
         this.states.boosting.setTransitions([
-            {state: this.states.dashing, predicate: () => { return CONTROLLER.B && this.canDash }},
+            {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
             {state: this.states.falling, predicate: () => { return !CONTROLLER.A || this.yVelocity > 0 }},
         ]);
 
@@ -488,7 +487,7 @@ class Slime extends AnimatedEntity {
             this.moveY(this.slideSpeed, 0);
             if (this.timers.climbTimer > 0.1 && this.slideSpeed < this.maxYVelocity) this.slideSpeed = this.slideSpeed + (PARAMS.GRAVITY / 2) * GAME.tickMod;
             if (!CONTROLLER.A) this.canJump = true;
-            if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
         };
         this.states.climbing.setTransitions([
             {state: this.states.running, predicate: () => { return this.tileCollisions.includes("bottom") && (CONTROLLER.RIGHT || CONTROLLER.LEFT) }},
@@ -513,7 +512,7 @@ class Slime extends AnimatedEntity {
             this.xDirection > 0 ? this.tag = "JumpingAir" : this.tag = "JumpingAirLeft";
             this.moveX(this.speed * 0.75 * this.xDirection);
             this.moveY();
-            if (!CONTROLLER.B && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
         };
         this.states.wallJumping.setTransitions([
             // {state: this.states.jumping, predicate: () => { return this.timers.jumpTimer > this.wallJumpTimeout * 2 && CONTROLLER.A }},

@@ -141,8 +141,9 @@ class Tabemasu extends AnimatedEntity {
      * to spawn and {@link GAME.slime.kill()} the slime
      */
     collideWithPlayer() {
+        if (this.currentState == this.states.stunned) return;
         if (GAME.slime.isInvincible){
-            this.changeToState(this.states.stunned);
+            this.changeState(this.states.stunned);
         } else GAME.slime.kill();
     }
 
@@ -201,7 +202,7 @@ class Tabemasu extends AnimatedEntity {
         // STUNNED //
         this.states.stunned.start = () => {
             // this.yVelocity = 1 / PARAMS.SCALE;
-            this.xDirection > 0 ? this.swapTag("Idle", true) : this.swapTag("IdleLeft", true);
+            this.xDirection > 0 ? this.swapTag("Stunned", true) : this.swapTag("StunnedLeft", true);
             this.stateTimer = 0;
         };
         this.states.stunned.behavior = () => {

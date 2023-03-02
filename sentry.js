@@ -24,7 +24,7 @@ class Sentry extends AnimatedEntity {
         GAME.entities.forEach(entity => {
             if (!entity.states || !entity.isInFrame() || entity.constructor.name != this.targetEntity) return;
             Object.keys(entity.states).forEach(state => {
-                if (entity.states[state].name == this.targetState) entity.changeToState(entity.states[state]);
+                if (entity.states[state].name == this.targetState) entity.changeState(entity.states[state]);
             });
             this.isTriggered = true;
         });

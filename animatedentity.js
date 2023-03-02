@@ -94,7 +94,7 @@ class AnimatedEntity {
             this.currentState = state;
             this.currentState.start();
         }
-        let checkState = this.currentState.checkState();
+        let checkState = this.currentState.checkStateTransitions();
         if (checkState) {
             this.currentState.end();
             this.currentState = checkState;

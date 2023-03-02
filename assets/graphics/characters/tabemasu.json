@@ -196,6 +196,132 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
     "sourceSize": { "w": 36, "h": 36 },
     "duration": 60
+   },
+   {
+    "filename": "0#Stunned",
+    "frame": { "x": 0, "y": 176, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 80
+   },
+   {
+    "filename": "1#Stunned",
+    "frame": { "x": 44, "y": 176, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 80
+   },
+   {
+    "filename": "2#Stunned",
+    "frame": { "x": 88, "y": 176, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 80
+   },
+   {
+    "filename": "3#Stunned",
+    "frame": { "x": 132, "y": 176, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 80
+   },
+   {
+    "filename": "4#Stunned",
+    "frame": { "x": 176, "y": 176, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 80
+   },
+   {
+    "filename": "5#Stunned",
+    "frame": { "x": 220, "y": 176, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 80
+   },
+   {
+    "filename": "6#Stunned",
+    "frame": { "x": 264, "y": 176, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 200
+   },
+   {
+    "filename": "0#StunnedLeft",
+    "frame": { "x": 0, "y": 220, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 80
+   },
+   {
+    "filename": "1#StunnedLeft",
+    "frame": { "x": 44, "y": 220, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 80
+   },
+   {
+    "filename": "2#StunnedLeft",
+    "frame": { "x": 88, "y": 220, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 80
+   },
+   {
+    "filename": "3#StunnedLeft",
+    "frame": { "x": 132, "y": 220, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 80
+   },
+   {
+    "filename": "4#StunnedLeft",
+    "frame": { "x": 176, "y": 220, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 80
+   },
+   {
+    "filename": "5#StunnedLeft",
+    "frame": { "x": 220, "y": 220, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 80
+   },
+   {
+    "filename": "6#StunnedLeft",
+    "frame": { "x": 264, "y": 220, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 200
    }
  ],
  "meta": {
@@ -203,7 +329,7 @@
   "version": "1.3-beta21-x64",
   "image": "tabemasu.png",
   "format": "RGBA8888",
-  "size": { "w": 432, "h": 168 },
+  "size": { "w": 432, "h": 256 },
   "scale": "1"
  }
 }
