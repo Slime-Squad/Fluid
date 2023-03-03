@@ -37,7 +37,6 @@ class Frames {
         this.animations = {};
         this.tags = [];
         Object.keys(json["frames"]).forEach((index) => {
-            
             const frame = json["frames"][index];
             const tag = frame["filename"].split("#")[1];
             if (this.tags.indexOf(tag) === -1) this.tags.push(tag);
@@ -66,12 +65,12 @@ class Frames {
         if (this.animations[tag].length <= frameTimer.frameIndex) {
             if (!loop) {
                 this.drawLastFrame(ctx, spritesheet, tag, x, y);
-                this.isFrozen = true;
                 return;
             }
-            this.isFrozen = false;
             frameTimer.frameIndex = 0;
         }
+        this.isFrozen = false;
+        //console.log(tag, frameTimer.frameIndex, this.isFrozen);
 
         const frame = this.animations[tag][frameTimer.frameIndex];
 
@@ -85,20 +84,21 @@ class Frames {
     }
 
     /**
-     * Freezes the current animation being displayed on the last frame. Intended for use on animations not meant to loop indefinitely.
+     * Freezes the current animation being displayed on the last frame. Intended for use on animations not meant to loop indefinitely. Sets the {@link isFrozen} property to true.
      * @param {CanvasRenderingContext2D} ctx The canvas to which the frame will be displayed upon.
      * @param {HTMLImageElement} spritesheet The spritesheet image associated with the animation the frame exists in.
-     * @param {String} tag The name of the animation in which the frame exists in, as it is defined in the JSON file used to initialize this {@link Frames} instance.
+     * @param {String} tag The name of the animation in which the frame final exists in, as it is defined in the JSON file used to initialize this {@link Frames} instance.
      * @param {number} x The x-coordinate associated with the top-left corner of the frame's sprite on the canvas.
      * @param {number} y The y-coordinate associated with the top-left corner of the frame's sprite on the canvas.
      */
     drawLastFrame(ctx, spritesheet, tag, x, y) {
-        ctx.drawImage(spritesheet, this.animations[tag].slice(-1)[0].x, 
-            this.animations[tag].slice(-1)[0].y, 
-            this.animations[tag].slice(-1)[0].w, 
-            this.animations[tag].slice(-1)[0].h, 
-            x, y, 
-            this.animations[tag].slice(-1)[0].w*PARAMS.SCALE, 
+        this.isFrozen = true;
+        ctx.drawImage(spritesheet, this.animations[tag].slice(-1)[0].x,
+            this.animations[tag].slice(-1)[0].y,
+            this.animations[tag].slice(-1)[0].w,
+            this.animations[tag].slice(-1)[0].h,
+            x, y,
+            this.animations[tag].slice(-1)[0].w*PARAMS.SCALE,
             this.animations[tag].slice(-1)[0].h*PARAMS.SCALE);
     }
 }
