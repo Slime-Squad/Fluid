@@ -37,10 +37,8 @@ class Tile {
      * @param {CanvasRenderingContext2D} ctx The canvas to be displayed upon.
      */
     draw(ctx) { 
-        const x = this.x - GAME.camera.x;
-        const y = this.y - GAME.camera.y;
-        if (x > -this.w*PARAMS.SCALE && x < PARAMS.WIDTH && y > -this.h*PARAMS.SCALE && y < PARAMS.HEIGHT) {
-            ctx.drawImage(this.img, this.imgX, this.imgY, this.w, this.h, x, y, this.w*PARAMS.SCALE, this.h*PARAMS.SCALE);
+        if (this.isInFrame()) {
+            ctx.drawImage(this.img, this.imgX, this.imgY, this.w, this.h, this.x - GAME.camera.x, this.y - GAME.camera.y, this.w*PARAMS.SCALE, this.h*PARAMS.SCALE);
             if (this.collidableDirections.length > 0 && PARAMS.DEBUG) {
                 ctx.strokeStyle = "red";
                 ctx.beginPath();
@@ -59,16 +57,14 @@ class Tile {
     isInFrame(){
         const x = this.x - GAME.camera.x;
         const y = this.y - GAME.camera.y;
-        const w = width ? width : this.hitbox ? this.hitbox.width : 8*PARAMS.SCALE;
-        const h = height ? height : this.hitbox ? this.hitbox.height : 8*PARAMS.SCALE;
-        return (x > -w && x < PARAMS.WIDTH && y > -h && y < PARAMS.HEIGHT);
+        return x > -this.w*PARAMS.SCALE && x < PARAMS.WIDTH && y > -this.h*PARAMS.SCALE && y < PARAMS.HEIGHT;
     }
 
     /**
      * Function responsible for handling the collision behavior of the tile (this) and player
      * @returns Entity
      */
-    collideWithPlayer(){
+    collideWithPlayer() {
         return this.collideWithEntity(GAME.slime);
     }
 
@@ -76,9 +72,10 @@ class Tile {
      * Function responsible for handling the collision behavior of the tile (this) and another entity.
      * @param {AnimatedEntity} entity - the entity colliding with the tile (this)
      */
-    collideWithEntity(entity){
-        
-        let directionOfEntity = this.collidableDirections.length == 1 ? 
+    collideWithEntity(entity) {
+        if (entity instanceof Projectile) entity.reset();
+        // if (!this.isInFrame()) return;
+        const directionOfEntity = this.collidableDirections.length == 1 ? 
             ENTITY_DIRECTIONS_STRINGS[this.collidableDirections[0]] :
             entity.hitbox.getCollisionDirection(this.hitbox);
 
@@ -90,10 +87,24 @@ class Tile {
         
 
         // Adjust entity x and y value
-        if (directionOfEntity === "left") entity.x = Math.max(this.hitbox.right - entity.hitbox.leftPad + 1, entity.x);
-        else if (directionOfEntity === "right") entity.x = Math.min(this.hitbox.left - entity.hitbox.width - entity.hitbox.leftPad - 1, entity.x);
-        else if (directionOfEntity ==="top") entity.y = Math.max(this.hitbox.bottom - entity.hitbox.topPad + 1, entity.y);
-        else if (directionOfEntity ==="bottom") entity.y = Math.min(this.hitbox.top - entity.hitbox.height - entity.hitbox.topPad, entity.y);
+        switch(directionOfEntity) {
+            case "left":
+                entity.x = Math.max(this.hitbox.right - entity.hitbox.leftPad + 1, entity.x);
+                break;
+            case "right":
+                entity.x = Math.min(this.hitbox.left - entity.hitbox.width - entity.hitbox.leftPad - 1, entity.x);
+                break;
+            case "top":
+                entity.y = Math.max(this.hitbox.bottom - entity.hitbox.topPad + 1, entity.y);
+                break;
+            case "bottom":
+                entity.y = Math.min(this.hitbox.top - entity.hitbox.height - entity.hitbox.topPad, entity.y);
+                break;
+        }
+        // if (directionOfEntity === "left") entity.x = Math.max(this.hitbox.right - entity.hitbox.leftPad + 1, entity.x);
+        // else if (directionOfEntity === "right") entity.x = Math.min(this.hitbox.left - entity.hitbox.width - entity.hitbox.leftPad - 1, entity.x);
+        // else if (directionOfEntity ==="top") entity.y = Math.max(this.hitbox.bottom - entity.hitbox.topPad + 1, entity.y);
+        // else if (directionOfEntity ==="bottom") entity.y = Math.min(this.hitbox.top - entity.hitbox.height - entity.hitbox.topPad, entity.y);
         entity.hitbox.updatePos(entity.x, entity.y);
         return directionOfEntity;
     }
