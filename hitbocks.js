@@ -26,12 +26,11 @@ class HitBox {
      * @returns list of entities collided.
      */
     getCollisions(){
-        const collisions = [];
+        // const collisions = [];
         // collisions.push(GAME.slime);
         // const world = ASSET_MANAGER.getAsset("./assets/world/world/world.world");
         // Object.values(world.rooms).forEach((room) => {
         //     //console.log(room.x, room.y);
-            
         //     if (GAME.camera.x - 10*PARAMS.WIDTH < room.x && GAME.camera.x + 10*PARAMS.WIDTH > room.x && GAME.camera.y - 10*PARAMS.HEIGHT < room.y && GAME.camera.y + 10*PARAMS.HEIGHT > room.y) {
         //         room.entities.forEach(entity => {
         //             if (!entity.hitbox || !entity.isAlive) return;
@@ -41,13 +40,13 @@ class HitBox {
         //         });
         //     }
         // });
-        GAME.entities.forEach(entity => {
-            if (!entity.hitbox || !entity.isAlive) return;
-            // if (entity.hitbox instanceof this.constructor) return;
-            if (!this.collide(entity.hitbox)) return;
-            collisions.push(entity);
-        });
-        return collisions;
+        // GAME.entities.forEach(entity => {
+        //     if (!entity.hitbox || !entity.isAlive) return;
+        //     // if (entity.hitbox instanceof this.constructor) return;
+        //     if (!this.collide(entity.hitbox)) return;
+        //     collisions.push(entity);
+        // });
+        return GAME.collidableEntities.filter((entity) => entity.hitbox && entity.isAlive && this.collide(entity.hitbox));
     }
 
     /**
@@ -56,11 +55,12 @@ class HitBox {
      * @returns Whether the current hitbox and the given hitbox exist within the same space as one another.
      */
     collide(o) {
-        if (o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height){
-            return false;
-        } else {
-            return true;
-        }
+        // if (o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height){
+        //     return false;
+        // } else {
+        //     return true;
+        // }
+        return !(o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height);
     }
 
     /**

@@ -4,14 +4,16 @@ class GameEngine {
     constructor() {
         this.ctx = null;
         this.camera = null;
-        this.currentFrame = 0; // Used to track time globablly
+        /** Used to track time globablly */
+        this.currentFrame = 0;
 
         // Everything that will be updated and drawn each frame
         this.entities = [];
+        this.collidableEntities = [];
 
          //for Gamepad
         this.gamepad = null;
-       
+
         // Information on the input
         this.click = null;
         this.mouse = null;
@@ -24,9 +26,6 @@ class GameEngine {
             "Ice" : false,
             "Earth" : false
         }
-        
-        
-
     };
 
     init(ctx) {
@@ -35,6 +34,7 @@ class GameEngine {
         this.timer = new Timer();
         this.camera = new SceneManager();
         this.addEntity(this.camera);
+        this.collidableEntities = this.entities.filter((entity) => entity.hitbox);
     };
 
     start() {
@@ -51,7 +51,7 @@ class GameEngine {
             x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
         });
-        
+
         this.ctx.canvas.addEventListener("mousemove", e => {
             // if (PARAMS.DEBUG) {
             //     console.log("MOUSE_MOVE", getXandY(e));
@@ -107,7 +107,7 @@ class GameEngine {
             this.entities[i].draw(this.ctx);
         }
 
-        this.camera.draw(this.ctx); 
+        this.camera.draw(this.ctx);
     };
 
     /**
@@ -155,21 +155,10 @@ class GameEngine {
     }
 
     update() {
-        this.totalEntities = this.entities.length;
-
-        for (let i = 0; i < this.totalEntities; i++) {
-            const entity = this.entities[i];
-
-            if (!entity.removeFromWorld) {
-                entity.update();
-            }
-        }
-
-        for (let i = this.entities.length - 1; i >= 0; --i) {
-            if (this.entities[i].removeFromWorld) {
-                this.entities.splice(i, 1);
-            }
-        }
+        // for (let i = this.entities.length - 1; i >= 0; --i) {
+        //     this.entities[i].update();
+        // }
+        this.entities.forEach(entity => entity.update());
     };
 
     loop() {
@@ -181,6 +170,22 @@ class GameEngine {
         this.currentFrame++;
     };
 
+    /**
+     * Updates the {@link GameEngine.collidableEntities} array to contain only entities within a reasonable range of the {@link GameEngine.slime}.
+     */
+    updateCollidableEntities() {
+        const collidableEntities = [];
+        console.log("Updated Collidable Entities");
+        Object.values(ASSET_MANAGER.world.rooms).filter((room) => 
+            (room.x + room.w)*PARAMS.SCALE > this.camera.x - PARAMS.WIDTH*4 &&
+            (room.x + room.w)*PARAMS.SCALE < this.camera.x + PARAMS.WIDTH*5 &&
+            (room.y + room.h)*PARAMS.SCALE > this.camera.y - PARAMS.HEIGHT*4 &&
+            (room.y + room.h)*PARAMS.SCALE < this.camera.y + PARAMS.HEIGHT*5).forEach((room) => {
+                room.entities.filter((entity) => entity.hitbox).forEach((entity) => {
+                    collidableEntities.push(entity)
+                })
+            }
+        );
+        this.collidableEntities = collidableEntities;
+    }
 };
-
-// KV Le was here :)
