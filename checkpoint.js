@@ -25,7 +25,7 @@ class Checkpoint extends AnimatedEntity {
         if (this.tag == "Idle") {
             ASSET_MANAGER.playAudio("./assets/audio/effect/checkpoint" + Math.floor(Math.random()*4) + ".wav");
             this.swapTag("Collected");
-            this.hitbox = null;
+            this.hitbox = undefined;
             GAME.slime.spawnX = this.x;
             GAME.slime.spawnY = this.y;
         }
@@ -40,7 +40,7 @@ class Checkpoint extends AnimatedEntity {
     }
 
     draw(ctx) {
-        if (this.isInFrame()) super.draw(ctx);
+        if (this.isInFrame() || this.tag == "Collected" && !this.frames.isFrozen) super.draw(ctx);
     }
 
 }
