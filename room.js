@@ -127,10 +127,13 @@ class Room {
                             }
                             if (entity) {
                                 this.tiles[layer].push(entity);
-                                if (entity.constructor.name == "Slime") this.entities.push(entity);
+                                if (entity.constructor.name != "Slime") this.entities.push(entity);
+                                Object.values(entity).forEach(field => {
+                                    if (field instanceof AnimatedEntity) this.entities.push(field);
+                                });
                             }
                         } else {
-                            const directionsAirAdjacent = this.isAirAdjacent(index);
+                            const directionsAirAdjacent = layer == "map" && this.isAirAdjacent(index);
                             const tile = new Tile(
                                 img,
                                 this.x*PARAMS.SCALE + ((index)%(this.w/8))*8*PARAMS.SCALE,
@@ -148,6 +151,7 @@ class Room {
                 });
             }
         });
+        
     }
 
     /**

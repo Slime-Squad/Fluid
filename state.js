@@ -4,31 +4,36 @@
  */
 class State {
 
-    constructor(name){
+    constructor(name) {
         this.stateChecks = [];
         this.name = name;
     }
 
-    checkStateTransitions(){
+    checkStateTransitions() {
         for(let check of this.stateChecks){
             if(check[0]()) return check[1];
         }
         return false;
     }
-    start(){
+
+    start() {
         // console.log("empty start function");
     }
-    behavior(){
+
+    behavior() {
         // console.log("empty behavior function");
     }
-    end(){
+
+    end() {
         // console.log("empty end function");
     }
-    setTransitions(predicateStatePairs){
+
+    setTransitions(predicateStatePairs) {
         this.stateChecks.length = 0;
-        predicateStatePairs.forEach(pair=> this.addCheckState(pair.predicate, pair.state))
+        predicateStatePairs.forEach(pair=> this.addCheckState(pair.predicate, pair.state));
     }
-    addCheckState(predicate, state){
-        this.stateChecks.push([predicate, state])
+
+    addCheckState(predicate, state) {
+        this.stateChecks.push([predicate, state]);
     }
 }

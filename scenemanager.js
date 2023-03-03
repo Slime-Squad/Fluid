@@ -16,13 +16,14 @@ class SceneManager {
         this.isFrozen = false;
         this.frames = 0;
         this.fps = 0;
-        this.loadTest();
+        this.seconds = 0;
+        this.loadWorld();
     }
 
     /**
-     * Initializes the testing level.
+     * Initializes the world.
      */
-    loadTest() {
+    loadWorld() {
         const world = ASSET_MANAGER.getAsset("./assets/world/world/world.world");
         // Camera entities (always visible)
         GAME.addEntity(this.deathScreen);
@@ -82,8 +83,12 @@ class SceneManager {
             this.start = Date.now();
             this.fps = this.frames;
             this.frames = 0;
+            this.seconds++;
         }
-        
+        // if (this.seconds >= 5) {
+        //     GAME.updateCollidableEntities();
+        //     this.seconds = 0;
+        // }
     }
 
     /**

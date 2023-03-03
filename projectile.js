@@ -18,11 +18,6 @@ class Projectile extends AnimatedEntity {
         //Movement
         this.speed = PARAMS.SCALE;
         this.direction = 1
-
-        //Timers
-        this.timers = {
-            duration: 0
-        }
     }
 
     /**
@@ -33,9 +28,6 @@ class Projectile extends AnimatedEntity {
         this.hitbox.getCollisions().forEach((entity) => {
             if (entity.collideWithEntity) entity.collideWithEntity(this);
         });
-        if(this.x == this.lastX) {
-            this.reset();
-        }
         this.endOfCycleUpdates();
     }
 
@@ -44,10 +36,6 @@ class Projectile extends AnimatedEntity {
      */
     shoot() {
         this.tag = "Fireball";
-        if(this.timers.duration > 3) {
-            this.reset();
-        }
-        
         this.x += this.speed * this.direction * GAME.tickMod;
     }
 
@@ -57,7 +45,6 @@ class Projectile extends AnimatedEntity {
     reset() {
         this.respawn();
         this.tag = "Invisible";
-        this.timers.duration = 0;
         this.direction = this.x > GAME.slime.x ? -1: 1;
     }
 
@@ -75,6 +62,6 @@ class Projectile extends AnimatedEntity {
      * @param {CanvasRenderingContext2D} ctx The canvas which the Batterflea will be drawn on
      */
     draw(ctx) {
-        super.draw(ctx);
+        if (this.isInFrame()) super.draw(ctx);
     }
 }
