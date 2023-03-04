@@ -34,7 +34,8 @@ class GameEngine {
         this.timer = new Timer();
         this.camera = new SceneManager();
         this.addEntity(this.camera);
-        this.collidableEntities = this.entities.filter((entity) => entity.hitbox);
+        this.updateCollidableEntities();
+        //this.collidableEntities = this.entities.filter((entity) => entity.hitbox);
     };
 
     start() {
@@ -174,18 +175,10 @@ class GameEngine {
      * Updates the {@link GameEngine.collidableEntities} array to contain only entities within a reasonable range of the {@link GameEngine.slime}.
      */
     updateCollidableEntities() {
-        const collidableEntities = [];
-        console.log("Updated Collidable Entities");
-        Object.values(ASSET_MANAGER.world.rooms).filter((room) => 
-            (room.x + room.w)*PARAMS.SCALE > this.camera.x - PARAMS.WIDTH*4 &&
-            (room.x + room.w)*PARAMS.SCALE < this.camera.x + PARAMS.WIDTH*5 &&
-            (room.y + room.h)*PARAMS.SCALE > this.camera.y - PARAMS.HEIGHT*4 &&
-            (room.y + room.h)*PARAMS.SCALE < this.camera.y + PARAMS.HEIGHT*5).forEach((room) => {
-                room.entities.filter((entity) => entity.hitbox).forEach((entity) => {
-                    collidableEntities.push(entity)
-                })
-            }
-        );
-        this.collidableEntities = collidableEntities;
+        this.collidableEntities = Object.values(ASSET_MANAGER.world.rooms).filter((room) =>
+            (room.x + room.w)*PARAMS.SCALE > this.camera.x - PARAMS.WIDTH*PARAMS.SCALE &&
+            (room.x + room.w)*PARAMS.SCALE < this.camera.x + PARAMS.WIDTH*PARAMS.SCALE &&
+            (room.y + room.h)*PARAMS.SCALE > this.camera.y - PARAMS.WIDTH*PARAMS.SCALE &&
+            (room.y + room.h)*PARAMS.SCALE < this.camera.y + PARAMS.WIDTH*PARAMS.SCALE);
     }
 };
