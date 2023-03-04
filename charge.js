@@ -64,7 +64,10 @@ class Charge extends AnimatedEntity {
             this.stateTimer += GAME.clockTick;
         }
         this.states.collected.setTransitions([
-            {state: this.states.disabled, predicate: () => { return this.frames.isFrozen() }}
+            {state: this.states.disabled, predicate: () => { 
+                return this.stateTimer > this.frames.animations["Collected"][0].duration * this.frames.animations["Collected"].length 
+                // all frames for charge animation are the same duration
+            }},
         ]);
 
         // DISABLED //
