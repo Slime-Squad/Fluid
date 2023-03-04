@@ -40,7 +40,7 @@ class Batterflea extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        if (!this.isInFrame()) return;
+        // if (!this.isInFrame()) return;
         this.hop();
         this.moveY();
 
