@@ -26,9 +26,12 @@ class Charge extends AnimatedEntity {
      */
     update() {
         if (!this.isInFrame() && this.currentState == this.states.active) return;
-        
         this.changeState();
         this.currentState.behavior();
+    }
+
+    draw(ctx) {
+        if (this.isInFrame() || this.currentState != this.states.active) super.draw(ctx);
     }
 
     respawn() {
@@ -78,7 +81,7 @@ class Charge extends AnimatedEntity {
             this.stateTimer += GAME.clockTick;
         }
         this.states.disabled.end = () => {
-            this.stateTimer = 0;            
+            this.stateTimer = 0;
         }
         this.states.disabled.setTransitions([
             {state: this.states.active, predicate: () => { return this.stateTimer >= 5 }}
