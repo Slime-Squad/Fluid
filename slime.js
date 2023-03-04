@@ -55,7 +55,7 @@ class Slime extends AnimatedEntity {
         this.canPressLTrig = true;
 
         // Powers
-        // this.dashbeam = new AnimatedEntity("./assets/graphics/characters/dashbeam", "Invisible", this.x, this.y, false);
+        // this.dashbeam = new Ornament("./assets/graphics/characters/dashbeam", "Invisible", this.x, this.y, false);
         
         // Charges
         this.charges = {
@@ -169,16 +169,6 @@ class Slime extends AnimatedEntity {
                 this.tileCollisions.push(direction)
             }
         });
-
-        // this.tileCollisions = this.tileCollisions.filter(entity => {return entity instanceof Tile})
-        // this.hitbox.updatePos(this.x, this.y);
-        // Sorted Collision
-        // this.entityCollisions.forEach(entity => { 
-        //     entity.distanceFromPlayer = Math.abs(entity.hitbox.center - this.hitbox.center);
-        // });
-        // this.entityCollisions.sort((a,b) => {return a.distanceFromPlayer - b.distanceFromPlayer}).forEach(entity => { 
-        //     if (entity.collideWithPlayer) this.tileCollisions.push(entity.collideWithPlayer()); 
-        // });
     }
 
     /**

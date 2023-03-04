@@ -12,7 +12,6 @@ class Tabemasu extends AnimatedEntity {
      */
     constructor(tag, x, y, loop = true) {
         super("./assets/graphics/characters/tabemasu", tag, x, y, loop);
-        // Object.assign(this, { tag, x, y, loop });
         this.hitbox = new HitBox(x, y, 3*PARAMS.SCALE, 4*PARAMS.SCALE, 30*PARAMS.SCALE, 30*PARAMS.SCALE);
 
         // Movement
@@ -37,7 +36,7 @@ class Tabemasu extends AnimatedEntity {
         // Timers   
         this.stateTimer = 0;
         this.stunnedTimeout = 5;
-        this.searchingTimeout = 2;
+        this.searchingTimeout = 1;
         this.roamingTimeout = 1;
     }
 
@@ -45,7 +44,7 @@ class Tabemasu extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        if (!this.isInFrame(36*PARAMS.SCALE, 36*PARAMS.SCALE)) {
+        if (!this.isInFrame(36*PARAMS.SCALE, 36*PARAMS.SCALE) && this.currentState != this.states.stunned) {
             return;
         }
 
@@ -258,7 +257,7 @@ class Tabemasu extends AnimatedEntity {
         };
         this.states.running.setTransitions([
             {state: this.states.falling, predicate: () => { return !this.tileCollisions.includes("bottom") }},
-            {state: this.states.searching, predicate: () => { return this.tileCollisions.includes("left") || this.tileCollisions.includes("right") }},
+            // {state: this.states.searching, predicate: () => { return this.tileCollisions.includes("left") || this.tileCollisions.includes("right") }},
             {state: this.states.hunting, predicate: () => { return this.distanceFromSlime.y < this.trackDistance }},
         ]);
         
@@ -327,7 +326,7 @@ class Tabemasu extends AnimatedEntity {
             this.moveY();
         };
         this.states.hunting.setTransitions([
-            {state: this.states.searching, predicate: () => { 
+            {state: this.states.roaming, predicate: () => { 
                 return this.distanceFromSlime.y > this.trackDistance / 3
                 || this.tileCollisions.includes("left") || this.tileCollisions.includes("right")
             }},

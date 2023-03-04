@@ -1,6 +1,6 @@
 /**
  * Class representation of a charge item.
- * @author Jasper Newkirk
+ * @author Jasper Newkirk, Nathan Brown
  */
 class Charge extends AnimatedEntity {
     /**
