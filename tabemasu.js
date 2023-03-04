@@ -12,7 +12,7 @@ class Tabemasu extends AnimatedEntity {
      */
     constructor(tag, x, y, loop = true) {
         super("./assets/graphics/characters/tabemasu", tag, x, y, loop);
-        this.hitbox = new HitBox(x, y, 3*PARAMS.SCALE, 4*PARAMS.SCALE, 30*PARAMS.SCALE, 30*PARAMS.SCALE);
+        this.hitbox = new HitBox(x, y, 3*PARAMS.SCALE, 7 * PARAMS.SCALE , 28*PARAMS.SCALE, 28*PARAMS.SCALE);
 
         // Movement
         this.speed = 1.1;
@@ -49,7 +49,7 @@ class Tabemasu extends AnimatedEntity {
         }
 
         this.distanceFromSlime.x = Math.abs(this.hitbox.center.x - GAME.slime.hitbox.center.x);
-        this.distanceFromSlime.y = Math.abs(this.hitbox.center.y - GAME.slime.hitbox.center.y);
+        this.distanceFromSlime.y = Math.abs(this.hitbox.center.y - GAME.slime.hitbox.center.y + 11 * PARAMS.SCALE);
         this.directionToSlime = this.hitbox.center.x > GAME.slime.hitbox.center.x ? -1 : 
             this.hitbox.center.x == GAME.slime.hitbox.center.x ? 0 : 1;
         
@@ -328,7 +328,7 @@ class Tabemasu extends AnimatedEntity {
         this.states.hunting.setTransitions([
             {state: this.states.roaming, predicate: () => { 
                 return this.distanceFromSlime.y > this.trackDistance / 3
-                || this.tileCollisions.includes("left") || this.tileCollisions.includes("right")
+                // || this.tileCollisions.includes("left") || this.tileCollisions.includes("right")
             }},
             {state: this.states.falling, predicate: () => { return this.yVelocity > 1 * PARAMS.SCALE }},
         ]);

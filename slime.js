@@ -39,7 +39,7 @@ class Slime extends AnimatedEntity {
         this.floatTimeout = 0.15;
         this.slideSpeed = 0;
         this.wallJumpTimeout = 0.2;
-        this.yFallThreshold = (1 / PARAMS.SCALE) * 10;
+        this.yFallThreshold = (1 / PARAMS.SCALE) * 12;
         this.jumpVelocity = -3.4;
         this.jumpMomentumMod = 1.8;
         this.lastX = this.x;
@@ -55,7 +55,7 @@ class Slime extends AnimatedEntity {
         this.canPressLTrig = true;
 
         // Powers
-        // this.dashbeam = new Ornament("./assets/graphics/characters/dashbeam", "Invisible", this.x, this.y, false);
+        // this.dashbeam = new Projectile("Fireball", this.x + 5 * PARAMS.SCALE, this.y, false);
         
         // Charges
         this.charges = {
