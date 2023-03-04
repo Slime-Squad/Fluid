@@ -181,7 +181,7 @@ class Slime extends AnimatedEntity {
 
     /**
      * Function responsible for killing the current Slime entity and playing a camera animation as the slime is respawned.
-     * @author Jasper Newkirk
+     * @author Jasper Newkirk, Nathan Brown
      */
     kill() {
         if (this.isInvincible || !this.isAlive) return;
@@ -202,6 +202,9 @@ class Slime extends AnimatedEntity {
                 this.y = this.spawnY;
                 this.hitbox.updatePos(this.x, this.y);
                 this.isAlive = true;
+                Object.keys(this.charges).forEach(tag => { this.useUpCharge(tag) });
+                this.canDash = false;
+                this.canBoost = false;
             }
         );
         GAME.entities.forEach((entity) => {if(entity.respawn) entity.respawn(); });
