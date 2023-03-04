@@ -15,7 +15,7 @@ class Charge extends AnimatedEntity {
         Object.assign(this, { tag, x, y, loop });
         this.hitbox = new HitBox(x, y, 0, 0, 8*PARAMS.SCALE, 8*PARAMS.SCALE);
         this.originalTag = tag;
-        this.elapsedTime = 0;
+        this.stateTimer = 0;
         this.initializeStates();
         this.currentState = this.states.invisible;
         this.currentState.start();
@@ -61,10 +61,13 @@ class Charge extends AnimatedEntity {
             this.swapTag("Collected", false);
         }
         this.states.collected.behavior = () => {
-            this.elapsedTime += GAME.clockTick;
+            this.stateTimer += GAME.clockTick;
         }
         this.states.collected.setTransitions([
-            {state: this.states.disabled, predicate: () => { return this.frames.isFrozen }}
+            {state: this.states.disabled, predicate: () => { 
+                return this.stateTimer > this.frames.animations["Collected"][0].duration * this.frames.animations["Collected"].length 
+                // all frames for charge animation are the same duration
+            }},
         ]);
 
         // DISABLED //
@@ -72,13 +75,13 @@ class Charge extends AnimatedEntity {
             this.swapTag("Disabled", true);
         }
         this.states.disabled.behavior = () => {
-            this.elapsedTime += GAME.clockTick;
+            this.stateTimer += GAME.clockTick;
         }
         this.states.disabled.end = () => {
-            this.elapsedTime = 0;            
+            this.stateTimer = 0;            
         }
         this.states.disabled.setTransitions([
-            {state: this.states.active, predicate: () => { return this.elapsedTime >= 5 }}
+            {state: this.states.active, predicate: () => { return this.stateTimer >= 5 }}
         ]);
 
         // ACTIVE //
@@ -96,6 +99,6 @@ class Charge extends AnimatedEntity {
             ASSET_MANAGER.playAudio("./assets/audio/effect/charge" + Math.floor(Math.random()*4) + ".wav");
             this.changeState(this.states.collected);
         }
-        // console.log(this.currentState.name);
+        console.log(this.currentState.name);
     }
 }

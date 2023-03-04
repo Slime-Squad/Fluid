@@ -75,15 +75,20 @@ class Tile {
     collideWithEntity(entity) {
         if (entity instanceof Projectile) entity.reset();
         // if (!this.isInFrame()) return;
-        const directionOfEntity = this.collidableDirections.length == 1 ? 
+        let directionOfEntity = this.collidableDirections.length == 1 ? 
             ENTITY_DIRECTIONS_STRINGS[this.collidableDirections[0]] :
             entity.hitbox.getCollisionDirection(this.hitbox);
 
         // let directionOfEntity = entity.hitbox.getCollisionDirection(this.hitbox);
             
-        // if (!directionOfEntity || !this.collidableDirections.includes(ENTITY_DIRECTIONS_IDS[directionOfEntity])){
-        //     directionOfEntity = ENTITY_DIRECTIONS_STRINGS[this.collidableDirections[0]];
-        // }
+        if (!directionOfEntity || !this.collidableDirections.includes(ENTITY_DIRECTIONS_IDS[directionOfEntity])){
+            if (this.collidableDirections.length == 2){
+                if (directionOfEntity == "bottom") directionOfEntity = ENTITY_DIRECTIONS_STRINGS[this.collidableDirections[0]];
+                if (directionOfEntity == "top") directionOfEntity = ENTITY_DIRECTIONS_STRINGS[this.collidableDirections[1]];
+            } else if (this.collidableDirections == 3){
+                // going to be more complicated
+            }
+        }
         
 
         // Adjust entity x and y value
