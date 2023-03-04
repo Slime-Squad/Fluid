@@ -55,8 +55,15 @@ class Slime extends AnimatedEntity {
         this.canPressLTrig = true;
 
         // Powers
-        // this.dashbeam = new Projectile("Fireball", this.x + 5 * PARAMS.SCALE, this.y, false);
-        
+        // this.dashbeam = new Ornament("./assets/graphics/characters/dashbeam", "Invisible", this.x + 5 * PARAMS.SCALE, this.y, false);
+        this.boostBlast = new Ornament("./assets/graphics/characters/boost", "Invisible", this.x, this.y, false);
+        this.indicatorElectric = new Ornament("./assets/graphics/characters/indicator", "Electric", this.x, this.y, true);
+        this.indicatorFire = new Ornament("./assets/graphics/characters/indicator", "Fire", this.x, this.y, true);
+        this.indicatorIce = new Ornament("./assets/graphics/item/charge", "Ice", this.x, this.y, true);
+        this.indicatorEarth = new Ornament("./assets/graphics/item/charge", "Earth", this.x, this.y, true);
+        this.indicators = [this.indicatorElectric, this.indicatorFire, this.indicatorIce, this.indicatorEarth];
+        this.indicators.forEach(indicator => { indicator.tag = "Invisible" });
+
         // Charges
         this.charges = {
             "Electric" : 0,
@@ -138,7 +145,7 @@ class Slime extends AnimatedEntity {
         } else if (!this.canPressLTrig && !CONTROLLER.LTRIG) this.canPressLTrig = true;
 
         // Refresh Charges (debug)
-        if (PARAMS.DEBUG && CONTROLLER.RTRIG) Object.keys(this.charges).forEach(charge => this.charges[charge] = 1);
+        if (PARAMS.DEBUG && CONTROLLER.RTRIG) Object.keys(this.charges).forEach(charge => this.pickUpCharge(charge));
 
         // Set Debug
         if (this.canPressHome && CONTROLLER.HOME){
@@ -151,6 +158,7 @@ class Slime extends AnimatedEntity {
         if (this.x == this.lastX) this.momentum = 0; // Reset momentum on stop
         if (this.y == this.lastY) this.yVelocity = 1 / PARAMS.SCALE; // Reset yVelocity on stop
         // if (this.timers.dashTimer > 1) this.canDash = true;
+        this.updateIndicators();
         super.endOfCycleUpdates();
     }
 
@@ -274,6 +282,58 @@ class Slime extends AnimatedEntity {
             );
     }
 
+    pickUpCharge(tag){
+        if (this.charges[tag] == 1) return;
+        this.charges[tag] = 1;
+        //this.charges[tag] = Math.min(this.charges[tag] + 1, 1);
+        switch(tag){
+            case "Electric" :
+                this.indicatorElectric.swapTag("Electric", true);
+                break;
+            case "Fire" :
+                this.indicatorFire.swapTag("Fire", true);
+                break;
+            case "Ice" :
+                this.indicatorIce.swapTag("Ice", false);
+                break;
+            case "Earth" :
+                this.indicatorEarth.swapTag("Earth", false);
+                break;
+                
+        }
+    }
+
+    useUpCharge(tag){
+        this.charges[tag] = 0; // Math.max(this.charges[tag] - 1, 0);
+        switch(tag){
+            case "Electric" :
+                this.indicatorElectric.swapTag("Invisible", false);
+                break;
+            case "Fire" :
+                this.indicatorFire.swapTag("Invisible", false);
+                break;
+            case "Ice" :
+                this.indicatorIce.swapTag("Invisible", false);
+                break;
+            case "Earth" :
+                this.indicatorEarth.swapTag("Invisible", false);
+                break;
+        }
+    }
+
+    updateIndicators(){
+        this.indicators.forEach(indicator => {
+            if (indicator.tag == "Invisible" || indicator.tag == "Earth" || indicator.tag == "Ice") return;
+            indicator.x = this.x;
+            indicator.y = this.y;
+            indicator.tag = this.xDirection > 0 ? indicator.originalTag : indicator.originalTag + "Left";
+        })
+        this.indicatorIce.x = this.x + PARAMS.SCALE * 8;
+        this.indicatorIce.y = this.y + PARAMS.SCALE * 2;
+        this.indicatorEarth.x = this.x + PARAMS.SCALE * 12;
+        this.indicatorEarth.y = this.y + PARAMS.SCALE * 8;
+    }
+
     ///////////////////
     // STATE MACHINE //
     ///////////////////
@@ -366,12 +426,12 @@ class Slime extends AnimatedEntity {
         // DASHING //
         this.states.dashing.start = () => {
             ASSET_MANAGER.playAudio("./assets/audio/effect/dash" + Math.floor(Math.random()*4) + ".wav");
-            this.charges["Electric"] = 0;
+            this.useUpCharge("Electric");
             this.canDash = false;
             this.yVelocity = 0;
             this.timers.dashTimer = 0;
             this.isInvincible = true;
-            // this.dashbeam.x = this.x;
+            // this.dashbeam.x = this.hitbox.right;
             // this.dashbeam.y = this.y;
             // this.dashbeam.swapTag("Default", false);
         };
@@ -436,20 +496,26 @@ class Slime extends AnimatedEntity {
         // BOOSTING //
         this.states.boosting.start = () =>{
             ASSET_MANAGER.playAudio("./assets/audio/effect/boost" + Math.floor(Math.random()*4) + ".wav");
-            this.charges["Fire"] = 0;
+            this.useUpCharge("Fire");
             this.yVelocity = this.jumpVelocity - Math.abs(this.momentum / this.jumpMomentumMod);
             this.canBoost = false;
             this.canJump = false;
+            this.boostBlast.x = this.x;
+            this.boostBlast.y = this.hitbox.bottom;
+            this.xDirection > 0 ? this.boostBlast.swapTag("Default", false) : this.boostBlast.swapTag("DefaultLeft", false);
             // this.isInvincible = true;
         };
         this.states.boosting.behavior = () =>{
             this.xDirection > 0 ? this.tag = "JumpingAir" : this.tag = "JumpingAirLeft";
             this.controlX();
             this.moveY();
+            this.boostBlast.x = this.x;
+            this.boostBlast.y = this.hitbox.bottom; - 2 * PARAMS.SCALE;
             if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
         };
         this.states.boosting.end = () =>{
             this.yVelocity = 0;
+            this.boostBlast.swapTag("Invisible", false);
         };
         this.states.boosting.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},

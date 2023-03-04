@@ -24,6 +24,7 @@ class Projectile extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
+        if (this.tag == "Invisible") return;
         this.hitbox.updatePos(this.x, this.y);
         this.hitbox.getCollisions().forEach((entity) => {
             if (entity.collideWithEntity) entity.collideWithEntity(this);

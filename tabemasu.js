@@ -81,7 +81,7 @@ class Tabemasu extends AnimatedEntity {
                 this.xDirection > 0 ? 
                     this.hitbox.center.x - this.trackDistance * 2 - GAME.camera.x  : 
                     this.hitbox.center.x - PARAMS.WIDTH / 2 - GAME.camera.x,
-                this.hitbox.center.y - this.trackDistance - GAME.camera.y, 
+                this.hitbox.center.y - this.trackDistance - GAME.camera.y + PARAMS.SCALE * 11, 
                 PARAMS.WIDTH / 2 + this.trackDistance * 2,
                 this.trackDistance * 2);
             GAME.CTX.font = "30px segoe ui";
@@ -327,7 +327,7 @@ class Tabemasu extends AnimatedEntity {
         };
         this.states.hunting.setTransitions([
             {state: this.states.roaming, predicate: () => { 
-                return this.distanceFromSlime.y > this.trackDistance / 3
+                return this.distanceFromSlime.y > this.trackDistance
                 // || this.tileCollisions.includes("left") || this.tileCollisions.includes("right")
             }},
             {state: this.states.falling, predicate: () => { return this.yVelocity > 1 * PARAMS.SCALE }},

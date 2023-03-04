@@ -6,7 +6,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
     "sourceSize": { "w": 64, "h": 16 },
-    "duration": 20
+    "duration": 16.67
    },
    {
     "filename": "1#Default",
@@ -15,7 +15,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
     "sourceSize": { "w": 64, "h": 16 },
-    "duration": 20
+    "duration": 16.67
    },
    {
     "filename": "2#Default",
@@ -24,7 +24,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
     "sourceSize": { "w": 64, "h": 16 },
-    "duration": 20
+    "duration": 16.67
    },
    {
     "filename": "3#Default",
@@ -33,7 +33,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
     "sourceSize": { "w": 64, "h": 16 },
-    "duration": 20
+    "duration": 16.67
    },
    {
     "filename": "4#Default",
@@ -42,7 +42,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
     "sourceSize": { "w": 64, "h": 16 },
-    "duration": 20
+    "duration": 16.67
    },
    {
     "filename": "5#Default",
@@ -51,7 +51,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
     "sourceSize": { "w": 64, "h": 16 },
-    "duration": 20
+    "duration": 16.67
    },
    {
     "filename": "6#Default",
@@ -60,7 +60,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
     "sourceSize": { "w": 64, "h": 16 },
-    "duration": 20
+    "duration": 16.67
    },
    {
     "filename": "7#Default",
@@ -69,7 +69,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
     "sourceSize": { "w": 64, "h": 16 },
-    "duration": 20
+    "duration": 16.67
    },
    {
     "filename": "8#Default",
@@ -78,7 +78,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
     "sourceSize": { "w": 64, "h": 16 },
-    "duration": 20
+    "duration": 16.67
    },
    {
     "filename": "9#Default",
@@ -87,11 +87,11 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
     "sourceSize": { "w": 64, "h": 16 },
-    "duration": 20
+    "duration": 16.67
    },
    {
     "filename": "10#Default",
-    "frame": { "x": 720, "y": 0, "w": 64, "h": 16 },
+    "frame": { "x": 716.67, "y": 0, "w": 64, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 16 },
@@ -180,7 +180,7 @@
     "duration": 40
    },
    {
-    "filename": "20#Default",
+    "filename": "16.67#Default",
     "frame": { "x": 1440, "y": 0, "w": 64, "h": 16 },
     "rotated": false,
     "trimmed": false,

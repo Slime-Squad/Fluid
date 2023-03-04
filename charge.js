@@ -98,7 +98,7 @@ class Charge extends AnimatedEntity {
      */
     collideWithPlayer(){
         if (this.currentState == this.states.active) {
-            GAME.slime.charges[this.tag] = Math.min(GAME.slime.charges[this.tag] + 1, 1);
+            GAME.slime.pickUpCharge(this.originalTag);
             ASSET_MANAGER.playAudio("./assets/audio/effect/charge" + Math.floor(Math.random()*4) + ".wav");
             this.changeState(this.states.collected);
         }
