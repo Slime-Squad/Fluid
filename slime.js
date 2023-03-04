@@ -287,15 +287,6 @@ class Slime extends AnimatedEntity {
     ///////////////////
     // STATE MACHINE //
     ///////////////////
-
-    changeState(){
-        let checkState = this.currentState.checkStateTransitions();
-        if (checkState) {
-            this.currentState.end();
-            this.currentState = checkState;
-            this.currentState.start();
-        }
-    }
     
     initializeStates(){
         this.states = {

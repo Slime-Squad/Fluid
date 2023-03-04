@@ -10,10 +10,7 @@ class State {
     }
 
     checkStateTransitions() {
-        for(let check of this.stateChecks){
-            if(check[0]()) return check[1];
-        }
-        return false;
+        return this.stateChecks.find((check) => check[0]())?.[1];
     }
 
     start() {

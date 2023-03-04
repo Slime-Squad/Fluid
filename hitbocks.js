@@ -46,7 +46,8 @@ class HitBox {
         //     if (!this.collide(entity.hitbox)) return;
         //     collisions.push(entity);
         // });
-        return GAME.collidableEntities.filter((entity) => entity.hitbox && entity.isAlive && this.collide(entity.hitbox));
+        
+        return GAME.collidableEntities.map(room => room.entities.filter((entity) => entity.hitbox && entity.isAlive && this.collide(entity.hitbox))).flat(1);
     }
 
     /**
@@ -60,7 +61,7 @@ class HitBox {
         // } else {
         //     return true;
         // }
-        return !(o.left > this.left + this.width || this.left > o.left + o.width || o.top > this.top + this.height || this.top > o.top + o.height);
+        return o.top <= this.top + this.height && o.left <= this.left + this.width && this.left <= o.left + o.width && this.top <= o.top + o.height;
     }
 
     /**

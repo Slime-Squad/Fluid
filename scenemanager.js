@@ -85,10 +85,10 @@ class SceneManager {
             this.frames = 0;
             this.seconds++;
         }
-        // if (this.seconds >= 5) {
-        //     GAME.updateCollidableEntities();
-        //     this.seconds = 0;
-        // }
+        if (this.seconds >= 1) {
+            GAME.updateCollidableEntities();
+            this.seconds = 0;
+        }
     }
 
     /**

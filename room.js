@@ -89,13 +89,13 @@ class Room {
                                     entity = new ChargeGenerator("Electric", x, y);
                                     break;
                                 case 12:
-                                    this.tiles[layer].push(new ChargeGenerator("Fire", x, y));
+                                    entity = new ChargeGenerator("Fire", x, y);
                                     break;
                                 case 13:
-                                    this.tiles[layer].push(new ChargeGenerator("Earth", x, y));
+                                    entity = new ChargeGenerator("Earth", x, y);
                                     break;
                                 case 14:
-                                    this.tiles[layer].push(new ChargeGenerator("Ice", x, y));
+                                    entity = new ChargeGenerator("Ice", x, y);
                                     break;
                                 case 15:
                                     entity = new Sentry(x, y, "Tabemasu", "Alert", 64 * PARAMS.SCALE, 64 * PARAMS.SCALE);
@@ -125,11 +125,11 @@ class Room {
                                     entity = new JukeBox(x, y, "ice", "meeting.mp3");
                                     break;
                             }
-                            if (entity) {
+                            if (entity && entity.hitbox) {
                                 this.tiles[layer].push(entity);
                                 if (entity.constructor.name != "Slime") this.entities.push(entity);
                                 Object.values(entity).forEach(field => {
-                                    if (field instanceof AnimatedEntity) this.entities.push(field);
+                                    if (field instanceof AnimatedEntity && field.hitbox) this.entities.push(field);
                                 });
                             }
                         } else {
