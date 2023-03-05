@@ -132,6 +132,6 @@ class AnimatedEntity {
 
     kill(){
         this.isAlive = false;
-        if (this.states.dead) this.changeState(this.states.dead);
+        if (this.states?.dead) this.changeState(this.states.dead);
     }
 }

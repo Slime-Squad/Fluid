@@ -20,8 +20,13 @@ class GameEngine {
         this.mouse = null;
         this.wheel = null;
         this.keys = {};
-
-        this.UNLOCKED_CHARGES = {
+        
+        this.UNLOCKED_CHARGES = PARAMS.CHARGES_UNLOCKED ? {
+            "Electric" : true,
+            "Fire" : true,
+            "Ice" : true,
+            "Earth" : true
+        } : {
             "Electric" : false,
             "Fire" : false,
             "Ice" : false,
