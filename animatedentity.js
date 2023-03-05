@@ -64,6 +64,7 @@ class AnimatedEntity {
         this.x = this.spawnX;
         this.y = this.spawnY;
         if (this.hitbox) this.hitbox.updatePos(this.x, this.y);
+        this.isAlive = true;
     }
 
     deccelerate(){
@@ -127,5 +128,10 @@ class AnimatedEntity {
         const h = height ? height : this.hitbox ? this.hitbox.height : 8*PARAMS.SCALE;
         //if ((x > -w && x < PARAMS.WIDTH && y > -h && y < PARAMS.HEIGHT)) console.log(this.constructor.name, "is in frame.");
         return (x > -w && x < PARAMS.WIDTH && y > -h && y < PARAMS.HEIGHT);
+    }
+
+    kill(){
+        this.isAlive = false;
+        if (this.states.dead) this.changeState(this.states.dead);
     }
 }

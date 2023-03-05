@@ -44,7 +44,7 @@ class Tabemasu extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        if (!this.isInFrame(36*PARAMS.SCALE, 36*PARAMS.SCALE) && this.currentState != this.states.stunned) {
+        if (!this.isAlive || (!this.isInFrame(72*PARAMS.SCALE, 36*PARAMS.SCALE) && this.currentState != this.states.stunned)) {
             return;
         }
 
@@ -140,7 +140,7 @@ class Tabemasu extends AnimatedEntity {
      * to spawn and {@link GAME.slime.kill()} the slime
      */
     collideWithPlayer() {
-        if (this.currentState == this.states.stunned) return;
+        if (this.currentState == this.states.stunned || this.currentState == this.states.dead) return;
         if (GAME.slime.isInvincible){
             this.changeState(this.states.stunned);
         } else GAME.slime.kill();
@@ -161,7 +161,7 @@ class Tabemasu extends AnimatedEntity {
      * Kills this entity
      */
     kill() {
-        this.isAlive = false;
+        if (this.currentState == this.states.stunned) super.kill();
     }
 
     ///////////////////
@@ -178,6 +178,7 @@ class Tabemasu extends AnimatedEntity {
             searching: new State("Searching"),
             roaming: new State("Roaming"),
             hunting: new State("Hunting"),
+            dead: new State("Dead"),
         };
 
         // IDLE //
@@ -332,5 +333,10 @@ class Tabemasu extends AnimatedEntity {
             }},
             {state: this.states.falling, predicate: () => { return this.yVelocity > 1 * PARAMS.SCALE }},
         ]);
+        
+        // DEAD //
+        this.states.dead.start = () => {
+            this.swapTag("Dead", false);
+        };
     }
 }

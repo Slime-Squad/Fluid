@@ -21,8 +21,8 @@ class Sentry extends AnimatedEntity {
 
     collideWithPlayer(){
         if (this.isTriggered) return;
-        GAME.entities.forEach(entity => {
-            if (!entity.states || !entity.isInFrame() || entity.constructor.name != this.targetEntity) return;
+        GAME.collidableEntities.forEach(entity => {
+            if (!entity.isAlive || !entity.states || !entity.isInFrame() || entity.constructor.name != this.targetEntity) return;
             Object.keys(entity.states).forEach(state => {
                 if (entity.states[state].name == this.targetState) entity.changeState(entity.states[state]);
             });

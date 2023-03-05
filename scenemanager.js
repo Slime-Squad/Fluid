@@ -73,7 +73,10 @@ class SceneManager {
             if (this.elapsedFreezeTime >= this.freezeTimer) this.unfreeze();
         } else {
             this.x = Math.round(lerp(this.x, GAME.slime.x + GAME.slime.hitbox.width / 2 - PARAMS.WIDTH/2 + PARAMS.SCALE*56*GAME.slime.momentum, GAME.tickMod/15));
-            this.y = Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE - Math.min(0,PARAMS.SCALE*24*-GAME.slime.yVelocity), GAME.tickMod/15));
+            this.y = GAME.slime.yVelocity < 0 ? 
+                Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 4*PARAMS.SCALE, GAME.tickMod/15)) :
+                Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE - PARAMS.SCALE*24*-GAME.slime.yVelocity, GAME.tickMod/15));
+            // this.y = Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE - Math.min(0,PARAMS.SCALE*24*-GAME.slime.yVelocity), GAME.tickMod/15));
         }
         this.deathScreen.x = this.x - 3*PARAMS.SCALE;
         this.deathScreen.y = this.y - 3*PARAMS.SCALE;
@@ -104,6 +107,7 @@ class SceneManager {
         if (PARAMS.DEBUG) {
             ctx.strokeRect(0,0,PARAMS.WIDTH/2,PARAMS.HEIGHT/2)
             ctx.fillText("CAM: x=" + this.x + " y=" + this.y, 10, 30);
+            ctx.fillText("GAMEPAD BTNS PRESSED: " + GAME.gamepad.buttons.forEach((button, index) => { if (button.pressed) return index}), 10, PARAMS.HEIGHT - 20);
         }
     }
 

@@ -10,6 +10,7 @@ class GameEngine {
         // Everything that will be updated and drawn each frame
         this.entities = [];
         this.collidableEntities = [];
+        this.killableEntities = ["Batterflea", "Tabemasu", "Magmasquito", "Skiwi"]
 
          //for Gamepad
         this.gamepad = null;
