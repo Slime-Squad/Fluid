@@ -37,11 +37,13 @@ class Bubble extends AnimatedEntity {
     }
 
     collideWithPlayer() {
+        if (GAME.slime.currentState == GAME.slime.states.slamming) return;
+        GAME.slime.changeState(GAME.slime.states.falling);
         GAME.camera.slimeHealth.damage();
         if (GAME.slime.currentState != GAME.slime.states.slamming) {
             GAME.slime.x = this.x + 4*PARAMS.SCALE;
             GAME.slime.y = this.y + 2*PARAMS.SCALE;
-            this.y--;
+            this.y -= 0.5 * PARAMS.SCALE * GAME.tickMod;
             GAME.slime.yVelocity = -2 * PARAMS.SCALE;
         };
         

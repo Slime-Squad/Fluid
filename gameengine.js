@@ -136,8 +136,8 @@ class GameEngine {
                 CONTROLLER.HOME = this.gamepad.buttons[2].pressed || this.keys["\`"] || this.keys["\~"];
             } else {
             CONTROLLER.A = this.gamepad.buttons[0].pressed || this.keys[" "];
-            CONTROLLER.X = this.gamepad.buttons[1].pressed || this.keys["j"] || this.keys["J"];
-            CONTROLLER.B = this.gamepad.buttons[2].pressed || this.keys["k"] || this.keys["K"];
+            CONTROLLER.X = this.gamepad.buttons[2].pressed || this.keys["j"] || this.keys["J"];
+            CONTROLLER.B = this.gamepad.buttons[1].pressed || this.keys["k"] || this.keys["K"];
             //checks if d-pad is used or joysticks meet a certain threshold
             CONTROLLER.LEFT = this.gamepad.buttons[14].pressed || this.gamepad.axes[0] < -0.3 || this.keys["a"] || this.keys["A"];
             CONTROLLER.RIGHT = this.gamepad.buttons[15].pressed || this.gamepad.axes[0] > 0.3 || this.keys["d"] || this.keys["D"];
