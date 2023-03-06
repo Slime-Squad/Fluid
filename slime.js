@@ -266,7 +266,9 @@ class Slime extends AnimatedEntity {
             this.xDirection = 1; // moveX not dependent on this.direction
         } else{
             this.moveX(0);
-            this.deccelerate();
+            this.momentum = this.xDirection > 0 ? 
+                clamp(this.momentum - this.decceleration * GAME.tickMod, 0, this.maxMom) : 
+                clamp(this.momentum + this.decceleration * GAME.tickMod, -this.maxMom, 0);
         }
 
     }
@@ -302,7 +304,8 @@ class Slime extends AnimatedEntity {
                 break;
             case "Earth" :
                 this.indicatorEarth.swapTag("Earth", false);
-                break;                
+                break;
+                
         }
     }
 
