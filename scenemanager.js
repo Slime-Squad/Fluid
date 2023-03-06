@@ -107,7 +107,7 @@ class SceneManager {
         if (PARAMS.DEBUG) {
             ctx.strokeRect(0,0,PARAMS.WIDTH/2,PARAMS.HEIGHT/2)
             ctx.fillText("CAM: x=" + this.x + " y=" + this.y, 10, 30);
-            ctx.fillText("GAMEPAD BTNS PRESSED: " + GAME.gamepad.buttons.filter(button => {button && button.pressed}), 10, PARAMS.HEIGHT - 20);
+            // ctx.fillText("GAMEPAD BTNS PRESSED: " + GAME.gamepad.buttons.filter(button => {button && button.pressed}), 10, PARAMS.HEIGHT - 20);
             // ctx.fillText("GAMEPAD BTNS PRESSED: " + GAME.gamepad.buttons.forEach((button, index) => { if (button.pressed) return index}), 10, PARAMS.HEIGHT - 20);
         }
     }

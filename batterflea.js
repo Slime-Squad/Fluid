@@ -66,9 +66,8 @@ class Batterflea extends AnimatedEntity {
      * to spawn and {@link GAME.slime.kill()} the slime
      */
     collideWithPlayer() {
-        if (GAME.slime.isInvincible && this.isAlive){
-            this.kill();
-        } else if (GAME.slime.isAlive) GAME.slime.kill();
+        this.killMeWithPowers();
+        if (!GAME.slime.isInvincible && this.isAlive) GAME.slime.kill();
     }
 
     /**
@@ -118,7 +117,7 @@ class Batterflea extends AnimatedEntity {
     }
 
     kill() {
-        if (this.thing = "batterflea") GAME.slime.charges["Electric"] = 1;
+        GAME.slime.pickUpCharge("Electric");
         super.kill();
     }
 

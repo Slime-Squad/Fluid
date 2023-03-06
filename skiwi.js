@@ -26,7 +26,7 @@ class Skiwi extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        if (!this.isInFrame()) return;
+        if (!this.isAlive || !this.isInFrame()) return;
         this.ski();
         this.hitbox.updatePos(this.x, this.y);
         // this.hitbox.getCollisions().forEach((entity) => {
@@ -56,9 +56,15 @@ class Skiwi extends AnimatedEntity {
      */
     collideWithPlayer() {
         if (GAME.slime.isAlive) GAME.slime.kill();
+        this.killMeWithPowers();
     }
 
     draw(ctx) {
         super.draw(ctx)
+    }
+
+    kill(){
+        super.kill();
+        this.direction > 0 ? this.swapTag("DeadR", false) : this.swapTag("DeadL", false);
     }
 }

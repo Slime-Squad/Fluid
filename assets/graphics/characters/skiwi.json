@@ -178,6 +178,24 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 24 },
     "sourceSize": { "w": 16, "h": 24 },
     "duration": 100
+   },
+   {
+    "filename": "0#DeadL",
+    "frame": { "x": 0, "y": 64, "w": 16, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 24 },
+    "sourceSize": { "w": 16, "h": 24 },
+    "duration": 100
+   },
+   {
+    "filename": "0#DeadR",
+    "frame": { "x": 0, "y": 88, "w": 16, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 24 },
+    "sourceSize": { "w": 16, "h": 24 },
+    "duration": 100
    }
  ],
  "meta": {

@@ -21,6 +21,7 @@ class Health extends AnimatedEntity {
     damage() {
         this.health -= GAME.tickMod/60;
         this.delta = '-';
+        this.isDamaged = true;
     }
 
     /**
@@ -28,7 +29,7 @@ class Health extends AnimatedEntity {
      */
     update() {
         //if (this.health == 8) return;
-        this.health = Math.min(8, this.health + GAME.tickMod/120)
+        this.health = this.isDamaged ? this.health : Math.min(8, this.health + GAME.tickMod/15);
         if (this.tag != Math.floor(this.health) + this.delta) this.swapTag(Math.max(0, Math.floor(this.health)) + this.delta);
         if (this.health <= 0) {
             if (GAME.slime.isAlive) GAME.slime.kill();
@@ -37,6 +38,7 @@ class Health extends AnimatedEntity {
         this.x = lerp(this.x, GAME.slime.x + 8*PARAMS.SCALE, GAME.tickMod/2);
         this.y = lerp(this.y, GAME.slime.y, GAME.tickMod/2);
         this.delta = this.health == 0 || this.health == 8 ? '' : '+';
+        this.isDamaged = false;
     }
 
     /**

@@ -544,7 +544,7 @@ class Slime extends AnimatedEntity {
         this.states.slamming.start = () => {
            this.useUpCharge("Earth");
            this.momentum = 0;
-           this.yVelocity = this.maxYVelocity;
+           this.yVelocity = this.maxYVelocity / 2;
            this.canSlam = false;
            this.canJump = false;
            this.isInvincible = true;

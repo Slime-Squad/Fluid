@@ -134,4 +134,9 @@ class AnimatedEntity {
         this.isAlive = false;
         if (this.states?.dead) this.changeState(this.states.dead);
     }
+
+    killMeWithPowers(states = undefined){
+        let statesThatKillMe = !states ? [GAME.slime.states.dashing, GAME.slime.states.slamming] : states;
+        if (statesThatKillMe.includes(GAME.slime.currentState)) this.kill();
+    }
 }

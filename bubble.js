@@ -43,15 +43,15 @@ class Bubble extends AnimatedEntity {
         if (GAME.slime.currentState != GAME.slime.states.slamming) {
             GAME.slime.x = this.x + 4*PARAMS.SCALE;
             GAME.slime.y = this.y + 2*PARAMS.SCALE;
-            this.y -= 0.5 * PARAMS.SCALE * GAME.tickMod;
-            GAME.slime.yVelocity = -2 * PARAMS.SCALE;
+            this.y -= 0.65 * PARAMS.SCALE * GAME.tickMod;
+            GAME.slime.yVelocity = -1 / PARAMS.SCALE;
         };
         
         if (CONTROLLER.LEFT) {
-            this.x = lerp(this.x, this.x - 1, GAME.tickMod);
+            this.x = lerp(this.x, this.x - 1 * PARAMS.SCALE, GAME.tickMod);
         }
         if (CONTROLLER.RIGHT) {
-            this.x = lerp(this.x, this.x + 1, GAME.tickMod);
+            this.x = lerp(this.x, this.x + 1 * PARAMS.SCALE, GAME.tickMod);
         }
         this.hitbox.updatePos(this.x, this.y);
     }
