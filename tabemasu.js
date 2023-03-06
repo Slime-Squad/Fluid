@@ -141,7 +141,7 @@ class Tabemasu extends AnimatedEntity {
      */
     collideWithPlayer() {
         if (this.currentState == this.states.stunned || this.currentState == this.states.dead) return;
-        if (GAME.slime.curentState == GAME.slime.states.dashing){
+        if (GAME.slime.currentState == GAME.slime.states.dashing){
             this.changeState(this.states.stunned);
         } else GAME.slime.kill();
     }
