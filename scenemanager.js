@@ -101,9 +101,9 @@ class SceneManager {
     draw(ctx) {
         // DEBUG INFO
         if (this.isFrozen) this.freezeAnimation(ctx, this);
-        ctx.font = "30px segoe ui";
-        ctx.fillStyle = "white";
-        ctx.fillText("FPS:" + this.fps, PARAMS.WIDTH-120, 30);
+        // ctx.font = "30px segoe ui";
+        // ctx.fillStyle = "white";
+        // ctx.fillText("FPS:" + this.fps, PARAMS.WIDTH-120, 30);
         if (PARAMS.DEBUG) {
             ctx.strokeRect(0,0,PARAMS.WIDTH/2,PARAMS.HEIGHT/2)
             ctx.fillText("CAM: x=" + this.x + " y=" + this.y, 10, 30);
