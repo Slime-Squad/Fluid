@@ -32,14 +32,14 @@ class Slime extends AnimatedEntity {
         this.xDirection = 1;
         this.yVelocity = 1 / PARAMS.SCALE;
         this.maxYVelocity = 6;
-        this.boostSpeed = -6;
         this.boostTimeout = 0.15;
         this.dashSpeed = 5;
         this.dashTimeout = 0.2;
         this.floatTimeout = 0.15;
+        this.slamTimeout = 0.15;
         this.slideSpeed = 0;
         this.wallJumpTimeout = 0.2;
-        this.yFallThreshold = (1 / PARAMS.SCALE) * 10;
+        this.yFallThreshold = (1 / PARAMS.SCALE) * 12;
         this.jumpVelocity = -3.4;
         this.jumpMomentumMod = 1.8;
         this.lastX = this.x;
@@ -51,12 +51,22 @@ class Slime extends AnimatedEntity {
         this.canJump = true;
         this.canDash = false;
         this.canBoost = false;
+        this.canSlam = false;
         this.canPressHome = true;
         this.canPressLTrig = true;
 
         // Powers
-        // this.dashbeam = new AnimatedEntity("./assets/graphics/characters/dashbeam", "Invisible", this.x, this.y, false);
-        
+        // this.dashbeam = new Ornament("./assets/graphics/characters/dashbeam", "Invisible", this.x + 5 * PARAMS.SCALE, this.y, false);
+        this.boostBlast = new Ornament("./assets/graphics/characters/boost", "Invisible", this.x, this.y, false);
+        this.boostBlast.hitbox = new HitBox(-10000, -10000, 2*PARAMS.SCALE, 18*PARAMS.SCALE, 12*PARAMS.SCALE, 35*PARAMS.SCALE);
+
+        this.indicatorElectric = new Ornament("./assets/graphics/characters/indicator", "Electric", this.x, this.y, true);
+        this.indicatorFire = new Ornament("./assets/graphics/characters/indicator", "Fire", this.x, this.y, true);
+        this.indicatorIce = new Ornament("./assets/graphics/item/charge", "Ice", this.x, this.y, true);
+        this.indicatorEarth = new Ornament("./assets/graphics/item/charge", "Earth", this.x, this.y, true);
+        this.indicators = [this.indicatorElectric, this.indicatorFire, this.indicatorIce, this.indicatorEarth];
+        this.indicators.forEach(indicator => { indicator.tag = "Invisible" });
+
         // Charges
         this.charges = {
             "Electric" : 0,
@@ -138,7 +148,7 @@ class Slime extends AnimatedEntity {
         } else if (!this.canPressLTrig && !CONTROLLER.LTRIG) this.canPressLTrig = true;
 
         // Refresh Charges (debug)
-        if (PARAMS.DEBUG && CONTROLLER.RTRIG) Object.keys(this.charges).forEach(charge => this.charges[charge] = 1);
+        if (PARAMS.DEBUG && CONTROLLER.RTRIG) Object.keys(this.charges).forEach(charge => this.pickUpCharge(charge));
 
         // Set Debug
         if (this.canPressHome && CONTROLLER.HOME){
@@ -151,6 +161,7 @@ class Slime extends AnimatedEntity {
         if (this.x == this.lastX) this.momentum = 0; // Reset momentum on stop
         if (this.y == this.lastY) this.yVelocity = 1 / PARAMS.SCALE; // Reset yVelocity on stop
         // if (this.timers.dashTimer > 1) this.canDash = true;
+        this.updateIndicators();
         super.endOfCycleUpdates();
     }
 
@@ -166,24 +177,14 @@ class Slime extends AnimatedEntity {
             if (entity.collideWithPlayer) {
                 let direction = entity.collideWithPlayer();
                 if (!direction) return;
-                this.tileCollisions.push(direction)
+                this.tileCollisions.push(direction);
             }
         });
-
-        // this.tileCollisions = this.tileCollisions.filter(entity => {return entity instanceof Tile})
-        // this.hitbox.updatePos(this.x, this.y);
-        // Sorted Collision
-        // this.entityCollisions.forEach(entity => { 
-        //     entity.distanceFromPlayer = Math.abs(entity.hitbox.center - this.hitbox.center);
-        // });
-        // this.entityCollisions.sort((a,b) => {return a.distanceFromPlayer - b.distanceFromPlayer}).forEach(entity => { 
-        //     if (entity.collideWithPlayer) this.tileCollisions.push(entity.collideWithPlayer()); 
-        // });
     }
 
     /**
      * Function responsible for killing the current Slime entity and playing a camera animation as the slime is respawned.
-     * @author Jasper Newkirk
+     * @author Jasper Newkirk, Nathan Brown
      */
     kill() {
         if (this.isInvincible || !this.isAlive) return;
@@ -204,6 +205,9 @@ class Slime extends AnimatedEntity {
                 this.y = this.spawnY;
                 this.hitbox.updatePos(this.x, this.y);
                 this.isAlive = true;
+                Object.keys(this.charges).forEach(tag => { this.useUpCharge(tag) });
+                this.canDash = false;
+                this.canBoost = false;
             }
         );
         GAME.entities.forEach((entity) => {if(entity.respawn) entity.respawn(); });
@@ -262,9 +266,7 @@ class Slime extends AnimatedEntity {
             this.xDirection = 1; // moveX not dependent on this.direction
         } else{
             this.moveX(0);
-            this.momentum = this.xDirection > 0 ? 
-                clamp(this.momentum - this.decceleration * GAME.tickMod, 0, this.maxMom) : 
-                clamp(this.momentum + this.decceleration * GAME.tickMod, -this.maxMom, 0);
+            this.deccelerate();
         }
 
     }
@@ -284,6 +286,57 @@ class Slime extends AnimatedEntity {
             );
     }
 
+    pickUpCharge(tag){
+        if (this.charges[tag] == 1) return;
+        this.charges[tag] = 1;
+        //this.charges[tag] = Math.min(this.charges[tag] + 1, 1);
+        switch(tag){
+            case "Electric" :
+                this.indicatorElectric.swapTag("Electric", true);
+                break;
+            case "Fire" :
+                this.indicatorFire.swapTag("Fire", true);
+                break;
+            case "Ice" :
+                this.indicatorIce.swapTag("Ice", false);
+                break;
+            case "Earth" :
+                this.indicatorEarth.swapTag("Earth", false);
+                break;                
+        }
+    }
+
+    useUpCharge(tag){
+        this.charges[tag] = 0; // Math.max(this.charges[tag] - 1, 0);
+        switch(tag){
+            case "Electric" :
+                this.indicatorElectric.swapTag("Invisible", false);
+                break;
+            case "Fire" :
+                this.indicatorFire.swapTag("Invisible", false);
+                break;
+            case "Ice" :
+                this.indicatorIce.swapTag("Invisible", false);
+                break;
+            case "Earth" :
+                this.indicatorEarth.swapTag("Invisible", false);
+                break;
+        }
+    }
+
+    updateIndicators(){
+        this.indicators.forEach(indicator => {
+            if (indicator.tag == "Invisible" || indicator.tag == "Earth" || indicator.tag == "Ice") return;
+            indicator.x = this.x;
+            indicator.y = this.y;
+            indicator.tag = this.xDirection > 0 ? indicator.originalTag : indicator.originalTag + "Left";
+        })
+        this.indicatorIce.x = this.x + PARAMS.SCALE * 8;
+        this.indicatorIce.y = this.y + PARAMS.SCALE * 2;
+        this.indicatorEarth.x = this.x + PARAMS.SCALE * 12;
+        this.indicatorEarth.y = this.y + PARAMS.SCALE * 8;
+    }
+
     ///////////////////
     // STATE MACHINE //
     ///////////////////
@@ -298,7 +351,8 @@ class Slime extends AnimatedEntity {
             floating: new State("Floating"),
             boosting: new State("Boosting"),
             climbing: new State("Climbing"),
-            wallJumping: new State("Wall Jumping")
+            wallJumping: new State("Wall Jumping"),
+            slamming: new State("Slamming")
         };
 
         // IDLE //
@@ -348,12 +402,14 @@ class Slime extends AnimatedEntity {
             this.controlX();
             this.moveY();
             if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.B && this.charges["Earth"] >= 1) this.canSlam = true;
         };
         this.states.jumping.end = () => {
             this.yVelocity = 0;
         }
         this.states.jumping.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
+            {state: this.states.slamming, predicate: () => {return CONTROLLER.B && this.canSlam}},
             {state: this.states.falling, predicate: () => { return !CONTROLLER.A || this.yVelocity >= 0 }},
         ]);
         
@@ -364,10 +420,12 @@ class Slime extends AnimatedEntity {
             this.moveY();
             if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
             if (!CONTROLLER.A && this.charges["Fire"] >= 1) this.canBoost = true;
+            if (!CONTROLLER.B && this.charges["Earth"] >= 1) this.canSlam = true;
         };
         this.states.falling.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
             {state: this.states.boosting, predicate: () => { return CONTROLLER.A && this.canBoost }},
+            {state: this.states.slamming, predicate: () => {return CONTROLLER.B && this.canSlam}},
             {state: this.states.running, predicate: () => { return this.tileCollisions.includes("bottom") && (CONTROLLER.RIGHT || CONTROLLER.LEFT) }},
             {state: this.states.idle, predicate: () => { return this.tileCollisions.includes("bottom") }},
             {state: this.states.climbing, predicate: () => { return this.tileCollisions.includes("right") || this.tileCollisions.includes("left") }},
@@ -376,12 +434,12 @@ class Slime extends AnimatedEntity {
         // DASHING //
         this.states.dashing.start = () => {
             ASSET_MANAGER.playAudio("./assets/audio/effect/dash" + Math.floor(Math.random()*4) + ".wav");
-            this.charges["Electric"] = 0;
+            this.useUpCharge("Electric");
             this.canDash = false;
             this.yVelocity = 0;
             this.timers.dashTimer = 0;
             this.isInvincible = true;
-            // this.dashbeam.x = this.x;
+            // this.dashbeam.x = this.hitbox.right;
             // this.dashbeam.y = this.y;
             // this.dashbeam.swapTag("Default", false);
         };
@@ -433,10 +491,12 @@ class Slime extends AnimatedEntity {
             this.moveY(0, 0);
             if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
             if (!CONTROLLER.A && this.charges["Fire"] >= 1) this.canBoost = true;
+            if (!CONTROLLER.B && this.charges["Earth"] >= 1) this.canSlam = true;
         };
         this.states.floating.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
             {state: this.states.boosting, predicate: () => { return CONTROLLER.A && this.canBoost }},
+            {state: this.states.slamming, predicate: () => {return CONTROLLER.B && this.canSlam}},
             {state: this.states.running, predicate: () => { return this.tileCollisions.includes("bottom") && (CONTROLLER.RIGHT || CONTROLLER.LEFT) }},
             {state: this.states.idle, predicate: () => { return this.tileCollisions.includes("bottom") }},
             {state: this.states.climbing, predicate: () => { return this.tileCollisions.includes("right") || this.tileCollisions.includes("left") }},
@@ -446,26 +506,66 @@ class Slime extends AnimatedEntity {
         // BOOSTING //
         this.states.boosting.start = () =>{
             ASSET_MANAGER.playAudio("./assets/audio/effect/boost" + Math.floor(Math.random()*4) + ".wav");
-            this.charges["Fire"] = 0;
+            this.useUpCharge("Fire");
             this.yVelocity = this.jumpVelocity - Math.abs(this.momentum / this.jumpMomentumMod);
             this.canBoost = false;
             this.canJump = false;
-            // this.isInvincible = true;
+            this.boostBlast.x = this.x;
+            this.boostBlast.y = this.hitbox.bottom - PARAMS.SCALE * 18;
+            this.boostBlast.hitbox.updatePos(this.boostBlast.x, this.boostBlast.y)
+            this.xDirection > 0 ? this.boostBlast.swapTag("Default", false) : this.boostBlast.swapTag("DefaultLeft", false);
+            this.boostBlast.hitbox.getCollisions().filter(entity => { 
+                return GAME.killableEntities.includes(entity.constructor.name) 
+            }).forEach(killableEntity => {killableEntity.kill()});
         };
         this.states.boosting.behavior = () =>{
             this.xDirection > 0 ? this.tag = "JumpingAir" : this.tag = "JumpingAirLeft";
             this.controlX();
             this.moveY();
+            // this.boostBlast.x = this.x;
+            // this.boostBlast.y = this.hitbox.bottom; - 2 * PARAMS.SCALE;
             if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.X && this.charges["Earth"] >= 1) this.canSlam = true;
         };
         this.states.boosting.end = () =>{
             this.yVelocity = 0;
+            // this.boostBlast.swapTag("Invisible", false);
         };
         this.states.boosting.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
-            {state: this.states.falling, predicate: () => { return !CONTROLLER.A || this.yVelocity > 0 }},
+            {state: this.states.slamming, predicate: () => {return CONTROLLER.B && this.canSlam}},
+            {state: this.states.falling, predicate: () => { return !CONTROLLER.A || this.yVelocity > 0 }}            
         ]);
 
+        //SLAMMING//
+        this.states.slamming.start = () => {
+           this.useUpCharge("Earth");
+           this.momentum = 0;
+           this.yVelocity = this.maxYVelocity;
+           this.canSlam = false;
+           this.canJump = false;
+           this.isInvincible = true;
+           this.slamTimer = 0;
+        };
+        this.states.slamming.behavior = () => {
+            this.xDirection > 0 ? this.tag = "JumpingAir" : this.tage = "JumpingAirLeft";
+            this.moveY();
+            this.slamTimer += GAME.clockTick;
+            if (this.charges["Electric"] >= 1) this.canDash = true;
+            if (this.charges["Fire"] >= 1) this.canBoost = true;
+            this.hitbox.getCollisions().filter(entity => { 
+                return GAME.killableEntities.includes(entity.constructor.name) 
+            }).forEach(killableEntity => {killableEntity.kill()});
+        };
+        this.states.slamming.end = () => {
+            this.isInvincible = false;
+        };
+        this.states.slamming.setTransitions([
+            {state: this.states.dashing, predicate: () => {return CONTROLLER.X && this.canDash}},
+            {state: this.states.falling, predicate: () => {return this.slamTimer > this.slamTimeout}},
+            {state: this.states.idle, predicate: () => { return this.tileCollisions.includes("bottom") }}
+        ]);
+        
         // CLIMBING //
         this.states.climbing.start = () =>{
             this.yVelocity = 0;

@@ -13,7 +13,7 @@ class Skiwi extends AnimatedEntity {
     constructor(tag, x, y, loop = true) {
         super("./assets/graphics/characters/skiwi", tag, x, y, loop);
         Object.assign(this, { tag, x, y, loop });
-        this.hitbox = new HitBox(x, y, 0, 0, 16*PARAMS.SCALE, 24*PARAMS.SCALE);
+        this.hitbox = new HitBox(x, y, 1*PARAMS.SCALE, 2*PARAMS.SCALE, 14*PARAMS.SCALE, 20*PARAMS.SCALE);
 
         //Movement
         this.direction = 1;
@@ -29,9 +29,11 @@ class Skiwi extends AnimatedEntity {
         if (!this.isInFrame()) return;
         this.ski();
         this.hitbox.updatePos(this.x, this.y);
-        this.hitbox.getCollisions().forEach((entity) => {
-            if (entity.collideWithEntity) entity.collideWithEntity(this);
-        });
+        // this.hitbox.getCollisions().forEach((entity) => {
+        //     if (entity.collideWithEntity) entity.collideWithEntity(this);
+        // });
+
+        if (this.hitbox.getCollisions().length > 1) this.x = this.lastX;
 
         if(this.x == this.lastX) {
            this.direction = this.direction * -1;

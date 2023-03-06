@@ -83,8 +83,8 @@ class Tile {
             
         if (!directionOfEntity || !this.collidableDirections.includes(ENTITY_DIRECTIONS_IDS[directionOfEntity])){
             if (this.collidableDirections.length == 2){
-                if (directionOfEntity == "bottom") directionOfEntity = ENTITY_DIRECTIONS_STRINGS[this.collidableDirections[0]];
-                if (directionOfEntity == "top") directionOfEntity = ENTITY_DIRECTIONS_STRINGS[this.collidableDirections[1]];
+                if (directionOfEntity == "bottom") directionOfEntity = entity.hitbox.center.x < this.hitbox.center.x ? "right" : "left";
+                if (directionOfEntity == "top") directionOfEntity = entity.hitbox.center.x < this.hitbox.center.x ? "right" : "left";
             } else if (this.collidableDirections == 3){
                 // going to be more complicated
             }

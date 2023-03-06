@@ -6,7 +6,25 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
     "sourceSize": { "w": 36, "h": 36 },
-    "duration": 60
+    "duration": 200
+   },
+   {
+    "filename": "1#Idle",
+    "frame": { "x": 44, "y": 0, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 500
+   },
+   {
+    "filename": "2#Idle",
+    "frame": { "x": 88, "y": 0, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 1000
    },
    {
     "filename": "0#IdleLeft",
@@ -15,7 +33,25 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
     "sourceSize": { "w": 36, "h": 36 },
-    "duration": 60
+    "duration": 200
+   },
+   {
+    "filename": "1#IdleLeft",
+    "frame": { "x": 44, "y": 44, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 500
+   },
+   {
+    "filename": "2#IdleLeft",
+    "frame": { "x": 88, "y": 44, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 1000
    },
    {
     "filename": "0#Running",
@@ -322,6 +358,69 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
     "sourceSize": { "w": 36, "h": 36 },
     "duration": 200
+   },
+   {
+    "filename": "0#Dead",
+    "frame": { "x": 0, "y": 264, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 90
+   },
+   {
+    "filename": "1#Dead",
+    "frame": { "x": 44, "y": 264, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 180
+   },
+   {
+    "filename": "2#Dead",
+    "frame": { "x": 88, "y": 264, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 90
+   },
+   {
+    "filename": "3#Dead",
+    "frame": { "x": 132, "y": 264, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 90
+   },
+   {
+    "filename": "4#Dead",
+    "frame": { "x": 176, "y": 264, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 90
+   },
+   {
+    "filename": "5#Dead",
+    "frame": { "x": 220, "y": 264, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 90
+   },
+   {
+    "filename": "6#Dead",
+    "frame": { "x": 264, "y": 264, "w": 36, "h": 36 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 36, "h": 36 },
+    "sourceSize": { "w": 36, "h": 36 },
+    "duration": 90
    }
  ],
  "meta": {
@@ -329,7 +428,7 @@
   "version": "1.3-beta21-x64",
   "image": "tabemasu.png",
   "format": "RGBA8888",
-  "size": { "w": 432, "h": 256 },
+  "size": { "w": 432, "h": 300 },
   "scale": "1"
  }
 }

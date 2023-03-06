@@ -40,6 +40,10 @@ class Batterflea extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
+        if (!this.isAlive) {
+            this.tag = "Invisible";
+            return;
+        }
         if (!this.isInFrame()) return;
         this.hop();
         this.moveY();
@@ -62,7 +66,9 @@ class Batterflea extends AnimatedEntity {
      * to spawn and {@link GAME.slime.kill()} the slime
      */
     collideWithPlayer() {
-        if (GAME.slime.isAlive) GAME.slime.kill();
+        if (GAME.slime.isInvincible && this.isAlive){
+            this.kill();
+        } else if (GAME.slime.isAlive) GAME.slime.kill();
     }
 
     /**
@@ -111,11 +117,9 @@ class Batterflea extends AnimatedEntity {
         }
     }
 
-    /**
-     * Kills this entity
-     */
     kill() {
-        this.isAlive = false;
+        if (this.thing = "batterflea") GAME.slime.charges["Electric"] = 1;
+        super.kill();
     }
 
     /**

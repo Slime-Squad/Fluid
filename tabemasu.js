@@ -12,8 +12,7 @@ class Tabemasu extends AnimatedEntity {
      */
     constructor(tag, x, y, loop = true) {
         super("./assets/graphics/characters/tabemasu", tag, x, y, loop);
-        // Object.assign(this, { tag, x, y, loop });
-        this.hitbox = new HitBox(x, y, 3*PARAMS.SCALE, 4*PARAMS.SCALE, 30*PARAMS.SCALE, 30*PARAMS.SCALE);
+        this.hitbox = new HitBox(x, y, 3*PARAMS.SCALE, 7 * PARAMS.SCALE , 28*PARAMS.SCALE, 28*PARAMS.SCALE);
 
         // Movement
         this.speed = 1.1;
@@ -37,7 +36,7 @@ class Tabemasu extends AnimatedEntity {
         // Timers   
         this.stateTimer = 0;
         this.stunnedTimeout = 5;
-        this.searchingTimeout = 2;
+        this.searchingTimeout = 1;
         this.roamingTimeout = 1;
     }
 
@@ -45,12 +44,12 @@ class Tabemasu extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        if (!this.isInFrame(36*PARAMS.SCALE, 36*PARAMS.SCALE)) {
+        if (!this.isAlive || (!this.isInFrame(72*PARAMS.SCALE, 36*PARAMS.SCALE) && this.currentState != this.states.stunned)) {
             return;
         }
 
         this.distanceFromSlime.x = Math.abs(this.hitbox.center.x - GAME.slime.hitbox.center.x);
-        this.distanceFromSlime.y = Math.abs(this.hitbox.center.y - GAME.slime.hitbox.center.y);
+        this.distanceFromSlime.y = Math.abs(this.hitbox.center.y - GAME.slime.hitbox.center.y + 11 * PARAMS.SCALE);
         this.directionToSlime = this.hitbox.center.x > GAME.slime.hitbox.center.x ? -1 : 
             this.hitbox.center.x == GAME.slime.hitbox.center.x ? 0 : 1;
         
@@ -82,7 +81,7 @@ class Tabemasu extends AnimatedEntity {
                 this.xDirection > 0 ? 
                     this.hitbox.center.x - this.trackDistance * 2 - GAME.camera.x  : 
                     this.hitbox.center.x - PARAMS.WIDTH / 2 - GAME.camera.x,
-                this.hitbox.center.y - this.trackDistance - GAME.camera.y, 
+                this.hitbox.center.y - this.trackDistance - GAME.camera.y + PARAMS.SCALE * 11, 
                 PARAMS.WIDTH / 2 + this.trackDistance * 2,
                 this.trackDistance * 2);
             GAME.CTX.font = "30px segoe ui";
@@ -141,8 +140,8 @@ class Tabemasu extends AnimatedEntity {
      * to spawn and {@link GAME.slime.kill()} the slime
      */
     collideWithPlayer() {
-        if (this.currentState == this.states.stunned) return;
-        if (GAME.slime.isInvincible){
+        if (this.currentState == this.states.stunned || this.currentState == this.states.dead) return;
+        if (GAME.slime.currentState == GAME.slime.states.dashing){
             this.changeState(this.states.stunned);
         } else GAME.slime.kill();
     }
@@ -162,7 +161,7 @@ class Tabemasu extends AnimatedEntity {
      * Kills this entity
      */
     kill() {
-        this.isAlive = false;
+        if (this.currentState == this.states.stunned) super.kill();
     }
 
     ///////////////////
@@ -179,6 +178,7 @@ class Tabemasu extends AnimatedEntity {
             searching: new State("Searching"),
             roaming: new State("Roaming"),
             hunting: new State("Hunting"),
+            dead: new State("Dead"),
         };
 
         // IDLE //
@@ -258,7 +258,7 @@ class Tabemasu extends AnimatedEntity {
         };
         this.states.running.setTransitions([
             {state: this.states.falling, predicate: () => { return !this.tileCollisions.includes("bottom") }},
-            {state: this.states.searching, predicate: () => { return this.tileCollisions.includes("left") || this.tileCollisions.includes("right") }},
+            // {state: this.states.searching, predicate: () => { return this.tileCollisions.includes("left") || this.tileCollisions.includes("right") }},
             {state: this.states.hunting, predicate: () => { return this.distanceFromSlime.y < this.trackDistance }},
         ]);
         
@@ -327,11 +327,16 @@ class Tabemasu extends AnimatedEntity {
             this.moveY();
         };
         this.states.hunting.setTransitions([
-            {state: this.states.searching, predicate: () => { 
-                return this.distanceFromSlime.y > this.trackDistance / 3
-                || this.tileCollisions.includes("left") || this.tileCollisions.includes("right")
+            {state: this.states.roaming, predicate: () => { 
+                return this.distanceFromSlime.y > this.trackDistance
+                // || this.tileCollisions.includes("left") || this.tileCollisions.includes("right")
             }},
             {state: this.states.falling, predicate: () => { return this.yVelocity > 1 * PARAMS.SCALE }},
         ]);
+        
+        // DEAD //
+        this.states.dead.start = () => {
+            this.swapTag("Dead", false);
+        };
     }
 }

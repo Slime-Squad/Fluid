@@ -10,6 +10,7 @@ class GameEngine {
         // Everything that will be updated and drawn each frame
         this.entities = [];
         this.collidableEntities = [];
+        this.killableEntities = ["Batterflea", "Tabemasu", "Magmasquito", "Skiwi"]
 
          //for Gamepad
         this.gamepad = null;
@@ -19,8 +20,13 @@ class GameEngine {
         this.mouse = null;
         this.wheel = null;
         this.keys = {};
-
-        this.UNLOCKED_CHARGES = {
+        
+        this.UNLOCKED_CHARGES = PARAMS.CHARGES_UNLOCKED ? {
+            "Electric" : true,
+            "Fire" : true,
+            "Ice" : true,
+            "Earth" : true
+        } : {
             "Electric" : false,
             "Fire" : false,
             "Ice" : false,
@@ -119,7 +125,8 @@ class GameEngine {
         if (this.gamepad != null) {
             if (!this.gamepad.buttons[14]) { // WiiMote
                 CONTROLLER.A = this.gamepad.buttons[0].pressed || this.keys[" "];
-                CONTROLLER.X = this.gamepad.buttons[1].pressed || this.gamepad.buttons[2].pressed || this.keys["j"] || this.keys["J"];
+                CONTROLLER.X = this.gamepad.buttons[1].pressed || this.keys["j"] || this.keys["J"];
+                //CONTROLLER.B = this.gamepad.buttons[2].pressed || this.keys["k"] || this.keys["K"];
                 CONTROLLER.LEFT = this.gamepad.axes[0] < -0.3 || this.keys["a"] || this.keys["A"];
                 CONTROLLER.RIGHT = this.gamepad.axes[0] > 0.3 || this.keys["d"] || this.keys["D"];
                 CONTROLLER.UP = this.gamepad.axes[1] < -0.3 || this.keys["w"] || this.keys["W"];
@@ -129,7 +136,8 @@ class GameEngine {
                 CONTROLLER.HOME = this.gamepad.buttons[2].pressed || this.keys["\`"] || this.keys["\~"];
             } else {
             CONTROLLER.A = this.gamepad.buttons[0].pressed || this.keys[" "];
-            CONTROLLER.X = this.gamepad.buttons[1].pressed || this.gamepad.buttons[2].pressed || this.keys["j"] || this.keys["J"];
+            CONTROLLER.X = this.gamepad.buttons[1].pressed || this.keys["j"] || this.keys["J"];
+            CONTROLLER.B = this.gamepad.buttons[2].pressed || this.keys["k"] || this.keys["K"];
             //checks if d-pad is used or joysticks meet a certain threshold
             CONTROLLER.LEFT = this.gamepad.buttons[14].pressed || this.gamepad.axes[0] < -0.3 || this.keys["a"] || this.keys["A"];
             CONTROLLER.RIGHT = this.gamepad.buttons[15].pressed || this.gamepad.axes[0] > 0.3 || this.keys["d"] || this.keys["D"];
@@ -140,10 +148,11 @@ class GameEngine {
             CONTROLLER.RTRIG = this.gamepad.buttons[7].pressed || this.keys["l"] || this.keys["L"];
             CONTROLLER.HOME = this.gamepad.buttons[16].pressed || this.keys["\`"] || this.keys["\~"];
             }
-            if (PARAMS.DEBUG) this.gamepad.buttons.forEach((button, index) => { if (button.pressed) console.log("GamepadButton: " + index)});
+            // if (PARAMS.DEBUG) this.gamepad.buttons.forEach((button, index) => { if (button.pressed) console.log("GamepadButton: " + index)});
         } else {
             CONTROLLER.A = this.keys[" "];
             CONTROLLER.X = this.keys["j"] || this.keys["J"];
+            CONTROLLER.B = this.keys["k"] || this.keys["K"];
             CONTROLLER.LEFT = this.keys["a"] || this.keys["A"];
             CONTROLLER.RIGHT = this.keys["d"] || this.keys["D"];
             CONTROLLER.UP = this.keys["w"] || this.keys["W"];
