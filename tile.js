@@ -73,8 +73,6 @@ class Tile {
      * @param {AnimatedEntity} entity - the entity colliding with the tile (this)
      */
     collideWithEntity(entity) {
-        if (entity instanceof Projectile) entity.reset();
-        // if (!this.isInFrame()) return;
         let directionOfEntity = this.collidableDirections.length == 1 ? 
             ENTITY_DIRECTIONS_STRINGS[this.collidableDirections[0]] :
             entity.hitbox.getCollisionDirection(this.hitbox);

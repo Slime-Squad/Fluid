@@ -17,7 +17,7 @@ class Projectile extends AnimatedEntity {
 
         //Movement
         this.speed = PARAMS.SCALE;
-        this.direction = 1
+        this.direction = 1;
     }
 
     /**
@@ -25,18 +25,25 @@ class Projectile extends AnimatedEntity {
      */
     update() {
         if (this.tag == "Invisible") return;
+        this.move();
         this.hitbox.updatePos(this.x, this.y);
-        this.hitbox.getCollisions().forEach((entity) => {
-            if (entity.collideWithEntity) entity.collideWithEntity(this);
-        });
+        if (this.hitbox.getCollisions().some(entity => entity instanceof Tile || entity instanceof Slime)) this.reset();
+        // this.hitbox.getCollisions().forEach((entity) => {
+        //     if (entity.collideWithEntity) entity.collideWithEntity(this);
+        // });
         this.endOfCycleUpdates();
     }
 
     /**
      * Changes the animations and is responsible for moving the projectile.
      */
-    shoot() {
+    shoot(direction = 1) {
+        this.respawn();
         this.tag = "Fireball";
+        this.direction = direction;
+    }
+
+    move(){
         this.x += this.speed * this.direction * GAME.tickMod;
     }
 

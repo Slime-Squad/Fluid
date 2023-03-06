@@ -33,10 +33,9 @@ class Skiwi extends AnimatedEntity {
         //     if (entity.collideWithEntity) entity.collideWithEntity(this);
         // });
 
-        if (this.hitbox.getCollisions().length > 1) this.x = this.lastX;
-
-        if(this.x == this.lastX) {
-           this.direction = this.direction * -1;
+        if (this.hitbox.getCollisions().length > 1) {
+            this.x = this.lastX;
+            this.direction = this.direction * -1;
         }
 
         this.endOfCycleUpdates();

@@ -16,17 +16,24 @@ class Magmasquito extends AnimatedEntity {
         this.hitbox = new HitBox(x, y, 0, 0, 20*PARAMS.SCALE, 20*PARAMS.SCALE);
         this.projectile = new Projectile("Invisible", x, y);
         this.speed = PARAMS.SCALE;
-        this.directionTimer = 0;
+        this.shootTimer = 2;
+        this.shootTimeout = 3;
     }
 
     /**
      * Function called on every clock tick.
      */
     update() {
+        if (!this.isInFrame(16*PARAMS.SCALE, 16*PARAMS.SCALE)) return;
+        if (GAME.slime.hitbox.center.x > this.hitbox.center.x){
+            this.tag = "SuckR";
+            this.direction = 1;
+        } else {
+            this.tag = "SuckL";
+            this.direction = -1;
+        }
         this.shoot();
-        //if (!this.isInFrame(16*PARAMS.SCALE, 16*PARAMS.SCALE)) return;
-        GAME.slime.x > this.x ? this.tag = "SuckR" : this.tag = "SuckL";
-        this.endOfCycleUpdates();
+        this.shootTimer += GAME.clockTick;
     }
 
     /**
@@ -41,7 +48,10 @@ class Magmasquito extends AnimatedEntity {
      * This makes a call to the shoot function.
      */
     shoot() {
-        this.projectile.shoot();
+        if (this.shootTimer > this.shootTimeout){
+            this.shootTimer = 0;
+            this.projectile.shoot(this.direction);
+        }
     }
 
     /**
