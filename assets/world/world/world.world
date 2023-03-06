@@ -107,7 +107,7 @@
         },
         {
             "fileName": "../../../mapping_tools/tilemaps/dirt1.tmx",
-            "height": 1024,
+            "height": 1152,
             "width": 768,
             "x": 5040,
             "y": -1728
@@ -121,10 +121,10 @@
         },
         {
             "fileName": "../../../mapping_tools/tilemaps/dirt3.tmx",
-            "height": 384,
+            "height": 512,
             "width": 1024,
             "x": 6576,
-            "y": -1088
+            "y": -1216
         },
         {
             "fileName": "../../../mapping_tools/tilemaps/dirt4.tmx",
@@ -135,7 +135,7 @@
         },
         {
             "fileName": "../../../mapping_tools/tilemaps/dirt5.tmx",
-            "height": 384,
+            "height": 512,
             "width": 1024,
             "x": 6576,
             "y": -1728
