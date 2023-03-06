@@ -36,6 +36,7 @@ class Slime extends AnimatedEntity {
         this.dashSpeed = 5;
         this.dashTimeout = 0.2;
         this.floatTimeout = 0.15;
+        this.slamTimeout = 0.15;
         this.slideSpeed = 0;
         this.wallJumpTimeout = 0.2;
         this.yFallThreshold = (1 / PARAMS.SCALE) * 12;
@@ -50,6 +51,7 @@ class Slime extends AnimatedEntity {
         this.canJump = true;
         this.canDash = false;
         this.canBoost = false;
+        this.canSlam = false;
         this.canPressHome = true;
         this.canPressLTrig = true;
 
@@ -352,7 +354,8 @@ class Slime extends AnimatedEntity {
             floating: new State("Floating"),
             boosting: new State("Boosting"),
             climbing: new State("Climbing"),
-            wallJumping: new State("Wall Jumping")
+            wallJumping: new State("Wall Jumping"),
+            slamming: new State("Slamming")
         };
 
         // IDLE //
@@ -402,12 +405,14 @@ class Slime extends AnimatedEntity {
             this.controlX();
             this.moveY();
             if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.B && this.charges["Earth"] >= 1) this.canSlam = true;
         };
         this.states.jumping.end = () => {
             this.yVelocity = 0;
         }
         this.states.jumping.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
+            {state: this.states.slamming, predicate: () => {return CONTROLLER.B && this.canSlam}},
             {state: this.states.falling, predicate: () => { return !CONTROLLER.A || this.yVelocity >= 0 }},
         ]);
         
@@ -418,10 +423,12 @@ class Slime extends AnimatedEntity {
             this.moveY();
             if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
             if (!CONTROLLER.A && this.charges["Fire"] >= 1) this.canBoost = true;
+            if (!CONTROLLER.B && this.charges["Earth"] >= 1) this.canSlam = true;
         };
         this.states.falling.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
             {state: this.states.boosting, predicate: () => { return CONTROLLER.A && this.canBoost }},
+            {state: this.states.slamming, predicate: () => {return CONTROLLER.B && this.canSlam}},
             {state: this.states.running, predicate: () => { return this.tileCollisions.includes("bottom") && (CONTROLLER.RIGHT || CONTROLLER.LEFT) }},
             {state: this.states.idle, predicate: () => { return this.tileCollisions.includes("bottom") }},
             {state: this.states.climbing, predicate: () => { return this.tileCollisions.includes("right") || this.tileCollisions.includes("left") }},
@@ -487,10 +494,12 @@ class Slime extends AnimatedEntity {
             this.moveY(0, 0);
             if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
             if (!CONTROLLER.A && this.charges["Fire"] >= 1) this.canBoost = true;
+            if (!CONTROLLER.B && this.charges["Earth"] >= 1) this.canSlam = true;
         };
         this.states.floating.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
             {state: this.states.boosting, predicate: () => { return CONTROLLER.A && this.canBoost }},
+            {state: this.states.slamming, predicate: () => {return CONTROLLER.B && this.canSlam}},
             {state: this.states.running, predicate: () => { return this.tileCollisions.includes("bottom") && (CONTROLLER.RIGHT || CONTROLLER.LEFT) }},
             {state: this.states.idle, predicate: () => { return this.tileCollisions.includes("bottom") }},
             {state: this.states.climbing, predicate: () => { return this.tileCollisions.includes("right") || this.tileCollisions.includes("left") }},
@@ -519,6 +528,7 @@ class Slime extends AnimatedEntity {
             // this.boostBlast.x = this.x;
             // this.boostBlast.y = this.hitbox.bottom; - 2 * PARAMS.SCALE;
             if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.X && this.charges["Earth"] >= 1) this.canSlam = true;
         };
         this.states.boosting.end = () =>{
             this.yVelocity = 0;
@@ -526,9 +536,39 @@ class Slime extends AnimatedEntity {
         };
         this.states.boosting.setTransitions([
             {state: this.states.dashing, predicate: () => { return CONTROLLER.X && this.canDash }},
-            {state: this.states.falling, predicate: () => { return !CONTROLLER.A || this.yVelocity > 0 }},
+            {state: this.states.slamming, predicate: () => {return CONTROLLER.B && this.canSlam}},
+            {state: this.states.falling, predicate: () => { return !CONTROLLER.A || this.yVelocity > 0 }}            
         ]);
 
+        //SLAMMING//
+        this.states.slamming.start = () => {
+           this.useUpCharge("Earth");
+           this.momentum = 0;
+           this.yVelocity = this.maxYVelocity;
+           this.canSlam = false;
+           this.canJump = false;
+           this.isInvincible = true;
+           this.slamTimer = 0;
+        };
+        this.states.slamming.behavior = () => {
+            this.xDirection > 0 ? this.tag = "JumpingAir" : this.tage = "JumpingAirLeft";
+            this.moveY();
+            this.slamTimer += GAME.clockTick;
+            if (this.charges["Electric"] >= 1) this.canDash = true;
+            if (this.charges["Fire"] >= 1) this.canBoost = true;
+            this.hitbox.getCollisions().filter(entity => { 
+                return GAME.killableEntities.includes(entity.constructor.name) 
+            }).forEach(killableEntity => {killableEntity.kill()});
+        };
+        this.states.slamming.end = () => {
+            this.isInvincible = false;
+        };
+        this.states.slamming.setTransitions([
+            {state: this.states.dashing, predicate: () => {return CONTROLLER.X && this.canDash}},
+            {state: this.states.falling, predicate: () => {return this.slamTimer > this.slamTimeout}},
+            {state: this.states.idle, predicate: () => { return this.tileCollisions.includes("bottom") }}
+        ]);
+        
         // CLIMBING //
         this.states.climbing.start = () =>{
             this.yVelocity = 0;
