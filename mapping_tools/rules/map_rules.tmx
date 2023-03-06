@@ -8,7 +8,7 @@
  </properties>
  <tileset firstgid="1" source=":/automap-tiles.tsx"/>
  <tileset firstgid="6" source="tools/tools.tsx"/>
- <tileset firstgid="330" source="../tilesets/stone.tsx"/>
+ <tileset firstgid="330" source="../tilesets/fire.tsx"/>
  <layer id="1" name="regions" width="60" height="120">
   <data encoding="csv">
    <chunk x="0" y="0" width="16" height="16">
