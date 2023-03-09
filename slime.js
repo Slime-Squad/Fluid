@@ -88,6 +88,8 @@ class Slime extends AnimatedEntity {
 
         this.startOfCycleUpdates();
 
+        if (!this.isAlive) return;
+
         let oldX = this.hitbox.left;
         let oldY = this.hitbox.top;
         this.changeState();
@@ -173,6 +175,12 @@ class Slime extends AnimatedEntity {
         this.tileCollisions.length = 0; // empty array
         this.entityCollisions = this.posHitBox.getCollisions();
 
+        // let bubble = this.entityCollisions.find(entity => entity instanceof Bubble);
+        // if (bubble) {
+        //     bubble.collideWithPlayer();
+        //     return;
+        // }
+        
         this.entityCollisions.forEach(entity => { 
             if (entity.collideWithPlayer) {
                 let direction = entity.collideWithPlayer();
@@ -208,6 +216,7 @@ class Slime extends AnimatedEntity {
                 Object.keys(this.charges).forEach(tag => { this.useUpCharge(tag) });
                 this.canDash = false;
                 this.canBoost = false;
+                this.currentState = this.states.falling;
             }
         );
         GAME.entities.forEach((entity) => {if(entity.respawn) entity.respawn(); });
@@ -355,7 +364,8 @@ class Slime extends AnimatedEntity {
             boosting: new State("Boosting"),
             climbing: new State("Climbing"),
             wallJumping: new State("Wall Jumping"),
-            slamming: new State("Slamming")
+            slamming: new State("Slamming"),
+            breedable: new State("Breedable"),
         };
 
         // IDLE //
@@ -612,6 +622,25 @@ class Slime extends AnimatedEntity {
             // {state: this.states.jumping, predicate: () => { return this.timers.jumpTimer > this.wallJumpTimeout * 2 && CONTROLLER.A }},
             {state: this.states.falling, predicate: () => { return (!CONTROLLER.A && this.timers.wallJumpTimer > this.wallJumpTimeout) || this.timers.wallJumpTimer > this.wallJumpTimeout * 1.5}},
             {state: this.states.climbing, predicate: () => { return (this.direction <= 0 && this.tileCollisions.includes("left")) || (this.direction > 0 && this.tileCollisions.includes("right")) }},
+        ]);
+
+        // BREEDABLE //
+        this.states.breedable.start = () => {
+            // this.yVelocity = -2 * PARAMS.SCALE;
+        }
+        this.states.breedable.behavior = () => {
+            if (CONTROLLER.LEFT) this.xDirection = -1;
+            else if (CONTROLLER.RIGHT) this.xDirection = 1;
+            this.xDirection > 0 ? this.tag = "Falling" : this.tag = "FallingLeft";
+            if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.A && this.charges["Fire"] >= 1) this.canBoost = true;
+            if (!CONTROLLER.B && this.charges["Earth"] >= 1) this.canSlam = true;
+        }
+        this.states.breedable.end = () => {
+            this.yVelocity = 1 / PARAMS.SCALE;
+        }
+        this.states.breedable.setTransitions([
+            {state: this.states.slamming, predicate: () => { return CONTROLLER.B && GAME.slime.canSlam }},
         ]);
     }
 

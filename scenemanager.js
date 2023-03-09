@@ -48,7 +48,7 @@ class SceneManager {
         });
         // enforce entity loading order (first means will be on top of other entities)
         layerCache["entity"].sort((a, b) => {
-            const entityLoadOrder = ['Slime', 'Bubble'];
+            const entityLoadOrder = ['Slime','Bubble','Ornament',];
             return entityLoadOrder.indexOf(b.constructor.name) - entityLoadOrder.indexOf(a.constructor.name);
         });
         layerCache["entity"].forEach((entity) => console.log(entity.constructor.name));
@@ -72,10 +72,12 @@ class SceneManager {
             this.elapsedFreezeTime += GAME.clockTick;
             if (this.elapsedFreezeTime >= this.freezeTimer) this.unfreeze();
         } else {
-            this.x = Math.round(lerp(this.x, GAME.slime.x + GAME.slime.hitbox.width / 2 - PARAMS.WIDTH/2 + PARAMS.SCALE*56*GAME.slime.momentum, GAME.tickMod/15));
-            this.y = GAME.slime.yVelocity < 0 ? 
-                Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 4*PARAMS.SCALE, GAME.tickMod/15)) :
-                Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE - PARAMS.SCALE*24*-GAME.slime.yVelocity, GAME.tickMod/15));
+            this.x = GAME.slime.x + GAME.slime.hitbox.width / 2 - PARAMS.WIDTH/2;
+            this.y = GAME.slime.y - PARAMS.HEIGHT/2 - 4*PARAMS.SCALE;
+            // this.x = Math.round(lerp(this.x, GAME.slime.x + GAME.slime.hitbox.width / 2 - PARAMS.WIDTH/2 + PARAMS.SCALE*56*GAME.slime.momentum, GAME.tickMod/15));
+            // this.y = GAME.slime.yVelocity < 0 ? 
+            //     Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 4*PARAMS.SCALE, GAME.tickMod/15)) :
+            //     Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE - PARAMS.SCALE*24*-GAME.slime.yVelocity, GAME.tickMod/15));
             // this.y = Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE - Math.min(0,PARAMS.SCALE*24*-GAME.slime.yVelocity), GAME.tickMod/15));
         }
         this.deathScreen.x = this.x - 3*PARAMS.SCALE;
