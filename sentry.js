@@ -14,23 +14,28 @@ class Sentry extends AnimatedEntity {
      */
     constructor(x, y, targetEntity, targetState, width= 8 * PARAMS.SCALE, height= 8 * PARAMS.SCALE) {
         super("./assets/graphics/item/charge", "Invisible", x, y, false);
-        this.targetEntity = targetEntity;
-        this.targetState = targetState;
+        this.nameOfTargetEntity = targetEntity;
+        this.nameOfTargetState = targetState;
         this.hitbox = new HitBox(x, y, 0, 0, width, height);
     }
 
     collideWithPlayer(){
-        if (this.isTriggered) return;
-        GAME.collidableEntities.forEach(entity => {
-            if (!entity.isAlive || !entity.states || !entity.isInFrame() || entity.constructor.name != this.targetEntity) return;
-            Object.keys(entity.states).forEach(state => {
-                if (entity.states[state].name == this.targetState) entity.changeState(entity.states[state]);
-            });
-            this.isTriggered = true;
-        });
+        if (this.isTriggered || !this.targetEntity.isAlive) return;
+        // console.log("Sentry: ", this.targetEntity, this.targetState);
+        this.isTriggered = true;
+        this.targetEntity.changeState(this.targetState);
+        // this.hitbox = null;
+    }
+
+    initializeTargets(){
+        this.targetEntity = GAME.entities.filter(
+            entity => entity.constructor.name === this.nameOfTargetEntity).reduce(
+                (prev, next) => { return getDistance(prev.hitbox.center, this.hitbox.center) < getDistance(next.hitbox.center, this.hitbox.center) ? prev : next });
+        this.targetState = this.targetEntity.states[this.nameOfTargetState.toLowerCase()];
     }
 
     respawn(){
         this.isTriggered = false;
+        // new HitBox(x, y, 0, 0, width, height);
     }
 }

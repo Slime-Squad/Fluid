@@ -62,6 +62,9 @@ class SceneManager {
 
         this.x = GAME.slime.x - PARAMS.WIDTH/2 + 8*PARAMS.SCALE;
         this.y = GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE;
+
+        // Sentry find their closest (by distance) counterpart and assigns itself to the target Entity
+        GAME.entities.filter(entity => entity.constructor.name === "Sentry").forEach(sentry => sentry.initializeTargets());
     }
 
     /**

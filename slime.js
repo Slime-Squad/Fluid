@@ -564,8 +564,8 @@ class Slime extends AnimatedEntity {
             this.xDirection > 0 ? this.tag = "JumpingAir" : this.tage = "JumpingAirLeft";
             this.moveY();
             this.slamTimer += GAME.clockTick;
-            if (this.charges["Electric"] >= 1) this.canDash = true;
-            if (this.charges["Fire"] >= 1) this.canBoost = true;
+            if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
+            if (!CONTROLLER.A && this.charges["Fire"] >= 1) this.canBoost = true;
             this.hitbox.getCollisions().filter(entity => { 
                 return GAME.killableEntities.includes(entity.constructor.name) 
             }).forEach(killableEntity => {killableEntity.kill()});

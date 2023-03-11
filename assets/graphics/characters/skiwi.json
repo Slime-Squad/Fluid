@@ -190,7 +190,7 @@
    },
    {
     "filename": "0#DeadR",
-    "frame": { "x": 0, "y": 88, "w": 16, "h": 24 },
+    "frame": { "x": 0, "y": 96, "w": 16, "h": 24 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 24 },

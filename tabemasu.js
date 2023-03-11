@@ -44,7 +44,7 @@ class Tabemasu extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        if (!this.isAlive || (!this.isInFrame(72*PARAMS.SCALE, 36*PARAMS.SCALE) && this.currentState != this.states.stunned)) {
+        if (!this.isAlive || (!this.isInFrame(128 * PARAMS.SCALE, 36 * PARAMS.SCALE) && this.currentState != this.states.stunned)) {
             return;
         }
 
@@ -153,9 +153,8 @@ class Tabemasu extends AnimatedEntity {
     respawn() {
         super.respawn();
         this.xDirection = this.xDirectionDefault;
-        this.changeState(this.states.idle);
-        this.xDirection = this.xDirectionDefault;
         this.momentum = 0;
+        this.changeState(this.states.idle);
     }
 
     /**
@@ -196,7 +195,8 @@ class Tabemasu extends AnimatedEntity {
             {state: this.states.alert, predicate: () => {
                 return  this.distanceFromSlime.x < this.trackDistance 
                 ||      (this.distanceFromSlime.y < this.trackDistance && this.distanceFromSlime.x < this.trackDistance * 2)
-                ||      (this.directionToSlime == this.xDirection && this.distanceFromSlime.y < this.trackDistance)
+                // ||      (this.directionToSlime == this.xDirection && this.distanceFromSlime.y < this.trackDistance)
+                ||      (this.directionToSlime == this.xDirection && this.distanceFromSlime.y < this.trackDistance && this.distanceFromSlime.x < PARAMS.WIDTH / 2)
             }},
         ]);
 
