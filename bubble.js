@@ -32,10 +32,10 @@ class Bubble extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        if (!this.isInFrame()) return;
+        if (!this.isInFrame() && this.currentState == this.currentState.idle) return;
         this.changeState();
         this.currentState.behavior();
-        console.log("Bubble State: " + this.currentState.name);
+        // console.log("Bubble State: " + this.currentState.name);
         this.hitbox.updatePos(this.x, this.y);
 
         this.endOfCycleUpdates();
@@ -47,45 +47,17 @@ class Bubble extends AnimatedEntity {
     }
 
     collideWithPlayer() {
-        if (this.currentState == this.states.abducting) return;
-        this.changeState(this.states.abducting);
-        // GAME.camera.slimeHealth.damage();
-        // GAME.slime.x = this.x + 4*PARAMS.SCALE;
-        // GAME.slime.y = this.y + 2*PARAMS.SCALE;
-        // this.y--;
-        // GAME.slime.yVelocity = -2 * PARAMS.SCALE;
-        // if (CONTROLLER.LEFT) {
-        //     this.x = lerp(this.x, this.x - 1, GAME.tickMod);
-        // }
-        // if (CONTROLLER.RIGHT) {
-        //     this.x = lerp(this.x, this.x + 1, GAME.tickMod);
-        // }
-        // this.hitbox.updatePos(this.x, this.y);
+        if (this.currentState == this.states.idle && GAME.slime.currentState != GAME.slime.states.breedable) {
+            this.changeState(this.states.abducting);
+        }
     }
 
-    // collideWithPlayer() {
-    //     if (GAME.slime.currentState == GAME.slime.states.slamming) return;
-    //     GAME.slime.changeState(GAME.slime.states.falling);
-    //     GAME.camera.slimeHealth.damage();
-    //     if (GAME.slime.currentState != GAME.slime.states.slamming) {
-    //         GAME.slime.x = this.x + 4*PARAMS.SCALE;
-    //         GAME.slime.y = this.y + 2*PARAMS.SCALE;
-    //         this.y -= 0.65 * PARAMS.SCALE * GAME.tickMod;
-    //         GAME.slime.yVelocity = -1 / PARAMS.SCALE;
-    //     };
-        
-    //     if (CONTROLLER.LEFT) {
-    //         this.x = lerp(this.x, this.x - 1 * PARAMS.SCALE, GAME.tickMod);
-    //     }
-    //     if (CONTROLLER.RIGHT) {
-    //         this.x = lerp(this.x, this.x + 1 * PARAMS.SCALE, GAME.tickMod);
     /**
      * Horizontal Movement - called by state functions.
      * @author Nathan Brown
      */
     moveX(moveSpeed, moveAcceleration = 0) {
 
-        // if (this.momentum * moveSpeed < 0) this.momentum /= 1.05;
         this.x += (moveSpeed + this.momentum) * PARAMS.SCALE * GAME.tickMod;
         this.momentum = clamp(
             this.momentum + moveAcceleration * GAME.tickMod, 
@@ -133,22 +105,21 @@ class Bubble extends AnimatedEntity {
         this.states = {
             idle: new State("Idle"),
             abducting: new State("Abducting"),
-            returning: new State("Returning"),
+            popping: new State("Popping"),
+            inflating: new State("Inflating"),
         };
         
         // IDLE //
+        this.states.idle.start = () => {
+            this.swapTag("Idle", true);
+        }
         // this.states.idle.setTransitions([
         //     {state: this.states.abducting, predicate: () => { return this.hitbox.getCollisions().some(entity => entity instanceof Slime)}},
         // ]);
 
         // ABDUCTING //
         this.states.abducting.start = () => {
-            // const cameraFreezeAnimation = (ctx, camera) => {
-            //     camera.x = GAME.slime.x + GAME.slime.hitbox.width / 2 - PARAMS.WIDTH/2;
-            //     camera.y = GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE;
-            // };
-            // GAME.camera.freeze(0, cameraFreezeAnimation, () =>{ if (GAME.slime.currentState != GAME.slime.states.breedable) camera.unFreeze() });
-            GAME.slime.currentState = GAME.slime.states.breedable;
+            GAME.slime.changeState(GAME.slime.states.breedable);
             GAME.slime.x = this.x + 4 * PARAMS.SCALE;
             GAME.slime.y = this.y + 2 * PARAMS.SCALE;
             GAME.slime.hitbox.updatePos(GAME.slime.x, GAME.slime.y);
@@ -175,10 +146,36 @@ class Bubble extends AnimatedEntity {
         };
         this.states.abducting.end = () => {
             this.momentum = 0;
-            this.respawn();
         };
         this.states.abducting.setTransitions([
-            {state: this.states.idle, predicate: () => { return GAME.slime.currentState != GAME.slime.states.breedable }},
+            {state: this.states.popping, predicate: () => { return GAME.slime.currentState != GAME.slime.states.breedable }},
+        ]);
+
+        // POPPING //
+        this.states.popping.start = () => {
+            this.stateTimer = 0;
+            this.swapTag("Popping", false);
+        }
+        this.states.popping.behavior = () => {
+            this.stateTimer += GAME.clockTick;
+        }
+        this.states.popping.end = () => {
+            this.respawn();
+        }
+        this.states.popping.setTransitions([
+            {state: this.states.inflating, predicate: () => { return this.stateTimer > 1 }},
+        ]);
+
+        // INFLATING //
+        this.states.inflating.start = () => {
+            this.stateTimer = 0;
+            this.swapTag("Inflating", false);
+        }
+        this.states.inflating.behavior = () => {
+            this.stateTimer += GAME.clockTick;
+        }
+        this.states.inflating.setTransitions([
+            {state: this.states.idle, predicate: () => { return this.stateTimer > this.frames.animations["Inflating"][0].duration * this.frames.animations["Inflating"].length  }},
         ]);
     }
 }

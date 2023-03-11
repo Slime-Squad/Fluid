@@ -627,6 +627,7 @@ class Slime extends AnimatedEntity {
         // BREEDABLE //
         this.states.breedable.start = () => {
             // this.yVelocity = -2 * PARAMS.SCALE;
+            this.isInvincible = false;
         }
         this.states.breedable.behavior = () => {
             if (CONTROLLER.LEFT) this.xDirection = -1;

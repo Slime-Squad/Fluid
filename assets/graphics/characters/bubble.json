@@ -10,7 +10,7 @@
    },
    {
     "filename": "1#Idle",
-    "frame": { "x": 28, "y": 0, "w": 24, "h": 24 },
+    "frame": { "x": 32, "y": 0, "w": 24, "h": 24 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
@@ -19,7 +19,7 @@
    },
    {
     "filename": "2#Idle",
-    "frame": { "x": 56, "y": 0, "w": 24, "h": 24 },
+    "frame": { "x": 64, "y": 0, "w": 24, "h": 24 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
@@ -28,7 +28,7 @@
    },
    {
     "filename": "3#Idle",
-    "frame": { "x": 84, "y": 0, "w": 24, "h": 24 },
+    "frame": { "x": 96, "y": 0, "w": 24, "h": 24 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
@@ -37,7 +37,7 @@
    },
    {
     "filename": "4#Idle",
-    "frame": { "x": 112, "y": 0, "w": 24, "h": 24 },
+    "frame": { "x": 128, "y": 0, "w": 24, "h": 24 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
@@ -46,7 +46,7 @@
    },
    {
     "filename": "5#Idle",
-    "frame": { "x": 140, "y": 0, "w": 24, "h": 24 },
+    "frame": { "x": 160, "y": 0, "w": 24, "h": 24 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
@@ -55,7 +55,7 @@
    },
    {
     "filename": "6#Idle",
-    "frame": { "x": 168, "y": 0, "w": 24, "h": 24 },
+    "frame": { "x": 192, "y": 0, "w": 24, "h": 24 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
@@ -64,7 +64,106 @@
    },
    {
     "filename": "7#Idle",
-    "frame": { "x": 196, "y": 0, "w": 24, "h": 24 },
+    "frame": { "x": 224, "y": 0, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 200
+   },
+   {
+    "filename": "0#Popping",
+    "frame": { "x": 0, "y": 32, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 50
+   },
+   {
+    "filename": "1#Popping",
+    "frame": { "x": 32, "y": 32, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 50
+   },
+   {
+    "filename": "2#Popping",
+    "frame": { "x": 64, "y": 32, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 50
+   },
+   {
+    "filename": "3#Popping",
+    "frame": { "x": 96, "y": 32, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 50
+   },
+   {
+    "filename": "4#Popping",
+    "frame": { "x": 128, "y": 32, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 50
+   },
+   {
+    "filename": "5#Popping",
+    "frame": { "x": 160, "y": 32, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 50
+   },
+   {
+    "filename": "0#Inflating",
+    "frame": { "x": 0, "y": 64, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 200
+   },
+   {
+    "filename": "1#Inflating",
+    "frame": { "x": 32, "y": 64, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 200
+   },
+   {
+    "filename": "2#Inflating",
+    "frame": { "x": 64, "y": 64, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 200
+   },
+   {
+    "filename": "3#Inflating",
+    "frame": { "x": 96, "y": 64, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 200
+   },
+   {
+    "filename": "4#Inflating",
+    "frame": { "x": 128, "y": 64, "w": 24, "h": 24 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
@@ -77,7 +176,7 @@
   "version": "1.3-beta21-x64",
   "image": "bubble.png",
   "format": "RGBA8888",
-  "size": { "w": 220, "h": 24 },
+  "size": { "w": 248, "h": 88 },
   "scale": "1"
  }
 }
