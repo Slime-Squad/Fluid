@@ -35,9 +35,12 @@ class KillBox {
     }
 
     /**
-     * Response to colliding with player.
+     * Response to colliding with player. Makes slime vincible.
      */
     collideWithPlayer(){
-        if (GAME.slime.isAlive) GAME.slime.kill();
+        if (GAME.slime.isAlive) {
+            GAME.slime.isInvincible = false;
+            GAME.slime.kill();
+        }
     }
 }
