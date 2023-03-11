@@ -36,7 +36,7 @@ class Slime extends AnimatedEntity {
         this.dashSpeed = 5;
         this.dashTimeout = 0.2;
         this.floatTimeout = 0.15;
-        this.slamTimeout = 0.15;
+        this.slamTimeout = 0.25;
         this.slideSpeed = 0;
         this.wallJumpTimeout = 0.2;
         this.yFallThreshold = (1 / PARAMS.SCALE) * 12;
@@ -562,7 +562,7 @@ class Slime extends AnimatedEntity {
            this.slamTimer = 0;
         };
         this.states.slamming.behavior = () => {
-            this.xDirection > 0 ? this.tag = "JumpingAir" : this.tage = "JumpingAirLeft";
+            this.xDirection > 0 ? this.tag = "Slamming" : this.tag = "SlammingLeft";
             this.moveY();
             this.slamTimer += GAME.clockTick;
             if (!CONTROLLER.X && this.charges["Electric"] >= 1) this.canDash = true;
@@ -576,7 +576,7 @@ class Slime extends AnimatedEntity {
         };
         this.states.slamming.setTransitions([
             {state: this.states.dashing, predicate: () => {return CONTROLLER.X && this.canDash}},
-            {state: this.states.falling, predicate: () => {return this.slamTimer > this.slamTimeout}},
+            {state: this.states.floating, predicate: () => {return this.slamTimer > this.slamTimeout && !CONTROLLER.B}},
             {state: this.states.idle, predicate: () => { return this.tileCollisions.includes("bottom") }}
         ]);
         

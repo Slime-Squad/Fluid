@@ -414,8 +414,152 @@
     "duration": 60
    },
    {
-    "filename": "0#Climbing",
+    "filename": "0#Slamming",
     "frame": { "x": 0, "y": 312, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "1#Slamming",
+    "frame": { "x": 24, "y": 312, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "2#Slamming",
+    "frame": { "x": 48, "y": 312, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "3#Slamming",
+    "frame": { "x": 72, "y": 312, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "4#Slamming",
+    "frame": { "x": 96, "y": 312, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "5#Slamming",
+    "frame": { "x": 120, "y": 312, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "6#Slamming",
+    "frame": { "x": 144, "y": 312, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "7#Slamming",
+    "frame": { "x": 168, "y": 312, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "0#SlammingLeft",
+    "frame": { "x": 0, "y": 336, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "1#SlammingLeft",
+    "frame": { "x": 24, "y": 336, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "2#SlammingLeft",
+    "frame": { "x": 48, "y": 336, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "3#SlammingLeft",
+    "frame": { "x": 72, "y": 336, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "4#SlammingLeft",
+    "frame": { "x": 96, "y": 336, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "5#SlammingLeft",
+    "frame": { "x": 120, "y": 336, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "6#SlammingLeft",
+    "frame": { "x": 144, "y": 336, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "7#SlammingLeft",
+    "frame": { "x": 168, "y": 336, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 120
+   },
+   {
+    "filename": "0#Climbing",
+    "frame": { "x": 0, "y": 360, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -424,7 +568,7 @@
    },
    {
     "filename": "0#ClimbingLeft",
-    "frame": { "x": 0, "y": 336, "w": 16, "h": 16 },
+    "frame": { "x": 0, "y": 384, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -437,7 +581,7 @@
   "version": "1.3-beta21-x64",
   "image": "slimedrop.png",
   "format": "RGBA8888",
-  "size": { "w": 208, "h": 352 },
+  "size": { "w": 208, "h": 400 },
   "scale": "1"
  }
 }
