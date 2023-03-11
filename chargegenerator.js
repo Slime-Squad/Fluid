@@ -7,6 +7,7 @@ class ChargeGenerator extends Charge {
     constructor(tag, x, y, loop = true) {
         super(tag, x, y, loop);
         this.changeState(this.states.active);
+        this.tooltip = new ToolTip(this.tag.toLowerCase(), this.x + 16*PARAMS.SCALE, this.y - 32*PARAMS.SCALE);
     }
 
     update(){
@@ -19,6 +20,7 @@ class ChargeGenerator extends Charge {
     collideWithPlayer(){
         super.collideWithPlayer();
         GAME.UNLOCKED_CHARGES[this.originalTag] = true;
+        this.tooltip.collideWithPlayer();
     }
 
 }

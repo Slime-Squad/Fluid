@@ -6,7 +6,9 @@
             "health.png",
             "health.json",
             "backdrop.png",
-            "backdrop.json"
+            "backdrop.json",
+            "tooltip.png",
+            "tooltip.json"
         ],
         "characters": [
             "batterflea.json",
