@@ -61,10 +61,11 @@ class Slime extends AnimatedEntity {
         this.boostBlast.hitbox = new HitBox(-10000, -10000, 2*PARAMS.SCALE, 18*PARAMS.SCALE, 12*PARAMS.SCALE, 35*PARAMS.SCALE);
 
         this.indicatorElectric = new Ornament("./assets/graphics/characters/indicator", "Electric", this.x, this.y, true);
-        this.indicatorFire = new Ornament("./assets/graphics/characters/indicator", "Fire", this.x, this.y, true);
+        this.indicatorFire = new OrnamentBG("./assets/graphics/characters/indicator", "Fire", this.x, this.y, true);
         this.indicatorIce = new Ornament("./assets/graphics/item/charge", "Ice", this.x, this.y, true);
-        this.indicatorEarth = new Ornament("./assets/graphics/item/charge", "Earth", this.x, this.y, true);
-        this.indicators = [this.indicatorElectric, this.indicatorFire, this.indicatorIce, this.indicatorEarth];
+        this.indicatorEarth = new Ornament("./assets/graphics/characters/indicator", "Earth", this.x, this.y, true);
+        this.indicatorEarthBG = new OrnamentBG("./assets/graphics/characters/indicator", "EarthBG", this.x, this.y, true);
+        this.indicators = [this.indicatorElectric, this.indicatorFire, this.indicatorIce, this.indicatorEarth, this.indicatorEarthBG];
         this.indicators.forEach(indicator => { indicator.tag = "Invisible" });
 
         // Charges
@@ -312,7 +313,8 @@ class Slime extends AnimatedEntity {
                 this.indicatorIce.swapTag("Ice", false);
                 break;
             case "Earth" :
-                this.indicatorEarth.swapTag("Earth", false);
+                this.indicatorEarth.swapTag("Earth", true);
+                this.indicatorEarthBG.swapTag("EarthBG", true);
                 break;
                 
         }
@@ -332,21 +334,20 @@ class Slime extends AnimatedEntity {
                 break;
             case "Earth" :
                 this.indicatorEarth.swapTag("Invisible", false);
+                this.indicatorEarthBG.swapTag("Invisible", false);
                 break;
         }
     }
 
     updateIndicators(){
         this.indicators.forEach(indicator => {
-            if (indicator.tag == "Invisible" || indicator.tag == "Earth" || indicator.tag == "Ice") return;
+            if (indicator.tag == "Invisible" || indicator.tag == "Ice") return;
             indicator.x = this.x;
             indicator.y = this.y;
             indicator.tag = this.xDirection > 0 ? indicator.originalTag : indicator.originalTag + "Left";
         })
-        this.indicatorIce.x = this.x + PARAMS.SCALE * 8;
-        this.indicatorIce.y = this.y + PARAMS.SCALE * 2;
-        this.indicatorEarth.x = this.x + PARAMS.SCALE * 12;
-        this.indicatorEarth.y = this.y + PARAMS.SCALE * 8;
+        this.indicatorIce.x = this.x + PARAMS.SCALE * 6;
+        this.indicatorIce.y = this.y;
     }
 
     ///////////////////

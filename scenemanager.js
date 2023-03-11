@@ -48,7 +48,7 @@ class SceneManager {
         });
         // enforce entity loading order (first means will be on top of other entities)
         layerCache["entity"].sort((a, b) => {
-            const entityLoadOrder = ['Slime','Bubble','Ornament',];
+            const entityLoadOrder = ['OrnamentBG', 'Slime','Bubble','Ornament',];
             return entityLoadOrder.indexOf(b.constructor.name) - entityLoadOrder.indexOf(a.constructor.name);
         });
         layerCache["entity"].forEach((entity) => console.log(entity.constructor.name));
