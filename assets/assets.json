@@ -50,7 +50,8 @@
             "stone_bg_decal.png",
             "stone_bg_decal_1.png",
             "stone_fg_decal.png",
-            "fire.png"
+            "fire.png",
+            "fire_bg_decal.png"
         ]
     },
     "world": {
