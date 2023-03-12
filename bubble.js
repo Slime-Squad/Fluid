@@ -119,6 +119,7 @@ class Bubble extends AnimatedEntity {
 
         // ABDUCTING //
         this.states.abducting.start = () => {
+            GAME.slime.yVelocity = 1 / PARAMS.SCALE;
             GAME.slime.changeState(GAME.slime.states.breedable);
             GAME.slime.x = this.x + 4 * PARAMS.SCALE;
             GAME.slime.y = this.y + 2 * PARAMS.SCALE;
