@@ -13,7 +13,7 @@ class Magmasquito extends AnimatedEntity {
     constructor(tag, x, y, loop = true) {
         super("./assets/graphics/characters/magmasquito", tag, x, y, loop);
         Object.assign(this, { tag, x, y, loop });
-        this.hitbox = new HitBox(x, y, 0, 0, 20*PARAMS.SCALE, 20*PARAMS.SCALE);
+        this.hitbox = new HitBox(x, y, 1 * PARAMS.SCALE, 8 * PARAMS.SCALE, 14*PARAMS.SCALE, 8*PARAMS.SCALE);
         this.projectile = new Projectile("Invisible", x + 4 * PARAMS.SCALE, y + 7 * PARAMS.SCALE);
         this.speed = PARAMS.SCALE;
         this.shootTimer = 2;
