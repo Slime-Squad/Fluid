@@ -81,7 +81,7 @@ class SceneManager {
             // this.y = GAME.slime.yVelocity < 0 ? 
             //     Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 4*PARAMS.SCALE, GAME.tickMod/15)) :
             //     Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE - PARAMS.SCALE*24*-GAME.slime.yVelocity, GAME.tickMod/15));
-            this.y = Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE - Math.min(0,PARAMS.SCALE*24)*-GAME.slime.yVelocity, GAME.tickMod/15));
+            this.y = Math.round(lerp(this.y, GAME.slime.y - PARAMS.HEIGHT/2 - 16*PARAMS.SCALE - Math.min(0,-GAME.slime.yVelocity)*PARAMS.SCALE*24, GAME.tickMod/15));
         }
         this.deathScreen.x = this.x - 3*PARAMS.SCALE;
         this.deathScreen.y = this.y - 3*PARAMS.SCALE;

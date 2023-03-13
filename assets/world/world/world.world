@@ -209,6 +209,34 @@
             "width": 1024,
             "x": 5296,
             "y": -2496
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/fire8.tmx",
+            "height": 576,
+            "width": 960,
+            "x": 4592,
+            "y": 384
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/fire9.tmx",
+            "height": 576,
+            "width": 768,
+            "x": 5552,
+            "y": 384
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/fire10.tmx",
+            "height": 576,
+            "width": 768,
+            "x": 6320,
+            "y": 384
+        },
+        {
+            "fileName": "../../../mapping_tools/tilemaps/fire11.tmx",
+            "height": 320,
+            "width": 1024,
+            "x": 7856,
+            "y": 64
         }
     ],
     "onlyShowAdjacentMaps": false,
