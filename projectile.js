@@ -61,7 +61,7 @@ class Projectile extends AnimatedEntity {
      * to spawn and {@link GAME.slime.kill()} the slime
      */
     collideWithPlayer() {
-        if (GAME.slime.isAlive) GAME.slime.kill();
+        if (GAME.slime.isAlive && this.tag == "Fireball") GAME.slime.kill();
         this.reset();
     }
 

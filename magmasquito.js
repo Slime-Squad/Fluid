@@ -14,7 +14,7 @@ class Magmasquito extends AnimatedEntity {
         super("./assets/graphics/characters/magmasquito", tag, x, y, loop);
         Object.assign(this, { tag, x, y, loop });
         this.hitbox = new HitBox(x, y, 0, 0, 20*PARAMS.SCALE, 20*PARAMS.SCALE);
-        this.projectile = new Projectile("Invisible", x, y);
+        this.projectile = new Projectile("Invisible", x + 4 * PARAMS.SCALE, y + 7 * PARAMS.SCALE);
         this.speed = PARAMS.SCALE;
         this.shootTimer = 2;
         this.shootTimeout = 3;
@@ -24,7 +24,7 @@ class Magmasquito extends AnimatedEntity {
      * Function called on every clock tick.
      */
     update() {
-        if (!this.isInFrame(16*PARAMS.SCALE, 16*PARAMS.SCALE)) return;
+        if (!this.isInFrame(16*PARAMS.SCALE, 16*PARAMS.SCALE) || !this.isAlive) return;
         if (GAME.slime.hitbox.center.x > this.hitbox.center.x){
             this.tag = "SuckR";
             this.direction = 1;
@@ -42,6 +42,13 @@ class Magmasquito extends AnimatedEntity {
      */
     collideWithPlayer() {
         if (GAME.slime.isAlive) GAME.slime.kill();
+        if (GAME.slime.isInvincible) this.kill();
+    }
+
+    kill(){
+        this.isAlive = false;
+        this.swapTag("Dead", false);
+        this.projectile.reset();
     }
 
     /**

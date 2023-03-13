@@ -180,15 +180,6 @@
     "duration": 400
    },
    {
-    "filename": "4#SuckL",
-    "frame": { "x": 96, "y": 48, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 16, "h": 16 },
-    "duration": 400
-   },
-   {
     "filename": "0#SuckR",
     "frame": { "x": 0, "y": 72, "w": 16, "h": 16 },
     "rotated": false,
@@ -223,14 +214,23 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
     "sourceSize": { "w": 16, "h": 16 },
     "duration": 400
+   },
+   {
+    "filename": "0#Dead",
+    "frame": { "x": 0, "y": 96, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 400
    }
  ],
  "meta": {
   "app": "https://www.aseprite.org/",
   "version": "1.3-beta21-x64",
-  "image": "Magmasquito-2.png",
+  "image": "magmasquito.png",
   "format": "RGBA8888",
-  "size": { "w": 184, "h": 88 },
+  "size": { "w": 184, "h": 112 },
   "scale": "1"
  }
 }
