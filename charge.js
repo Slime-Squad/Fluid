@@ -102,6 +102,6 @@ class Charge extends AnimatedEntity {
             ASSET_MANAGER.playAudio("./assets/audio/effect/charge" + Math.floor(Math.random()*4) + ".wav");
             this.changeState(this.states.collected);
         }
-        console.log(this.currentState.name);
+        // console.log(this.currentState.name);
     }
 }

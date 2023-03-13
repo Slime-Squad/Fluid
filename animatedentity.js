@@ -126,7 +126,7 @@ class AnimatedEntity {
         const y = this.y - GAME.camera.y;
         const w = width ? width : this.hitbox ? this.hitbox.width : 8*PARAMS.SCALE;
         const h = height ? height : this.hitbox ? this.hitbox.height : 8*PARAMS.SCALE;
-        //if ((x > -w && x < PARAMS.WIDTH && y > -h && y < PARAMS.HEIGHT)) console.log(this.constructor.name, "is in frame.");
+        // if ((x > -w && x < PARAMS.WIDTH && y > -h && y < PARAMS.HEIGHT)) console.log(this.constructor.name, "is in frame.");
         return (x > -w && x < Number(PARAMS.WIDTH) + w && y > -h && y < Number(PARAMS.HEIGHT) + h);
     }
 

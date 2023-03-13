@@ -18,7 +18,7 @@ class AssetManager {
      * @param {String} path The path of the file to be queued for download.
      */
     queueDownload(path) {
-        console.log("Queueing " + path);
+        // console.log("Queueing " + path);
         this.downloadQueue.push(path);
     }
     /**
@@ -52,7 +52,7 @@ class AssetManager {
                     const aud = new Audio();
                     this.handleEventListeners(aud, callback, () => {
                         aud.addEventListener("loadeddata", () => {
-                            console.log("Loaded " + aud.src);
+                            // console.log("Loaded " + aud.src);
                             this.successCount++;
                             if (this.isDone()) callback(this.requests);
                         });
@@ -109,13 +109,13 @@ class AssetManager {
     handleEventListeners(asset, callback, optionalListeners = () => {}) {
         
         asset.addEventListener("load", () => {
-            console.log("Loaded " + asset.src);
+            // console.log("Loaded " + asset.src);
             this.successCount++;
             if (this.isDone()) callback(this.requests);
         });
 
         asset.addEventListener("error", () => {
-            console.log("Error loading " + asset.src);
+            // console.log("Error loading " + asset.src);
             this.errorCount++;
             if (this.isDone()) callback(this.requests);
         });

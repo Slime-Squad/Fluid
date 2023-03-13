@@ -20,7 +20,7 @@ class ToolTip extends AnimatedEntity {
     }
 
     collideWithPlayer(){
-        console.log("touching", this.type, this.type + (GAME.gamepad ? "_gamepad" : "_keyboard"));
+        // console.log("touching", this.type, this.type + (GAME.gamepad ? "_gamepad" : "_keyboard"));
         if (this.tag == "Invisible") {
             this.swapTag(this.type + (GAME.gamepad ? "_gamepad" : "_keyboard"), false);
         } else if (this.frames.isFrozen) {

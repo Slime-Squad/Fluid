@@ -71,14 +71,14 @@ class JukeBox {
             GAME.camera.backdrop.swapTag(GAME.camera.backdrop.tag.split("_")[0] + "_out", false);
         } else if (GAME.camera.backdrop.tag.includes("_out") && this.backdrop == "default") return;
         else {
-            console.log("Swapping out", GAME.camera.backdrop.tag, "with", this.backdrop + (this.backdrop == "default" ? "" : "_in"))
+            // console.log("Swapping out", GAME.camera.backdrop.tag, "with", this.backdrop + (this.backdrop == "default" ? "" : "_in"))
             GAME.camera.backdrop.xOffset = this.x - GAME.camera.x;
             GAME.camera.backdrop.yOffset = this.y - GAME.camera.y;
             GAME.camera.backdrop.swapTag(this.backdrop + (this.backdrop == "default" ? "" : "_in"), false);
             if (this.music && !PARAMS.BGM_MUTE) {
                 ASSET_MANAGER.killBackgroundMusic();
                 ASSET_MANAGER.playAudio("./assets/audio/music/" + this.music);
-                console.log("now playing:", "./assets/audio/music/" + this.music);
+                // console.log("now playing:", "./assets/audio/music/" + this.music);
             }
         }
         //GAME.camera.backdrop.swapTag(this.backdrop, false);

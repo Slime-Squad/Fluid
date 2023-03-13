@@ -35,7 +35,7 @@ class Room {
                 });
                 tiles = [...tiles.map((elem) => elem - Math.max(gid,1))];
 
-                console.log(layer["name"], gid, tiles)
+                // console.log(layer["name"], gid, tiles)
                 this.layers[layer["name"]] = [firstgids[gid], tiles]; // tileset path, tile indices array
             }
         });

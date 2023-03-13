@@ -37,7 +37,7 @@ class SceneManager {
                     room.tiles[layer].forEach((entity) => {
                         Object.values(entity).forEach(field => {
                             if (field instanceof AnimatedEntity){
-                                console.log(field.constructor.name, "is an animated entity");
+                                // console.log(field.constructor.name, "is an animated entity");
                                 layerCache[layer].push(field);
                             }
                         });
@@ -51,10 +51,10 @@ class SceneManager {
             const entityLoadOrder = ['OrnamentBG', 'Slime','Bubble','Ornament',];
             return entityLoadOrder.indexOf(b.constructor.name) - entityLoadOrder.indexOf(a.constructor.name);
         });
-        layerCache["entity"].forEach((entity) => console.log(entity.constructor.name));
+        // layerCache["entity"].forEach((entity) => console.log(entity.constructor.name));
         const order = ["fg", "entity", "map", "bg"];
         order.forEach((layer) => {
-            console.log("adding", layer);
+            // console.log("adding", layer);
             layerCache[layer].forEach((entity) => GAME.addEntity(entity))
         });
 
