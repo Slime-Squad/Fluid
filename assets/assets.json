@@ -34,7 +34,9 @@
             "tabemasu.png",
             "tabemasu.json",
             "projectile.png",
-            "projectile.json"
+            "projectile.json",
+            "radiation.png",
+            "radiation.json"
         ],
 
         "item": [
@@ -77,13 +79,18 @@
             "boost0.wav",
             "boost1.wav",
             "boost2.wav",
-            "boost3.wav"
+            "boost3.wav",
+            "rad0.wav",
+            "rad1.wav",
+            "rad2.wav",
+            "rad3.wav"
         ],
         "music": [
             "aerial.mp3",
             "metrodrome.mp3",
             "meeting.mp3",
-            "pacifica.mp3"
+            "pacifica.mp3",
+            "bowser.mp3"
         ]
     }
 }

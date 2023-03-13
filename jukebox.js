@@ -76,6 +76,7 @@ class JukeBox {
             GAME.camera.backdrop.yOffset = this.y - GAME.camera.y;
             GAME.camera.backdrop.swapTag(this.backdrop + (this.backdrop == "default" ? "" : "_in"), false);
             if (this.music && !PARAMS.BGM_MUTE) {
+                ASSET_MANAGER.killBackgroundMusic();
                 ASSET_MANAGER.playAudio("./assets/audio/music/" + this.music);
                 console.log("now playing:", "./assets/audio/music/" + this.music);
             }

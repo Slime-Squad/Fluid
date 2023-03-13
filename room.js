@@ -109,6 +109,9 @@ class Room {
                                 case 19:
                                     entity = new Checkpoint("Idle", x, y);
                                     break;
+                                case 21:
+                                    entity = new Radiation(x, y);
+                                    break;
                                 case 36:
                                     entity = new JukeBox(x, y);
                                     break;
@@ -123,6 +126,9 @@ class Room {
                                     break;
                                 case 40:
                                     entity = new JukeBox(x, y, "ice", "meeting.mp3");
+                                    break;
+                                case 41:
+                                    entity = new JukeBox(x, y, "dirt", "bowser.mp3");
                                     break;
                             }
                             if (entity && entity.hitbox) {
