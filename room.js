@@ -50,6 +50,7 @@ class Room {
                     if (elem >= 0) {
                         const x = this.x*PARAMS.SCALE + ((index)%(this.w/8))*8*PARAMS.SCALE;
                         const y = this.y*PARAMS.SCALE + Math.floor((index)/(this.w/8))*8*PARAMS.SCALE;
+                        if (layer.includes("draft")) return;
                         if (layer == "entity") { // TODO: ADD ENTITIES HERE
                             let entity;
                             switch(elem) {

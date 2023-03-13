@@ -5,7 +5,7 @@
   <property name="OverflowBorder" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" source="tools/tools.tsx"/>
- <tileset firstgid="325" source="../tilesets/fire_bg_decal.tsx"/>
+ <tileset firstgid="325" source="../tilesets/stone_bg_decal.tsx"/>
  <tileset firstgid="403" source=":/automap-tiles.tsx"/>
  <layer id="1" name="regions" width="120" height="48">
   <data encoding="csv">
